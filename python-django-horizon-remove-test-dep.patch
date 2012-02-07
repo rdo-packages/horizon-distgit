@@ -1,0 +1,21 @@
+diff --git a/openstack-dashboard/dashboard/settings.py b/openstack-dashboard/dashboard/settings.py
+index c76407b..a3c0dfd 100644
+--- a/openstack-dashboard/dashboard/settings.py
++++ b/openstack-dashboard/dashboard/settings.py
+@@ -87,14 +87,14 @@ INSTALLED_APPS = (
+     'django.contrib.sessions',
+     'django.contrib.messages',
+     'django.contrib.staticfiles',
+-    'django_nose',
++    #'django_nose',
+     'horizon',
+     'horizon.dashboards.nova',
+     'horizon.dashboards.syspanel',
+     'horizon.dashboards.settings',
+ )
+ 
+-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
++#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
+ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+ 

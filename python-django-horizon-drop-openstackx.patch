@@ -1,0 +1,995 @@
+commit 72a50b1c36c7ad7678ab6c53c53d3784865f57ca
+Author: Anthony Young <sleepsonthefloor@gmail.com>
+Date:   Mon Jan 23 20:15:17 2012 -0800
+
+    Novaclient for usage features.  Kill openstackx.
+    
+     * Fixes bug 848403
+     * blueprint novaclient-migration
+     * Fully removes openstackx
+     * Needs https://review.openstack.org/3382 to work for non-admin users
+    
+    Change-Id: I3e7fcf2f79a92c92c6c66ff0637ed874563496d6
+
+diff --git a/horizon/horizon/api/base.py b/horizon/horizon/api/base.py
+index 6e88691..f53d06d 100644
+--- a/horizon/horizon/api/base.py
++++ b/horizon/horizon/api/base.py
+@@ -61,7 +61,7 @@ class APIDictWrapper(object):
+         dictionary, in addition to attribute accesses.
+ 
+         Attribute access is the preferred method of access, to be
+-        consistent with api resource objects from openstackx
++        consistent with api resource objects from novclient.
+     """
+     def __init__(self, apidict):
+         self._apidict = apidict
+diff --git a/horizon/horizon/api/deprecated.py b/horizon/horizon/api/deprecated.py
+deleted file mode 100644
+index 74c0855..0000000
+--- a/horizon/horizon/api/deprecated.py
++++ /dev/null
+@@ -1,67 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2011 United States Government as represented by the
+-# Administrator of the National Aeronautics and Space Administration.
+-# All Rights Reserved.
+-#
+-# Copyright 2011 Nebula, Inc.
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-import functools
+-import logging
+-
+-from django.utils.decorators import available_attrs
+-import openstackx.admin
+-import openstackx.api.exceptions as openstackx_exceptions
+-import openstackx.extras
+-
+-from horizon.api.base import *
+-
+-
+-LOG = logging.getLogger(__name__)
+-
+-
+-def check_openstackx(f):
+-    """Decorator that adds extra info to api exceptions
+-
+-       The OpenStack Dashboard currently depends on openstackx extensions
+-       being present in Nova.  Error messages depending for views depending
+-       on these extensions do not lead to the conclusion that Nova is missing
+-       extensions.
+-
+-       This decorator should be dropped and removed after Keystone and
+-       Horizon more gracefully handle extensions and openstackx extensions
+-       aren't required by Horizon in Nova.
+-    """
+-    @functools.wraps(f, assigned=available_attrs(f))
+-    def inner(*args, **kwargs):
+-        try:
+-            return f(*args, **kwargs)
+-        except openstackx_exceptions.NotFound, e:
+-            e.message = e.details or ''
+-            e.message += ' This error may be caused by a misconfigured' \
+-                         ' Nova url in keystone\'s service catalog, or ' \
+-                         ' by missing openstackx extensions in Nova. ' \
+-                         ' See the Horizon README.'
+-            raise
+-    return inner
+-
+-
+-def extras_api(request):
+-    management_url = url_for(request, 'compute')
+-    LOG.debug('extras_api connection created using token "%s"'
+-                     ' and url "%s"' %
+-                    (request.user.token, management_url))
+-    return openstackx.extras.Extras(auth_token=request.user.token,
+-                                   management_url=management_url)
+diff --git a/horizon/horizon/api/nova.py b/horizon/horizon/api/nova.py
+index 068c18e..f1b7d47 100644
+--- a/horizon/horizon/api/nova.py
++++ b/horizon/horizon/api/nova.py
+@@ -28,8 +28,6 @@ from novaclient.v1_1 import security_group_rules as nova_rules
+ from novaclient.v1_1.servers import REBOOT_HARD
+ 
+ from horizon.api.base import *
+-from horizon.api.deprecated import check_openstackx
+-from horizon.api.deprecated import extras_api
+ 
+ 
+ LOG = logging.getLogger(__name__)
+@@ -41,7 +39,7 @@ VOLUME_STATE_AVAILABLE = "available"
+ 
+ 
+ class Flavor(APIResourceWrapper):
+-    """Simple wrapper around openstackx.admin.flavors.Flavor"""
++    """Simple wrapper around novaclient.flavors.Flavor"""
+     _attrs = ['disk', 'id', 'links', 'name', 'ram', 'vcpus']
+ 
+ 
+@@ -56,7 +54,7 @@ class FloatingIpPool(APIResourceWrapper):
+ 
+ 
+ class KeyPair(APIResourceWrapper):
+-    """Simple wrapper around openstackx.extras.keypairs.Keypair"""
++    """Simple wrapper around novaclient.keypairs.Keypair"""
+     _attrs = ['fingerprint', 'name', 'private_key']
+ 
+ 
+@@ -99,7 +97,7 @@ class QuotaSet(object):
+ 
+ 
+ class Server(APIResourceWrapper):
+-    """Simple wrapper around openstackx.extras.server.Server
++    """Simple wrapper around novaclient.server.Server
+ 
+        Preserves the request info so image name can later be retrieved
+     """
+@@ -127,15 +125,33 @@ class Server(APIResourceWrapper):
+ 
+ 
+ class Usage(APIResourceWrapper):
+-    """Simple wrapper around openstackx.extras.usage.Usage"""
+-    _attrs = ['begin', 'instances', 'stop', 'tenant_id',
+-             'total_active_disk_size', 'total_active_instances',
+-             'total_active_ram_size', 'total_active_vcpus', 'total_cpu_usage',
+-             'total_disk_usage', 'total_hours', 'total_ram_usage']
++    """Simple wrapper around contrib/simple_usage.py"""
++    _attrs = ['start', 'server_usages', 'stop', 'tenant_id',
++             'total_local_gb_usage', 'total_memory_mb_usage',
++             'total_vcpus_usage', 'total_hours']
++
++    @property
++    def total_active_instances(self):
++        return sum(1 for s in self.server_usages if s['ended_at'] == None)
++
++    @property
++    def total_active_vcpus(self):
++        return sum(s['vcpus']\
++            for s in self.server_usages if s['ended_at'] == None)
++
++    @property
++    def total_active_local_gb(self):
++        return sum(s['local_gb']\
++            for s in self.server_usages if s['ended_at'] == None)
++
++    @property
++    def total_active_memory_mb(self):
++        return sum(s['memory_mb']\
++            for s in self.server_usages if s['ended_at'] == None)
+ 
+ 
+ class SecurityGroup(APIResourceWrapper):
+-    """Simple wrapper around openstackx.extras.security_groups.SecurityGroup"""
++    """Simple wrapper around novaclient.security_groups.SecurityGroup"""
+     _attrs = ['id', 'name', 'description', 'tenant_id']
+ 
+     @property
+@@ -285,7 +301,6 @@ def server_console_output(request, instance_id, tail_length=None):
+                                                           length=tail_length)
+ 
+ 
+-@check_openstackx
+ def admin_server_list(request):
+     return [Server(s, request) for s in novaclient(request).servers.list()]
+ 
+@@ -349,14 +364,12 @@ def tenant_quota_defaults(request, tenant_id):
+     return QuotaSet(novaclient(request).quotas.defaults(tenant_id))
+ 
+ 
+-@check_openstackx
+ def usage_get(request, tenant_id, start, end):
+-    return Usage(extras_api(request).usage.get(tenant_id, start, end))
++    return Usage(novaclient(request).usage.get(tenant_id, start, end))
+ 
+ 
+-@check_openstackx
+ def usage_list(request, start, end):
+-    return [Usage(u) for u in extras_api(request).usage.list(start, end)]
++    return [Usage(u) for u in novaclient(request).usage.list(start, end, True)]
+ 
+ 
+ def security_group_list(request):
+diff --git a/horizon/horizon/dashboards/nova/access_and_security/security_groups/tests.py b/horizon/horizon/dashboards/nova/access_and_security/security_groups/tests.py
+index d7b7867..71d48b3 100644
+--- a/horizon/horizon/dashboards/nova/access_and_security/security_groups/tests.py
++++ b/horizon/horizon/dashboards/nova/access_and_security/security_groups/tests.py
+@@ -22,7 +22,6 @@ from django import http
+ from django.conf import settings
+ from django.core.urlresolvers import reverse
+ from glance.common import exception as glance_exception
+-from openstackx.api import exceptions as api_exceptions
+ from novaclient import exceptions as novaclient_exceptions
+ from novaclient.v1_1 import security_group_rules as nova_rules
+ from mox import IgnoreArg, IsA
+diff --git a/horizon/horizon/dashboards/nova/images_and_snapshots/snapshots/tests.py b/horizon/horizon/dashboards/nova/images_and_snapshots/snapshots/tests.py
+index c53a338..69f71e4 100644
+--- a/horizon/horizon/dashboards/nova/images_and_snapshots/snapshots/tests.py
++++ b/horizon/horizon/dashboards/nova/images_and_snapshots/snapshots/tests.py
+@@ -22,7 +22,7 @@ from django import http
+ from django.contrib import messages
+ from django.core.urlresolvers import reverse
+ from glance.common import exception as glance_exception
+-from openstackx.api import exceptions as api_exceptions
++from novaclient import exceptions as novaclient_exceptions
+ from mox import IgnoreArg, IsA
+ 
+ from horizon import api
+@@ -98,7 +98,7 @@ class SnapshotsViewTests(test.BaseViewTests):
+ 
+     def test_create_get_server_exception(self):
+         self.mox.StubOutWithMock(api, 'server_get')
+-        exception = api_exceptions.ApiException('apiException')
++        exception = novaclient_exceptions.ClientException('apiException')
+         api.server_get(IsA(http.HttpRequest),
+                        str(self.good_server.id)).AndRaise(exception)
+ 
+@@ -158,7 +158,7 @@ class SnapshotsViewTests(test.BaseViewTests):
+ 
+         api.server_get(IsA(http.HttpRequest),
+                        str(self.good_server.id)).AndReturn(self.good_server)
+-        exception = api_exceptions.ApiException('apiException',
++        exception = novaclient_exceptions.ClientException('apiException',
+                                                 message='apiException')
+         api.snapshot_create(IsA(http.HttpRequest),
+                             str(self.good_server.id), SNAPSHOT_NAME).\
+diff --git a/horizon/horizon/dashboards/nova/images_and_snapshots/views.py b/horizon/horizon/dashboards/nova/images_and_snapshots/views.py
+index bcbb397..f5814b4 100644
+--- a/horizon/horizon/dashboards/nova/images_and_snapshots/views.py
++++ b/horizon/horizon/dashboards/nova/images_and_snapshots/views.py
+@@ -30,7 +30,6 @@ from django.contrib import messages
+ from django.utils.translation import ugettext as _
+ from glance.common import exception as glance_exception
+ from novaclient import exceptions as novaclient_exceptions
+-from openstackx.api import exceptions as api_exceptions
+ 
+ from horizon import api
+ from horizon import exceptions
+diff --git a/horizon/horizon/dashboards/nova/instances_and_volumes/tests.py b/horizon/horizon/dashboards/nova/instances_and_volumes/tests.py
+index 06fcd38..c8c7b5a 100644
+--- a/horizon/horizon/dashboards/nova/instances_and_volumes/tests.py
++++ b/horizon/horizon/dashboards/nova/instances_and_volumes/tests.py
+@@ -21,7 +21,7 @@
+ from django import http
+ from django.core.urlresolvers import reverse
+ from mox import IsA
+-from openstackx.api import exceptions as api_exceptions
++from novaclient import exceptions as novaclient_exceptions
+ 
+ from horizon import api
+ from horizon import test
+@@ -62,7 +62,7 @@ class InstancesAndVolumesViewTest(test.BaseViewTests):
+     def test_index_server_list_exception(self):
+         self.mox.StubOutWithMock(api, 'server_list')
+         self.mox.StubOutWithMock(api, 'volume_list')
+-        exception = api_exceptions.ApiException('apiException')
++        exception = novaclient_exceptions.ClientException('apiException')
+         api.server_list(IsA(http.HttpRequest)).AndRaise(exception)
+         api.volume_list(IsA(http.HttpRequest)).AndReturn(self.volumes)
+ 
+diff --git a/horizon/horizon/dashboards/nova/overview/views.py b/horizon/horizon/dashboards/nova/overview/views.py
+index 47f165f..9648e19 100644
+--- a/horizon/horizon/dashboards/nova/overview/views.py
++++ b/horizon/horizon/dashboards/nova/overview/views.py
+@@ -58,24 +58,25 @@ def usage(request, tenant_id=None):
+         exceptions.handle(request,
+                           _('Unable to retrieve usage information.'))
+ 
++    total_ram = 0
+     ram_unit = "MB"
+-    total_ram = getattr(usage, 'total_active_ram_size', 0)
+-    if total_ram >= 1024:
+-        ram_unit = "GB"
+-        total_ram /= 1024
+ 
+     instances = []
+     terminated = []
+-
+-    if hasattr(usage, 'instances'):
++    if hasattr(usage, 'server_usages'):
++        total_ram = usage.total_active_memory_mb
+         now = datetime.datetime.now()
+-        for i in usage.instances:
++        for i in usage.server_usages:
+             i['uptime_at'] = now - datetime.timedelta(seconds=i['uptime'])
+             if i['ended_at'] and not show_terminated:
+                 terminated.append(i)
+             else:
+                 instances.append(i)
+ 
++    if total_ram >= 1024:
++        ram_unit = "GB"
++        total_ram /= 1024
++
+     if request.GET.get('format', 'html') == 'csv':
+         template = 'nova/overview/usage.csv'
+         mimetype = "text/csv"
+diff --git a/horizon/horizon/dashboards/nova/templates/nova/overview/usage.csv b/horizon/horizon/dashboards/nova/templates/nova/overview/usage.csv
+index d618b63..450f9e0 100644
+--- a/horizon/horizon/dashboards/nova/templates/nova/overview/usage.csv
++++ b/horizon/horizon/dashboards/nova/templates/nova/overview/usage.csv
+@@ -1,11 +1,11 @@
+ Usage Report For Period:,{{datetime_start|date:"b. d Y H:i"}},/,{{datetime_end|date:"b. d Y H:i"}}
+ Tenant ID:,{{usage.tenant_id}}
+ Total Active VCPUs:,{{usage.total_active_vcpus}}
+-CPU-HRs Used:,{{usage.total_cpu_usage}}
+-Total Active Ram (MB):,{{usage.total_active_ram_size}}
+-Total Disk Size:,{{usage.total_active_disk_size}}
+-Total Disk Usage:,{{usage.total_disk_usage}}
++CPU-HRs Used:,{{usage.total_vcpus_usage}}
++Total Active Ram (MB):,{{usage.total_active_memory_mb}}
++Total Disk Size:,{{usage.total_active_local_gb}}
++Total Disk Usage:,{{usage.total_local_gb_usage}}
+ 
+-ID,Name,UserId,VCPUs,RamMB,DiskGB,Flavor,Usage(Hours),Uptime(Seconds),State
+-{% for instance in usage.instances %}{{instance.id}},{{instance.name|addslashes}},{{instance.user_id|addslashes}},{{instance.vcpus|addslashes}},{{instance.ram_size|addslashes}},{{instance.disk_size|addslashes}},{{instance.flavor|addslashes}},{{instance.hours}},{{instance.uptime}},{{instance.state|capfirst|addslashes}}
++ID,Name,VCPUs,RamMB,DiskGB,Usage(Hours),Uptime(Seconds),State
++{% for server_usage in usage.server_usages %}{{server_usage.id}},{{server_usage.name|addslashes}},{{server_usage.vcpus|addslashes}},{{server_usage.memory_mb|addslashes}},{{server_usage.local_gb|addslashes}},{{server_usage.hours}},{{server_usage.uptime}},{{server_usage.state|capfirst|addslashes}}
+ {% endfor %}
+diff --git a/horizon/horizon/dashboards/nova/templates/nova/overview/usage.html b/horizon/horizon/dashboards/nova/templates/nova/overview/usage.html
+index 7ff9bba..2f0fb73 100644
+--- a/horizon/horizon/dashboards/nova/templates/nova/overview/usage.html
++++ b/horizon/horizon/dashboards/nova/templates/nova/overview/usage.html
+@@ -8,13 +8,13 @@
+ 
+ {% block dash_main %}
+ 
+-  {% if usage.instances %}
++  {% if usage.server_usages %}
+     <div id="usage">
+       <div class="usage_block first">
+         <h3>CPU</h3>
+         <ul>
+           <li><span class="quantity">{{ usage.total_active_vcpus|default:0 }}</span><span class="unit">Cores</span> Active</li>
+-          <li><span class="quantity">{{ usage.total_cpu_usage|floatformat|default:0 }}</span><span class="unit">CPU-HR</span> Used</li>
++          <li><span class="quantity">{{ usage.total_vcpus_usage|floatformat|default:0 }}</span><span class="unit">CPU-HR</span> Used</li>
+         </ul>
+       </div>
+ 
+@@ -28,8 +28,8 @@
+       <div class="usage_block last">
+         <h3>Disk</h3>
+         <ul>
+-          <li><span class="quantity">{{ usage.total_active_disk_size|default:0 }}</span><span class="unit">GB</span> Active</li>
+-          <li><span class="quantity">{{ usage.total_disk_usage|floatformat|default:0 }}</span><span class="unit">GB-HR</span> Used</li>
++          <li><span class="quantity">{{ usage.total_active_local_gb|default:0 }}</span><span class="unit">GB</span> Active</li>
++          <li><span class="quantity">{{ usage.total_local_gb|floatformat|default:0 }}</span><span class="unit">GB-HR</span> Used</li>
+         </ul>
+       </div>
+     </div>
+@@ -49,7 +49,6 @@
+     <table class="table table-striped table-bordered">
+       <tr id='headings'>
+         <th>{% trans "Name" %}</th>
+-        <th>{% trans "User" %}</th>
+         <th>{% trans "Size" %}</th>
+         <th>{% trans "Uptime" %}</th>
+         <th>{% trans "State" %}</th>
+@@ -62,8 +61,7 @@
+             <tr class="{% cycle 'odd' 'even' %}">
+           {% endif %}
+             <td>{{ instance.name }}</td>
+-            <td>{{ instance.user_id }}</td>
+-            <td>{{ instance.ram_size|mbformat }} Ram | {{ instance.vcpus }} VCPU | {{ instance.disk_size }}GB Disk</td>
++            <td>{{ instance.memory_mb|mbformat }} Ram | {{ instance.vcpus }} VCPU | {{ instance.local_gb }}GB Disk</td>
+             <td>{{ instance.uptime_at|timesince }}</td>
+             <td>{{ instance.state|lower|capfirst }}</td>
+         </tr>
+diff --git a/horizon/horizon/dashboards/syspanel/flavors/forms.py b/horizon/horizon/dashboards/syspanel/flavors/forms.py
+index 490e08d..1d8f111 100644
+--- a/horizon/horizon/dashboards/syspanel/flavors/forms.py
++++ b/horizon/horizon/dashboards/syspanel/flavors/forms.py
+@@ -32,7 +32,7 @@ LOG = logging.getLogger(__name__)
+ 
+ 
+ class CreateFlavor(forms.SelfHandlingForm):
+-    #flavorid is required because of openstackx
++    # flavorid is required in novaclient
+     flavor_id = forms.IntegerField(label=_("Flavor ID"))
+     name = forms.CharField(max_length="25", label=_("Name"))
+     vcpus = forms.CharField(max_length="5", label=_("VCPUs"))
+diff --git a/horizon/horizon/dashboards/syspanel/overview/views.py b/horizon/horizon/dashboards/syspanel/overview/views.py
+index 04403cc..d7b5133 100644
+--- a/horizon/horizon/dashboards/syspanel/overview/views.py
++++ b/horizon/horizon/dashboards/syspanel/overview/views.py
+@@ -36,15 +36,8 @@ LOG = logging.getLogger(__name__)
+ 
+ 
+ class GlobalSummary(object):
+-    node_resources = ['vcpus', 'disk_size', 'ram_size']
+-    unit_mem_size = {'disk_size': ['GB', 'TB'], 'ram_size': ['MB', 'GB']}
+-    node_resource_info = ['', 'active_', 'avail_']
+-
+     def __init__(self, request):
+         self.summary = {}
+-        for rsrc in GlobalSummary.node_resources:
+-            for info in GlobalSummary.node_resource_info:
+-                self.summary['total_' + info + rsrc] = 0
+         self.request = request
+         self.usage_list = []
+ 
+@@ -57,24 +50,16 @@ class GlobalSummary(object):
+                               _('Unable to retrieve usage information on date'
+                                 'range %(start)s to %(end)s' % {"start": start,
+                                                                 "end": end}))
+-        for usage in self.usage_list:
+-            for key in usage._attrs:
+-                val = getattr(usage, key)
+-                if isinstance(val, (float, int)):
+-                    self.summary.setdefault(key, 0)
+-                    self.summary[key] += val
+-
+-    def human_readable(self, rsrc):
+-        if self.summary['total_' + rsrc] > 1023:
+-            self.summary['unit_' + rsrc] = GlobalSummary.unit_mem_size[rsrc][1]
+-            mult = 1024.0
+-        else:
+-            self.summary['unit_' + rsrc] = GlobalSummary.unit_mem_size[rsrc][0]
+-            mult = 1.0
+-
+-        for kind in GlobalSummary.node_resource_info:
+-            self.summary['total_' + kind + rsrc + '_hr'] = \
+-                    self.summary['total_' + kind + rsrc] / mult
++
++        # List of attrs on the Usage object that we would like to summarize
++        attrs = ['total_local_gb_usage', 'total_memory_mb_usage',
++                 'total_active_memory_mb', 'total_vcpus_usage',
++                 'total_active_instances']
++
++        for attr in attrs:
++            for usage in self.usage_list:
++                self.summary.setdefault(attr, 0)
++                self.summary[attr] += getattr(usage, attr)
+ 
+     @staticmethod
+     def next_month(date_start):
+@@ -126,7 +111,7 @@ def usage(request):
+         template = 'syspanel/tenants/usage.csv'
+         mimetype = "text/csv"
+     else:
+-        template = 'syspanel/tenants/usage.html'
++        template = 'syspanel/tenants/global_usage.html'
+         mimetype = "text/html"
+ 
+     context = {'dateform': dateform,
+diff --git a/horizon/horizon/dashboards/syspanel/services/views.py b/horizon/horizon/dashboards/syspanel/services/views.py
+index 2d642d7..13dbf69 100644
+--- a/horizon/horizon/dashboards/syspanel/services/views.py
++++ b/horizon/horizon/dashboards/syspanel/services/views.py
+@@ -26,7 +26,6 @@ import urlparse
+ from django import shortcuts
+ from django.contrib import messages
+ from django.utils.translation import ugettext as _
+-from openstackx.api import exceptions as api_exceptions
+ 
+ from horizon import api
+ from horizon import tables
+diff --git a/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/base_usage.html b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/base_usage.html
+new file mode 100644
+index 0000000..78007e5
+--- /dev/null
++++ b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/base_usage.html
+@@ -0,0 +1,40 @@
++{% extends 'syspanel/base.html' %}
++{% load i18n sizeformat %}
++{% block title %}Usage Overview{% endblock %}
++
++{% block page_header %}
++  {# to make searchable false, just remove it from the include statement #}
++  {% include "horizon/common/_page_header.html" with title=_("System Panel Overview") %}
++{% endblock page_header %}
++
++{% block syspanel_main %}
++{% if external_links %}
++  <div id="monitoring">
++    <h3>{% trans "Monitoring" %}: </h3>
++    <ul id="external_links">
++      {% for link in external_links %}
++        <li><a target="_blank" href="{{ link.1 }}">{{ link.0}}</a></li>
++      {% endfor %}
++    </ul>
++  </div>
++{% endif %}
++
++<form action="" method="get" id="date_form">
++  <h3>{% trans "Select a month to query its usage" %}: </h3>
++  <div class="form-row">
++    {{ dateform.month }}
++    {{ dateform.year }}
++    <input class="btn small" type="submit"/>
++  </div>
++</form>
++
++<p id="activity">
++  <span><strong>{% trans "Active Instances" %}:</strong> {{ global_summary.total_active_instances|default:'-' }}</span>
++  <span><strong>{% trans "Active Memory" %}:</strong> {{ global_summary.total_active_memory_mb|mbformat|default:'-' }}</span>
++  <span><strong>{% trans "This month's VCPU-Hours" %}:</strong> {{ global_summary.total_vcpus_usage|floatformat|default:'-' }}</span>
++  <span><strong>{% trans "This month's GB-Hours" %}:</strong> {{ global_summary.total_local_gb_usage|floatformat|default:'-' }}</span>
++</p>
++
++{% block activity_list %}{% endblock %}
++
++{% endblock %}
+diff --git a/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/global_usage.html b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/global_usage.html
+new file mode 100644
+index 0000000..9c7b0dd
+--- /dev/null
++++ b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/global_usage.html
+@@ -0,0 +1,43 @@
++{% extends 'syspanel/tenants/base_usage.html' %}
++{% load i18n sizeformat %}
++{% block title %}Usage Overview{% endblock %}
++{% block activity_list %}
++  {% if usage_list %}
++    <div id="usage">
++      <table class="table table-striped table-bordered zebra-striped">
++        <thead>
++          <tr>
++            <th>{% trans "Tenant" %}</th>
++            <th>{% trans "Instances" %}</th>
++            <th>{% trans "VCPUs" %}</th>
++            <th>{% trans "Disk" %}</th>
++            <th>{% trans "RAM" %}</th>
++            <th>{% trans "VCPU CPU-Hours" %}</th>
++            <th>{% trans "Disk GB-Hours" %}</th>
++          </tr>
++        </thead>
++        <tbody>
++          {% for usage in usage_list %}
++            <tr>
++              <td><a href="{% url horizon:syspanel:tenants:usage usage.tenant_id %}">{{ usage.tenant_id }}</a></td>
++              <td>{{ usage.total_active_instances }}</td>
++              <td>{{ usage.total_active_vcpus }}</td>
++              <td>{{ usage.total_active_local_gb|diskgbformat }}</td>
++              <td>{{ usage.total_active_memory_mb|mbformat }}</td>
++              <td>{{ usage.total_vcpus_usage|floatformat }}</td>
++              <td>{{ usage.total_local_gb_usage|floatformat }}</td>
++            </tr>
++          {% endfor %}
++        </tbody>
++        <tfoot>
++          <tr>
++            <td colspan="7">
++              <span>Server Usage Summary</span>
++              <a class="csv_download_link pull-right" href="{{ csv_link }}">{% trans "Download CSV" %} &raquo;</a>
++            </td>
++          </td>
++        </tfoot>
++      </table>
++    </div>
++  {% endif %}
++{% endblock %}
+diff --git a/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.csv b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.csv
+index 79acd2c..3ea6f81 100644
+--- a/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.csv
++++ b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.csv
+@@ -1,8 +1,10 @@
+ Usage Report For Period:,{{datetime_start|date:"b. d Y H:i"}},/,{{datetime_end|date:"b. d Y H:i"}}
+ Active Instances:,{{global_summary.total_active_instances|default:'-'}}
+-This month's VCPU-Hours:,{{global_summary.total_cpu_usage|floatformat|default:'-'}}
+-This month's GB-Hours:,{{global_summary.total_disk_usage|floatformat|default:'-'}}
++Active Memory (MB):,{{global_summary.total_active_memory_mb|default:'-'}}
++This month's VCPU-Hours:,{{global_summary.total_vcpus_usage|floatformat|default:'-'}}
++This month's GB-Hours:,{{global_summary.total_local_gb_usage|floatformat|default:'-'}}
++This month's MemoryMB-Hours:,{{global_summary.total_memory_mb_usage|floatformat|default:'-'}}
+ 
+-Name,UserId,VCPUs,RamMB,DiskGB,Flavor,Usage(Hours),Uptime(Seconds),State
+-{% for usage in usage_list %}{% for instance in usage.instances %}{{instance.name|addslashes}},{{instance.user_id|addslashes}},{{instance.vcpus|addslashes}},{{instance.ram_size|addslashes}},{{instance.disk_size|addslashes}},{{instance.flavor|addslashes}},{{instance.hours}},{{instance.uptime}},{{instance.state|capfirst|addslashes}}{% endfor %}
++Tenant,Name,VCPUs,RamMB,DiskGB,Usage(Hours),Uptime(Seconds),State
++{% for usage in usage_list %}{% for server_usage in usage.server_usages %}{{server_usage.tenant_id|addslashes}},{{server_usage.name|addslashes}},{{server_usage.vcpus|addslashes}},{{server_usage.memory_mb|addslashes}},{{server_usage.local_gb|addslashes}},{{server_usage.hours}},{{server_usage.uptime}},{{server_usage.state|capfirst|addslashes}}{% endfor %}
+ {% endfor %}
+diff --git a/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.html b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.html
+index da4c6aa..ad95070 100644
+--- a/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.html
++++ b/horizon/horizon/dashboards/syspanel/templates/syspanel/tenants/usage.html
+@@ -1,69 +1,39 @@
+-{% extends 'syspanel/base.html' %}
++{% extends 'syspanel/tenants/base_usage.html' %}
+ {% load i18n sizeformat %}
+ {% block title %}Usage Overview{% endblock %}
++{% block activity_list %}
++  {% if instances %}
++    <div id="usage">
+ 
+-{% block page_header %}
+-  {# to make searchable false, just remove it from the include statement #}
+-  {% include "horizon/common/_page_header.html" with title=_("System Panel Overview") %}
+-{% endblock page_header %}
+-
+-{% block syspanel_main %}
+-{% if external_links %}
+-  <div id="monitoring">
+-    <h3>{% trans "Monitoring" %}: </h3>
+-    <ul id="external_links">
+-      {% for link in external_links %}
+-        <li><a target="_blank" href="{{ link.1 }}">{{ link.0}}</a></li>
+-      {% endfor %}
+-    </ul>
+-  </div>
+-{% endif %}
+-
+-<form action="" method="get" id="date_form" class="form-horizontal">
+-  <h3>{% trans "Select a month to query its usage" %}: </h3>
+-  <div class="form-row">
+-    {{ dateform.month }}
+-    {{ dateform.year }}
+-    <input class="btn small" type="submit"/>
+-  </div>
+-</form>
+-
+-<p id="activity">
+-  <span><strong>{% trans "Active Instances" %}:</strong> {{ global_summary.total_active_instances|default:'-' }}</span>
+-  <span><strong>{% trans "This month's VCPU-Hours" %}:</strong> {{ global_summary.total_cpu_usage|floatformat|default:'-' }}</span>
+-  <span><strong>{% trans "This month's GB-Hours" %}:</strong> {{ global_summary.total_disk_usage|floatformat|default:'-' }}</span>
+-</p>
+-
+-{% if usage_list %}
+-  <div id="usage">
+-    <div class="table_header">
+-      <div class='table_title wide'>
+-        <a class="csv_download_link pull-right" href="{{ csv_link }}">{% trans "Download CSV" %} &raquo;</a>
+-        <h3>{% trans "Server Usage Summary" %}</h3>
+-      </div>
++      <table class="table table-striped table-bordered zebra-striped">
++        <thead>
++          <tr id="headings">
++            <th>{% trans "Instances" %}</th>
++            <th>{% trans "VCPUs" %}</th>
++            <th>{% trans "Disk" %}</th>
++            <th>{% trans "RAM" %}</th>
++            <th>{% trans "Hours" %}</th>
++            <th>{% trans "Uptime" %}</th>
++          </tr>
++        </thead>
++        <tbody>
++          {% for instance in instances %}
++            <tr>
++              <td>{{ instance.name }}</td>
++              <td>{{ instance.vcpus }}</td>
++              <td>{{ instance.local_gb|diskgbformat }}</td>
++              <td>{{ instance.memory_mb|mbformat }}</td>
++              <td>{{ instance.hours|floatformat}}</td>
++              <td>{{ instance.uptime_at|timesince}}</td>
++            </tr>
++          {% endfor %}
++        </tbody>
++        <tfoot>
++          <td colspan="7">
++            <span>Tenant Server Usage Summary.</span>
++            <a class="csv_download_link pull-right" href="{{ csv_link }}">{% trans "Download CSV" %} &raquo;</a>
++          </td>
++        </tfoot>
+     </div>
+-
+-    <table class="table table-striped table-bordered">
+-      <tr id="headings">
+-        <th>{% trans "Tenant" %}</th>
+-        <th>{% trans "Instances" %}</th>
+-        <th>{% trans "VCPUs" %}</th>
+-        <th>{% trans "Disk" %}</th>
+-        <th>{% trans "RAM" %}</th>
+-        <th>{% trans "VCPU CPU-Hours" %}</th>
+-        <th>{% trans "Disk GB-Hours" %}</th>
+-      </tr>
+-      {% for usage in usage_list %}
+-        <tr>
+-          <td><a href="{% url horizon:syspanel:tenants:usage usage.tenant_id %}">{{ usage.tenant_id }}</a></td>
+-          <td>{{ usage.total_active_instances }}</td>
+-          <td>{{ usage.total_active_vcpus }}</td>
+-          <td>{{ usage.total_active_disk_size|diskgbformat }}</td>
+-          <td>{{ usage.total_active_ram_size|mbformat }}</td>
+-          <td>{{ usage.total_cpu_usage|floatformat }}</td>
+-          <td>{{ usage.total_disk_usage|floatformat }}</td>
+-        </tr>
+-      {% endfor %}
+-  </div>
+-{% endif %}
++  {% endif %}
+ {% endblock %}
+diff --git a/horizon/horizon/dashboards/syspanel/tenants/forms.py b/horizon/horizon/dashboards/syspanel/tenants/forms.py
+index e573724..7db3af4 100644
+--- a/horizon/horizon/dashboards/syspanel/tenants/forms.py
++++ b/horizon/horizon/dashboards/syspanel/tenants/forms.py
+@@ -24,7 +24,7 @@ from django import shortcuts
+ from django.conf import settings
+ from django.contrib import messages
+ from django.utils.translation import ugettext as _
+-from openstackx.api import exceptions as api_exceptions
++from keystoneclient import exceptions as keystone_exceptions
+ 
+ from horizon import api
+ from horizon import forms
+@@ -47,7 +47,7 @@ class AddUser(forms.SelfHandlingForm):
+             messages.success(request,
+                             _('%(user)s was successfully added to %(tenant)s.')
+                             % {"user": data['user'], "tenant": data['tenant']})
+-        except api_exceptions.ApiException, e:
++        except keystone_exceptions.ClientException, e:
+             messages.error(request, _('Unable to create user association: %s')
+                            % (e.message))
+         return shortcuts.redirect('horizon:syspanel:tenants:users',
+diff --git a/horizon/horizon/dashboards/syspanel/tenants/tests.py b/horizon/horizon/dashboards/syspanel/tenants/tests.py
+index b632d88..782357c 100644
+--- a/horizon/horizon/dashboards/syspanel/tenants/tests.py
++++ b/horizon/horizon/dashboards/syspanel/tenants/tests.py
+@@ -17,7 +17,6 @@
+ from django import http
+ from django.core.urlresolvers import reverse
+ from mox import IgnoreArg, IsA
+-from openstackx.api import exceptions as api_exceptions
+ 
+ from horizon import api
+ from horizon import test
+diff --git a/horizon/horizon/dashboards/syspanel/tenants/views.py b/horizon/horizon/dashboards/syspanel/tenants/views.py
+index fd20401..a537203 100644
+--- a/horizon/horizon/dashboards/syspanel/tenants/views.py
++++ b/horizon/horizon/dashboards/syspanel/tenants/views.py
+@@ -166,9 +166,9 @@ def usage(request, tenant_id):
+ 
+     running_instances = []
+     terminated_instances = []
+-    if hasattr(usage, 'instances'):
++    if hasattr(usage, 'server_usages'):
+         now = datetime.datetime.now()
+-        for i in usage.instances:
++        for i in usage.server_usages:
+             # this is just a way to phrase uptime in a way that is compatible
+             # with the 'timesince' filter.  Use of local time intentional
+             i['uptime_at'] = now - datetime.timedelta(seconds=i['uptime'])
+@@ -187,7 +187,8 @@ def usage(request, tenant_id):
+     context = {'dateform': dateform,
+                'datetime_start': datetime_start,
+                'datetime_end': datetime_end,
+-               'usage': usage,
++               'global_summary': usage,
++               'usage_list': [usage],
+                'csv_link': GlobalSummary.csv_link(date_start),
+                'instances': running_instances + terminated_instances,
+                'tenant_id': tenant_id}
+diff --git a/horizon/horizon/dashboards/syspanel/users/forms.py b/horizon/horizon/dashboards/syspanel/users/forms.py
+index 9fbf97f..ce42429 100644
+--- a/horizon/horizon/dashboards/syspanel/users/forms.py
++++ b/horizon/horizon/dashboards/syspanel/users/forms.py
+@@ -24,7 +24,6 @@ from django import shortcuts
+ from django.conf import settings
+ from django.contrib import messages
+ from django.utils.translation import ugettext as _
+-from openstackx.api import exceptions as api_exceptions
+ 
+ from horizon import api
+ from horizon import forms
+diff --git a/horizon/horizon/dashboards/syspanel/users/tests.py b/horizon/horizon/dashboards/syspanel/users/tests.py
+index 0428e88..966ad74 100644
+--- a/horizon/horizon/dashboards/syspanel/users/tests.py
++++ b/horizon/horizon/dashboards/syspanel/users/tests.py
+@@ -20,7 +20,7 @@
+ 
+ from django.core.urlresolvers import reverse
+ from mox import IgnoreArg
+-from openstackx.api import exceptions as api_exceptions
++from keystoneclient import exceptions as keystone_exceptions
+ 
+ from horizon import api
+ from horizon import test
+@@ -85,7 +85,7 @@ class UsersViewTests(test.BaseAdminViewTests):
+         formData = {'action': 'users__enable__%s' % OTHER_USER_ID}
+ 
+         self.mox.StubOutWithMock(api.keystone, 'user_update_enabled')
+-        api_exception = api_exceptions.ApiException('apiException',
++        api_exception = keystone_exceptions.ClientException('apiException',
+                                                     message='apiException')
+         api.keystone.user_update_enabled(IgnoreArg(), OTHER_USER_ID, True) \
+                     .AndRaise(api_exception)
+diff --git a/horizon/horizon/exceptions.py b/horizon/horizon/exceptions.py
+index 478f1dc..5bf0341 100644
+--- a/horizon/horizon/exceptions.py
++++ b/horizon/horizon/exceptions.py
+@@ -27,15 +27,12 @@ from cloudfiles import errors as swiftclient
+ from glance.common import exception as glanceclient
+ from keystoneclient import exceptions as keystoneclient
+ from novaclient import exceptions as novaclient
+-from openstackx.api import exceptions as openstackx
+ 
+ 
+ LOG = logging.getLogger(__name__)
+ 
+ 
+-UNAUTHORIZED = (openstackx.Unauthorized,
+-                openstackx.Unauthorized,
+-                keystoneclient.Unauthorized,
++UNAUTHORIZED = (keystoneclient.Unauthorized,
+                 keystoneclient.Forbidden,
+                 novaclient.Unauthorized,
+                 novaclient.Forbidden,
+@@ -46,7 +43,6 @@ UNAUTHORIZED = (openstackx.Unauthorized,
+ 
+ NOT_FOUND = (keystoneclient.NotFound,
+              novaclient.NotFound,
+-             openstackx.NotFound,
+              glanceclient.NotFound,
+              swiftclient.NoSuchContainer,
+              swiftclient.NoSuchObject)
+@@ -54,7 +50,6 @@ NOT_FOUND = (keystoneclient.NotFound,
+ # NOTE(gabriel): This is very broad, and may need to be dialed in.
+ RECOVERABLE = (keystoneclient.ClientException,
+                novaclient.ClientException,
+-               openstackx.ApiException,
+                glanceclient.GlanceException,
+                swiftclient.Error)
+ 
+diff --git a/horizon/horizon/templatetags/sizeformat.py b/horizon/horizon/templatetags/sizeformat.py
+index b6352b1..1d14986 100644
+--- a/horizon/horizon/templatetags/sizeformat.py
++++ b/horizon/horizon/templatetags/sizeformat.py
+@@ -66,6 +66,8 @@ def filesizeformat(bytes, filesize_number_format):
+ 
+ @register.filter(name='mbformat')
+ def mbformat(mb):
++    if not mb:
++        return 0
+     return filesizeformat(mb * 1024 * 1024, int_format).replace(' ', '')
+ 
+ 
+diff --git a/horizon/horizon/tests/api_tests/keystone.py b/horizon/horizon/tests/api_tests/keystone.py
+index 89ca44c..3b7967d 100644
+--- a/horizon/horizon/tests/api_tests/keystone.py
++++ b/horizon/horizon/tests/api_tests/keystone.py
+@@ -22,8 +22,8 @@ from __future__ import absolute_import
+ 
+ from django import http
+ from django.conf import settings
++from keystoneclient.v2_0 import client as keystone_client
+ from mox import IsA
+-from openstackx import admin as OSAdmin
+ 
+ from horizon.tests.api_tests.utils import *
+ 
+@@ -50,7 +50,7 @@ class Token(object):
+ class KeystoneAdminApiTests(APITestCase):
+     def stub_admin_api(self, count=1):
+         self.mox.StubOutWithMock(api.keystone, 'admin_api')
+-        admin_api = self.mox.CreateMock(OSAdmin.Admin)
++        admin_api = self.mox.CreateMock(keystone_client.Client)
+         for i in range(count):
+             api.keystone.admin_api(IsA(http.HttpRequest)) \
+                     .AndReturn(admin_api)
+diff --git a/horizon/horizon/tests/api_tests/nova.py b/horizon/horizon/tests/api_tests/nova.py
+index 74bc110..7770cfc 100644
+--- a/horizon/horizon/tests/api_tests/nova.py
++++ b/horizon/horizon/tests/api_tests/nova.py
+@@ -24,9 +24,6 @@ from __future__ import absolute_import
+ from django import http
+ from django.conf import settings
+ from mox import IsA, IgnoreArg
+-from openstackx import admin as OSAdmin
+-from openstackx import auth as OSAuth
+-from openstackx import extras as OSExtras
+ from novaclient.v1_1 import servers
+ 
+ 
+@@ -273,26 +270,6 @@ class ComputeApiTests(APITestCase):
+ 
+ class ExtrasApiTests(APITestCase):
+ 
+-    def stub_extras_api(self, count=1):
+-        self.mox.StubOutWithMock(api.nova, 'extras_api')
+-        extras_api = self.mox.CreateMock(OSExtras.Extras)
+-        for i in range(count):
+-            api.nova.extras_api(IsA(http.HttpRequest)) \
+-                    .AndReturn(extras_api)
+-        return extras_api
+-
+-    def test_get_extras_api(self):
+-        self.mox.StubOutClassWithMocks(OSExtras, 'Extras')
+-        OSExtras.Extras(auth_token=TEST_TOKEN, management_url=TEST_URL)
+-
+-        self.mox.StubOutWithMock(api.deprecated, 'url_for')
+-        api.deprecated.url_for(IsA(http.HttpRequest),
+-                               'compute').AndReturn(TEST_URL)
+-
+-        self.mox.ReplayAll()
+-
+-        self.assertIsNotNone(api.nova.extras_api(self.request))
+-
+     def test_server_vnc_console(self):
+         fake_console = {'console': {'url': 'http://fake', 'type': ''}}
+         novaclient = self.stub_novaclient()
+@@ -347,10 +324,10 @@ class ExtrasApiTests(APITestCase):
+             self.assertIn(server._apiresource, servers)
+ 
+     def test_usage_get(self):
+-        extras_api = self.stub_extras_api()
++        novaclient = self.stub_novaclient()
+ 
+-        extras_api.usage = self.mox.CreateMockAnything()
+-        extras_api.usage.get(TEST_TENANT_ID, 'start',
++        novaclient.usage = self.mox.CreateMockAnything()
++        novaclient.usage.get(TEST_TENANT_ID, 'start',
+                              'end').AndReturn(TEST_RETURN)
+ 
+         self.mox.ReplayAll()
+@@ -363,10 +340,10 @@ class ExtrasApiTests(APITestCase):
+     def test_usage_list(self):
+         usages = (TEST_RETURN, TEST_RETURN + '2')
+ 
+-        extras_api = self.stub_extras_api()
++        novaclient = self.stub_novaclient()
+ 
+-        extras_api.usage = self.mox.CreateMockAnything()
+-        extras_api.usage.list('start', 'end').AndReturn(usages)
++        novaclient.usage = self.mox.CreateMockAnything()
++        novaclient.usage.list('start', 'end', True).AndReturn(usages)
+ 
+         self.mox.ReplayAll()
+ 
+diff --git a/openstack-dashboard/dashboard/middleware.py b/openstack-dashboard/dashboard/middleware.py
+index 6a8772f..6339080 100644
+--- a/openstack-dashboard/dashboard/middleware.py
++++ b/openstack-dashboard/dashboard/middleware.py
+@@ -22,7 +22,7 @@ import logging
+ 
+ from django import shortcuts
+ from django.contrib import messages
+-from openstackx.api import exceptions as api_exceptions
++from novaclient import exceptions as novaclient_exceptions
+ 
+ 
+ LOG = logging.getLogger('openstack_dashboard')
+@@ -30,7 +30,7 @@ LOG = logging.getLogger('openstack_dashboard')
+ 
+ class DashboardLogUnhandledExceptionsMiddleware(object):
+     def process_exception(self, request, exception):
+-        if isinstance(exception, api_exceptions.NotFound):
++        if isinstance(exception, novaclient_exceptions.Unauthorized):
+             try:
+                 exception.message.index('reauthenticate')
+                 # clear the errors
+diff --git a/openstack-dashboard/dashboard/static/dashboard/css/style.css b/openstack-dashboard/dashboard/static/dashboard/css/style.css
+index 50d159c..d28fa65 100644
+--- a/openstack-dashboard/dashboard/static/dashboard/css/style.css
++++ b/openstack-dashboard/dashboard/static/dashboard/css/style.css
+@@ -546,6 +546,7 @@ table form {
+   min-width: 735px;
+   padding: 5px 0 5px 0;
+   border: 1px solid #e6e6e6;
++  clear: both;
+ }
+ 
+ #activity.tenant { margin: 0 0 0 0; }
+@@ -951,3 +952,11 @@ form div.clearfix.error {
+   border: 1px solid #e1e1e1;
+   padding: 5px;
+ }
++#date_form {
++  width: 100%;
++  float: left;
++}
++#date_form select, #date_form input {
++  float: left;
++  margin-right: 10px;
++}
+\ No newline at end of file
+diff --git a/tools/pip-requires b/tools/pip-requires
+index c99df9b..6c4460b 100644
+--- a/tools/pip-requires
++++ b/tools/pip-requires
+@@ -33,7 +33,6 @@ xattr
+ python-gflags
+ 
+ # horizon non-pip deps
+--e git+https://github.com/cloudbuilders/openstackx.git#egg=openstackx
+ -e git+https://github.com/openstack/python-novaclient.git#egg=python-novaclient
+ -e git+https://github.com/openstack/python-keystoneclient.git#egg=python-keystoneclient
+ -e git+https://github.com/openstack/glance.git#egg=glance
