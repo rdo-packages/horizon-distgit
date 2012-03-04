@@ -1,0 +1,11 @@
+diff -rup horizon-2012.1/openstack_dashboard/settings.py foo/openstack_dashboard/settings.py
+--- horizon-2012.1/openstack_dashboard/settings.py	2012-03-03 20:00:59.000000000 -0500
++++ foo/openstack_dashboard/settings.py	2012-03-03 21:09:23.344952394 -0500
+@@ -89,7 +89,6 @@ STATICFILES_DIRS = (
+ )
+ 
+ INSTALLED_APPS = (
+-    'openstack_dashboard',
+     'django.contrib.sessions',
+     'django.contrib.messages',
+     'django.contrib.staticfiles',

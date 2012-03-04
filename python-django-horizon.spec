@@ -2,8 +2,12 @@
 # This is 2012.1 essex-3 milestone
 #
 %global release_name essex
-%global release_letter e
-%global milestone 3
+%global release_letter rc
+%global milestone 1
+%global snapdate 20120304
+%global git_revno 1447
+%global snaptag ~%{release_letter}%{milestone}~%{snapdate}.%{git_revno}
+
 
 Name:       python-django-horizon
 Version:    2012.1
@@ -16,15 +20,12 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org
 BuildArch:  noarch
 
-Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}~%{release_letter}%{milestone}.tar.gz
+#Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}~%{release_letter}%{milestone}.tar.gz
+Source0:    http://horizon.openstack.org/tarballs/horizon-%{version}%{snaptag}.tar.gz
 Source1:    openstack-dashboard.conf
 
-# This was supposed to be in essex-3 but came 2 patches too late
-Patch1:     %{name}-drop-openstackx.patch
-# Dep is for testing only, so not required for a first run
-Patch2:     %{name}-remove-test-dep.patch
-# Place sqlite DB in /var/lib/openstack-dashboard
-Patch3:     %{name}-db-var-path.patch
+# We don't install dashboard in python sitelib, handle the fallout
+Patch1:     %{name}-no-dashboard-app.patch
 
 Requires:   Django >= 1.3.0
 Requires:   openstack-glance >= 2012.1
@@ -33,6 +34,7 @@ Requires:   python-dateutil
 Requires:   python-keystoneclient >= 2012.1
 Requires:   python-novaclient >= 2012.1
 Requires:   python-quantumclient >= 2012.1
+Requires:   python-django-nose
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -78,7 +80,7 @@ BuildRequires: python-dateutil
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2012.1
 BuildRequires: python-quantumclient
-
+BuildRequires: python-django-nose
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -87,24 +89,14 @@ Documentation for the Django Horizon application for talking with Openstack
 %prep
 %setup -q -n horizon-%{version}
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
-pushd horizon
 %{__python} setup.py build
-popd
 
 %install
-pushd horizon
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
-popd
 
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
-
-# This is needed for docs building
-cp openstack-dashboard/local/local_settings.py.example \
-   openstack-dashboard/local/local_settings.py
 
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
 sphinx-build -b html docs/source html
@@ -112,18 +104,17 @@ sphinx-build -b html docs/source html
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
 
-install -d -m 755 %{buildroot}%{_localstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
-rm openstack-dashboard/local/local_settings.py
-cp openstack-dashboard/local/local_settings.py.example \
+install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
+
+cp openstack_dashboard/local/local_settings.py.example \
    %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s %{_sysconfdir}/openstack-dashboard/local_settings \
-      openstack-dashboard/local/local_settings.py
+      %{buildroot}%{python_sitelib}/openstack_dashboard/local/local_settings.py
 
-install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
-cp -r openstack-dashboard/dashboard %{buildroot}%{_datadir}/openstack-dashboard
-cp -r openstack-dashboard/local %{buildroot}%{_datadir}/openstack-dashboard
-
+mv %{buildroot}%{python_sitelib}/openstack_dashboard \
+   %{buildroot}%{_datadir}/openstack-dashboard
+rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
 %files
 %{python_sitelib}/horizon
@@ -132,7 +123,6 @@ cp -r openstack-dashboard/local %{buildroot}%{_datadir}/openstack-dashboard
 
 %files -n openstack-dashboard
 %{_datadir}/openstack-dashboard/
-%{_localstatedir}/openstack-dashboard/
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %{_sysconfdir}/openstack-dashboard/local_settings
 
@@ -140,5 +130,12 @@ cp -r openstack-dashboard/local %{buildroot}%{_datadir}/openstack-dashboard
 %doc html
 
 %changelog
+* Sat Mar 03 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-0.1.rc1
+- Update to rc1 snapshot
+- Drop no longer needed packages
+- Change default URL to http://localhost/dashboard
+- Add dep on newly packaged python-django-nose
+- Fix static content viewing (patch from Jan van Eldik) (bz 788567)
+
 * Mon Jan 30 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-0.1.e3
 - Initial package
