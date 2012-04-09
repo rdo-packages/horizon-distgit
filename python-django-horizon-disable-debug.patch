@@ -1,0 +1,12 @@
+diff -rup horizon-2012.1/openstack_dashboard/local/local_settings.py.example foo/openstack_dashboard/local/local_settings.py.example
+--- horizon-2012.1/openstack_dashboard/local/local_settings.py.example	2012-04-09 17:58:40.379315191 -0400
++++ foo/openstack_dashboard/local/local_settings.py.example	2012-04-09 18:05:17.874910587 -0400
+@@ -2,7 +2,7 @@ import os
+ 
+ from django.utils.translation import ugettext_lazy as _
+ 
+-DEBUG = True
++DEBUG = False
+ TEMPLATE_DEBUG = DEBUG
+ PROD = False
+ USE_SSL = False

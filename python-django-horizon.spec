@@ -8,10 +8,10 @@
 %global git_revno 1447
 %global snaptag ~%{release_letter}%{milestone}~%{snapdate}.%{git_revno}
 
-
 Name:       python-django-horizon
 Version:    2012.1
-Release:    0.1.%{release_letter}%{milestone}%{?dist}
+Release:    1%{?dist}
+#Release:    0.1.%{?release_letter}%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -20,12 +20,13 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org
 BuildArch:  noarch
 
-#Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}~%{release_letter}%{milestone}.tar.gz
-Source0:    http://horizon.openstack.org/tarballs/horizon-%{version}%{snaptag}.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/+download/horizon-%{version}.tar.gz
+#Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}~%{?release_letter}%{milestone}.tar.gz
+#Source0:    http://horizon.openstack.org/tarballs/horizon-%{version}%{snaptag}.tar.gz
 Source1:    openstack-dashboard.conf
 
-# We don't install dashboard in python sitelib, handle the fallout
-Patch1:     %{name}-no-dashboard-app.patch
+Patch1:     %{name}-disable-debug.patch
+Patch2:     %{name}-default-db.patch
 
 Requires:   Django >= 1.3.0
 Requires:   openstack-glance >= 2012.1
@@ -71,7 +72,7 @@ Group:      Documentation
 
 Requires:   %{name} = %{version}-%{release}
 
-BuildRequires: python-sphinx
+BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
 BuildRequires: openstack-glance
@@ -104,25 +105,33 @@ sphinx-build -b html docs/source html
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
 
-install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
+install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
+install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
 
-cp openstack_dashboard/local/local_settings.py.example \
-   %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
-ln -s %{_sysconfdir}/openstack-dashboard/local_settings \
-      %{buildroot}%{python_sitelib}/openstack_dashboard/local/local_settings.py
-
+# Copy everything to /usr/share
 mv %{buildroot}%{python_sitelib}/openstack_dashboard \
    %{buildroot}%{_datadir}/openstack-dashboard
+mv manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
+
+# Move config to /etc, symlink it back to /usr/share
+mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
+ln -s %{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
+
+
+%post -n openstack-dashboard
+python %{_datadir}/openstack-dashboard/manage.py syncdb >/dev/null 2>&1 || :
+python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/null 2>&1 || :
 
 %files
 %{python_sitelib}/horizon
 %{python_sitelib}/*.egg-info
 
-
 %files -n openstack-dashboard
 %{_datadir}/openstack-dashboard/
+%{_sharedstatedir}/openstack-dashboard
+%{_sysconfdir}/openstack-dashboard
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %{_sysconfdir}/openstack-dashboard/local_settings
 
@@ -130,6 +139,11 @@ rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 %doc html
 
 %changelog
+* Mon Apr 09 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-1
+- Update to essex final release
+- Package manage.py (bz 808219)
+- Properly access all needed javascript (bz 807567)
+
 * Sat Mar 03 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-0.1.rc1
 - Update to rc1 snapshot
 - Drop no longer needed packages

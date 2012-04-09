@@ -1,0 +1,19 @@
+diff -rup foo/openstack_dashboard/local/local_settings.py.example horizon-2012.1/openstack_dashboard/local/local_settings.py.example
+--- foo/openstack_dashboard/local/local_settings.py.example	2012-04-09 11:33:05.234521644 -0400
++++ horizon-2012.1/openstack_dashboard/local/local_settings.py.example	2012-04-09 11:28:21.849381838 -0400
+@@ -20,6 +20,15 @@ SECRET_KEY = 'elj1IWiLoWHgcyYxFVLj7cM5rG
+ 
+ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
+ 
++# FIXME: We need to change this to mysql, instead of sqlite.
++DATABASES = {
++    'default': {
++        'ENGINE': 'django.db.backends.sqlite3',
++        'NAME': '/var/lib/openstack-dashboard/dashboard_openstack.sqlite3',
++        'TEST_NAME': os.path.join(LOCAL_PATH, 'test.sqlite3'),
++    },
++}
++
+ # We recommend you use memcached for development; otherwise after every reload
+ # of the django development server, you will have to login again. To use
+ # memcached set CACHE_BACKED to something like 'memcached://127.0.0.1:11211/'
