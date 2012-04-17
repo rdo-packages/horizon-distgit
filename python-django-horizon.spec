@@ -11,7 +11,6 @@
 Name:       python-django-horizon
 Version:    2012.1
 Release:    2%{?dist}
-#Release:    0.1.%{?release_letter}%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -20,9 +19,7 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org
 BuildArch:  noarch
 
-Source0:    http://launchpad.net/horizon/%{release_name}/+download/horizon-%{version}.tar.gz
-#Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}~%{?release_letter}%{milestone}.tar.gz
-#Source0:    http://horizon.openstack.org/tarballs/horizon-%{version}%{snaptag}.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/%{version}/+download/horizon-%{version}.tar.gz
 Source1:    openstack-dashboard.conf
 
 Patch1:     %{name}-disable-debug.patch
