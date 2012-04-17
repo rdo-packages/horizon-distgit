@@ -10,7 +10,7 @@
 
 Name:       python-django-horizon
 Version:    2012.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 #Release:    0.1.%{?release_letter}%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
@@ -27,6 +27,7 @@ Source1:    openstack-dashboard.conf
 
 Patch1:     %{name}-disable-debug.patch
 Patch2:     %{name}-default-db.patch
+Patch3:     xss-in-log-viewer.patch
 
 Requires:   Django >= 1.3.0
 Requires:   openstack-glance >= 2012.1
@@ -90,6 +91,7 @@ Documentation for the Django Horizon application for talking with Openstack
 %prep
 %setup -q -n horizon-%{version}
 %patch1 -p1
+%patch3 -p1
 
 %build
 %{__python} setup.py build
@@ -139,6 +141,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Tue Apr 17 2012 Pádraig Brady <P@draigBrady.com> - 2012.1-2
+- CVE-2012-2094 XSS vulnerability in Horizon log viewer
+
 * Mon Apr 09 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-1
 - Update to essex final release
 - Package manage.py (bz 808219)

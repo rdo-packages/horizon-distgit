@@ -1,0 +1,23 @@
+commit 4f1472171ed9ecad6606683d924e4d9e3962a1c8
+Author: J. Daniel Schmidt <jdsn@suse.de>
+Date:   Tue Apr 10 14:56:37 2012 +0200
+
+    html escape the console log in refresh
+    
+    fixes bug 977944
+    
+    Change-Id: I89089155d1083332d02ae9039898227cbab42d07
+
+diff --git a/horizon/static/horizon/js/horizon.js b/horizon/static/horizon/js/horizon.js
+index 8cf2be5..c47364a 100644
+--- a/horizon/static/horizon/js/horizon.js
++++ b/horizon/static/horizon/js/horizon.js
+@@ -284,7 +284,7 @@ var Horizon = function() {
+         data: data,
+         method: 'get',
+         success: function(response_body) {
+-          $('pre.logs').html(response_body);
++          $('pre.logs').text(response_body);
+         },
+         error: function(response) {
+           if(via_user_submit) {
