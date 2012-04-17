@@ -91,6 +91,7 @@ Documentation for the Django Horizon application for talking with Openstack
 %prep
 %setup -q -n horizon-%{version}
 %patch1 -p1
+%patch2 -p1
 %patch3 -p1
 
 %build
@@ -143,6 +144,7 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %changelog
 * Tue Apr 17 2012 Pádraig Brady <P@draigBrady.com> - 2012.1-2
 - CVE-2012-2094 XSS vulnerability in Horizon log viewer
+- Configure the default database to use
 
 * Mon Apr 09 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-1
 - Update to essex final release
