@@ -10,7 +10,7 @@
 
 Name:       python-django-horizon
 Version:    2012.1
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -34,7 +34,6 @@ Requires:   python-dateutil
 Requires:   python-keystoneclient >= 2012.1
 Requires:   python-novaclient >= 2012.1
 Requires:   python-quantumclient >= 2012.1
-Requires:   python-django-nose
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -80,7 +79,6 @@ BuildRequires: python-dateutil
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2012.1
 BuildRequires: python-quantumclient
-BuildRequires: python-django-nose
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -141,6 +139,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Wed May 09 2012 Alan Pevec <apevec@redhat.com> - 2012.1-4
+- Remove the currently uneeded dependency on python-django-nose
+
 * Thu May 03 2012 Pádraig Brady <P@draigBrady.com> - 2012.1-3
 - CVE-2012-2144 session reuse vulnerability
 
