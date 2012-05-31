@@ -26,6 +26,7 @@ Patch1:     %{name}-disable-debug.patch
 Patch2:     %{name}-default-db.patch
 Patch3:     xss-in-log-viewer.patch
 Patch4:     CVE-2012-2144-session_fixation.patch
+Patch5:     %{name}-disable-nose.patch
 
 Requires:   Django >= 1.3.0
 Requires:   openstack-glance >= 2012.1
@@ -90,6 +91,7 @@ Documentation for the Django Horizon application for talking with Openstack
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 %{__python} setup.py build
