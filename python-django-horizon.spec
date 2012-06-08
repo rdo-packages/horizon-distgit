@@ -1,37 +1,24 @@
-#
-# This is 2012.1 essex-3 milestone
-#
-%global release_name essex
-%global release_letter rc
-%global milestone 1
-%global snapdate 20120304
-%global git_revno 1447
-%global snaptag ~%{release_letter}%{milestone}~%{snapdate}.%{git_revno}
-
 Name:       python-django-horizon
-Version:    2012.1
-Release:    4%{?dist}
+Version:    2012.2
+Release:    0.1.f1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
-URL:        http://horizon.openstack.org
+URL:        http://horizon.openstack.org/
 BuildArch:  noarch
 
-Source0:    http://launchpad.net/horizon/%{release_name}/%{version}/+download/horizon-%{version}.tar.gz
+Source0:    http://launchpad.net/horizon/folsom/folsom-1/+download/horizon-2012.2~f1.tar.gz
 Source1:    openstack-dashboard.conf
 
 Patch1:     %{name}-disable-debug.patch
 Patch2:     %{name}-default-db.patch
-Patch3:     xss-in-log-viewer.patch
-Patch4:     CVE-2012-2144-session_fixation.patch
-Patch5:     %{name}-disable-nose.patch
 
-Requires:   Django >= 1.3.0
-Requires:   openstack-glance >= 2012.1
+Requires:   Django >= 1.4.0
 Requires:   python-cloudfiles >= 1.7.9.3
 Requires:   python-dateutil
+Requires:   python-glanceclient
 Requires:   python-keystoneclient >= 2012.1
 Requires:   python-novaclient >= 2012.1
 Requires:   python-quantumclient >= 2012.1
@@ -74,9 +61,9 @@ Requires:   %{name} = %{version}-%{release}
 BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
-BuildRequires: openstack-glance
 BuildRequires: python-cloudfiles >= 1.7.9.3
 BuildRequires: python-dateutil
+BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2012.1
 BuildRequires: python-quantumclient
@@ -89,9 +76,6 @@ Documentation for the Django Horizon application for talking with Openstack
 %setup -q -n horizon-%{version}
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 %{__python} setup.py build
@@ -141,6 +125,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Wed Jun 06 2012 Pádraig Brady <P@draigBrady.com> - 2012.2-0.1.f1
+- Update to folsom milestone 1
+
 * Wed May 09 2012 Alan Pevec <apevec@redhat.com> - 2012.1-4
 - Remove the currently uneeded dependency on python-django-nose
 
