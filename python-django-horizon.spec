@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.1.f1%{?dist}
+Release:    0.2.f1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -15,7 +15,7 @@ Source1:    openstack-dashboard.conf
 Patch1:     %{name}-disable-debug.patch
 Patch2:     %{name}-default-db.patch
 
-Requires:   Django >= 1.4.0
+Requires:   Django >= 1.4
 Requires:   python-cloudfiles >= 1.7.9.3
 Requires:   python-dateutil
 Requires:   python-glanceclient
@@ -125,7 +125,7 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
-* Wed Jun 06 2012 Pádraig Brady <P@draigBrady.com> - 2012.2-0.1.f1
+* Wed Jun 06 2012 Pádraig Brady <P@draigBrady.com> - 2012.2-0.2.f1
 - Update to folsom milestone 1
 
 * Wed May 09 2012 Alan Pevec <apevec@redhat.com> - 2012.1-4
