@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.2.f1%{?dist}
+Release:    0.3.f1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -26,6 +26,8 @@ Requires:   python-quantumclient >= 2012.1
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
 
+# additional provides to be consistent with other django packages
+Provides: django-horizon = %{version}-%{release}
 
 %description
 Horizon is a Django application for providing Openstack UI components.
@@ -125,6 +127,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Tue Jun 26 2012 Matthias Runge <mrunge@matthias-runge.de> - 2012.2-0.3.f1
+- add additional provides django-horizon
+
 * Wed Jun 06 2012 Pádraig Brady <P@draigBrady.com> - 2012.2-0.2.f1
 - Update to folsom milestone 1
 
