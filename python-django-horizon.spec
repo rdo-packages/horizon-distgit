@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.4.f1%{?dist}
+Release:    0.5.rc1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -9,22 +9,36 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
 
-Source0:    http://launchpad.net/horizon/folsom/folsom-1/+download/horizon-2012.2~f1.tar.gz
+Source0:    http://launchpad.net/horizon/folsom/folsom-rc1/+download/horizon-2012.2~rc1.tar.gz
 Source1:    openstack-dashboard.conf
 
-Patch1:     %{name}-disable-debug.patch
-Patch2:     %{name}-default-db.patch
+# offline compressed css, js
+Source2:    python-django-horizon-compressed-css.tar.gz
 
-Requires:   Django >= 1.4
+# change settings to use offline compression
+Patch0:     python-django-horizon-dashboard-settings.patch
+# disable debug also in local_settings.py
+Patch1:     python-django-horizon-disable-debug.patch
+
+Requires:   python-django
 Requires:   python-cloudfiles >= 1.7.9.3
 Requires:   python-dateutil
 Requires:   python-glanceclient
-Requires:   python-keystoneclient >= 2012.1
+Requires:   python-keystoneclient 
 Requires:   python-novaclient >= 2012.1
-Requires:   python-quantumclient >= 2012.1
+Requires:   python-quantumclient
+Requires:   python-cinderclient
+Requires:   python-swiftclient
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
+
+# for checks:
+#BuildRequires: python-django-nose
+#BuildRequires:   python-cinderclient
+#BuildRequires:   python-django-appconf
+#BuildRequires:   python-django-openstack-auth
+#BuildRequires:   python-django-compressor
 
 # additional provides to be consistent with other django packages
 Provides: django-horizon = %{version}-%{release}
@@ -44,6 +58,8 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
+Requires:   python-django-openstack-auth
+Requires:   python-django-compressor
 
 BuildRequires: python2-devel
 
@@ -76,8 +92,14 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %prep
 %setup -q -n horizon-%{version}
+
+# remove unnecessary .po files
+find . -name "django*.po" -exec rm -f '{}' \;
+
+# patch settings
+%patch0 -p1
+# disable debug also in local_settings.py
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__python} setup.py build
@@ -88,7 +110,7 @@ Documentation for the Django Horizon application for talking with Openstack
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
-sphinx-build -b html docs/source html
+sphinx-build -b html doc/source html
 
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
@@ -103,23 +125,59 @@ mv %{buildroot}%{python_sitelib}/openstack_dashboard \
 mv manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
+
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s %{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
+%find_lang django
+grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
+grep "\/site-packages\/horizon" django.lang > horizon.lang
+
+# finally put compressed js, css to the right place
+cd %{buildroot}%{_datadir}/openstack-dashboard
+tar xzf %{SOURCE2}
 
 %post -n openstack-dashboard
 python %{_datadir}/openstack-dashboard/manage.py syncdb >/dev/null 2>&1 || :
 python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/null 2>&1 || :
 
-%files
-%{python_sitelib}/horizon
+%files -f horizon.lang
+%dir %{python_sitelib}/horizon
+%{python_sitelib}/horizon/*.py*
+%{python_sitelib}/horizon/api
+%{python_sitelib}/horizon/browsers
+%{python_sitelib}/horizon/conf
+%{python_sitelib}/horizon/dashboards
+%{python_sitelib}/horizon/forms
+%{python_sitelib}/horizon/management
+%{python_sitelib}/horizon/openstack
+%{python_sitelib}/horizon/static
+%{python_sitelib}/horizon/tables
+%{python_sitelib}/horizon/tabs
+%{python_sitelib}/horizon/templates
+%{python_sitelib}/horizon/templatetags
+%{python_sitelib}/horizon/tests
+%{python_sitelib}/horizon/usage
+%{python_sitelib}/horizon/utils
+%{python_sitelib}/horizon/views
+%{python_sitelib}/horizon/workflows
 %{python_sitelib}/*.egg-info
+%exclude %{python_sitelib}/bin
 
-%files -n openstack-dashboard
-%{_datadir}/openstack-dashboard/
+%files -n openstack-dashboard -f dashboard.lang
+%dir %{_datadir}/openstack-dashboard/
+%{_datadir}/openstack-dashboard/*.py*
+%{_datadir}/openstack-dashboard/static
+%{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
+%{_datadir}/openstack-dashboard/openstack_dashboard/local
+%{_datadir}/openstack-dashboard/openstack_dashboard/static
+%{_datadir}/openstack-dashboard/openstack_dashboard/templates
+%{_datadir}/openstack-dashboard/openstack_dashboard/test
+%{_datadir}/openstack-dashboard/openstack_dashboard/wsgi
+
 %{_sharedstatedir}/openstack-dashboard
-%{_sysconfdir}/openstack-dashboard
+%dir %{_sysconfdir}/openstack-dashboard
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %{_sysconfdir}/openstack-dashboard/local_settings
 
@@ -127,6 +185,13 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Mon Sep 17 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.5.rc1
+- update to folsom rc1
+- require python-django instead of Django
+- add requirements to python-django-compressor, python-django-openstack-auth
+- add requirements to python-swiftclient
+- use compressed js, css files
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2012.2-0.4.f1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
