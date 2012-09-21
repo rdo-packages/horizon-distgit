@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.5.rc1%{?dist}
+Release:    0.6.rc1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -20,6 +20,8 @@ Patch0:     python-django-horizon-dashboard-settings.patch
 # disable debug also in local_settings.py
 Patch1:     python-django-horizon-disable-debug.patch
 
+# take variables out of compressed output
+Patch2:     python-django-horizon-template_conf.patch
 Requires:   python-django
 Requires:   python-cloudfiles >= 1.7.9.3
 Requires:   python-dateutil
@@ -34,7 +36,7 @@ BuildRequires: python2-devel
 BuildRequires: python-setuptools
 
 # for checks:
-#BuildRequires: python-django-nose
+#BuildRequires:   python-django-nose
 #BuildRequires:   python-cinderclient
 #BuildRequires:   python-django-appconf
 #BuildRequires:   python-django-openstack-auth
@@ -100,6 +102,9 @@ find . -name "django*.po" -exec rm -f '{}' \;
 %patch0 -p1
 # disable debug also in local_settings.py
 %patch1 -p1
+
+# correct compressed output
+%patch2 -p1
 
 %build
 %{__python} setup.py build
@@ -185,6 +190,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.6.rc1
+- fix compressing issue
+
 * Mon Sep 17 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.5.rc1
 - update to folsom rc1
 - require python-django instead of Django
