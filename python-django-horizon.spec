@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.6.rc1%{?dist}
+Release:    0.6.rc2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -9,7 +9,7 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
 
-Source0:    http://launchpad.net/horizon/folsom/folsom-rc1/+download/horizon-2012.2~rc1.tar.gz
+Source0:    http://launchpad.net/horizon/folsom/folsom-rc2/+download/horizon-2012.2~rc2.tar.gz
 Source1:    openstack-dashboard.conf
 
 # offline compressed css, js
@@ -22,7 +22,13 @@ Patch1:     python-django-horizon-disable-debug.patch
 
 # take variables out of compressed output
 Patch2:     python-django-horizon-template_conf.patch
+
+%if 0%{?rhel}<7 || 0%{?fedora} < 18
+Requires:   Django
+%else
 Requires:   python-django
+%endif
+
 Requires:   python-cloudfiles >= 1.7.9.3
 Requires:   python-dateutil
 Requires:   python-glanceclient
@@ -136,8 +142,10 @@ mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_s
 ln -s %{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
 %find_lang django
+%find_lang djangojs
 grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
 grep "\/site-packages\/horizon" django.lang > horizon.lang
+cat djangojs.lang >> horizon.lang
 
 # finally put compressed js, css to the right place
 cd %{buildroot}%{_datadir}/openstack-dashboard
@@ -190,6 +198,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.7.rc2
+- update to release folsom rc2
+
 * Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.6.rc1
 - fix compressing issue
 
