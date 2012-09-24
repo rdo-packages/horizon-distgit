@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.6.rc2%{?dist}
+Release:    0.8.rc2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
