@@ -37,6 +37,7 @@ Requires:   python-novaclient >= 2012.1
 Requires:   python-quantumclient
 Requires:   python-cinderclient
 Requires:   python-swiftclient
+Requires:   pytz
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -198,6 +199,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Mon Sep 24 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.8.rc2
+- also require pytz
+
 * Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.7.rc2
 - update to release folsom rc2
 
