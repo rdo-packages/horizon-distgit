@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.8.rc2%{?dist}
+Release:    0.9.rc2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -152,10 +152,6 @@ cat djangojs.lang >> horizon.lang
 cd %{buildroot}%{_datadir}/openstack-dashboard
 tar xzf %{SOURCE2}
 
-%post -n openstack-dashboard
-python %{_datadir}/openstack-dashboard/manage.py syncdb >/dev/null 2>&1 || :
-python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/null 2>&1 || :
-
 %files -f horizon.lang
 %dir %{python_sitelib}/horizon
 %{python_sitelib}/horizon/*.py*
@@ -199,6 +195,9 @@ python %{_datadir}/openstack-dashboard/manage.py collectstatic --noinput >/dev/n
 %doc html
 
 %changelog
+* Tue Sep 25 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.9.rc2
+- remove %%post section
+
 * Mon Sep 24 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.8.rc2
 - also require pytz
 
