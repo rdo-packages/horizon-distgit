@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    0.9.rc2%{?dist}
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -9,7 +9,7 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
 
-Source0:    http://launchpad.net/horizon/folsom/folsom-rc2/+download/horizon-2012.2~rc2.tar.gz
+Source0:    http://launchpad.net/horizon/folsom/%{version}/+download/horizon-%{version}.tar.gz
 Source1:    openstack-dashboard.conf
 
 # offline compressed css, js
@@ -22,6 +22,10 @@ Patch1:     python-django-horizon-disable-debug.patch
 
 # take variables out of compressed output
 Patch2:     python-django-horizon-template_conf.patch
+
+# move dashboard login/logout to /dashboard
+Patch3:     python-django-horizon-no_webroot.patch
+
 
 %if 0%{?rhel}<7 || 0%{?fedora} < 18
 Requires:   Django
@@ -113,6 +117,9 @@ find . -name "django*.po" -exec rm -f '{}' \;
 # correct compressed output
 %patch2 -p1
 
+# move dashboard login/logout to /dashboard
+%patch3 -p1
+
 %build
 %{__python} setup.py build
 
@@ -142,11 +149,28 @@ rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s %{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
+%if 0%{?rhel} > 6 || 0%{?fedora} >= 16
 %find_lang django
 %find_lang djangojs
+%else
+# Handling locale files
+# This is adapted from the %%find_lang macro, which cannot be directly
+# used since Django locale files are not located in %%{_datadir}
+#
+# The rest of the packaging guideline still apply -- do not list
+# locale files by hand!
+(cd $RPM_BUILD_ROOT && find . -name 'django*.mo') | %{__sed} -e 's|^.||' |
+%{__sed} -e \
+   's:\(.*/locale/\)\([^/_]\+\)\(.*\.mo$\):%lang(\2) \1\2\3:' \
+      >> django.lang
+%endif
+
 grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
 grep "\/site-packages\/horizon" django.lang > horizon.lang
+
+%if 0%{?rhel} > 6 || 0%{?fedora} >= 16
 cat djangojs.lang >> horizon.lang
+%endif
 
 # finally put compressed js, css to the right place
 cd %{buildroot}%{_datadir}/openstack-dashboard
@@ -195,6 +219,9 @@ tar xzf %{SOURCE2}
 %doc html
 
 %changelog
+* Wed Sep 26 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.10.rc2
+- more el6 compatibility
+
 * Tue Sep 25 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.9.rc2
 - remove %%post section
 
