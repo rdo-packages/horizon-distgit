@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -172,9 +172,15 @@ grep "\/site-packages\/horizon" django.lang > horizon.lang
 cat djangojs.lang >> horizon.lang
 %endif
 
-# finally put compressed js, css to the right place
+# copy static files to %{_datadir}/openstack-dashboard/static
+mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
+cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
+cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
+
+# finally put compressed js, css to the right place, and also manifest.json
 cd %{buildroot}%{_datadir}/openstack-dashboard
 tar xzf %{SOURCE2}
+
 
 %files -f horizon.lang
 %dir %{python_sitelib}/horizon
@@ -209,6 +215,10 @@ tar xzf %{SOURCE2}
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/wsgi
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 
 %{_sharedstatedir}/openstack-dashboard
 %dir %{_sysconfdir}/openstack-dashboard
@@ -219,6 +229,9 @@ tar xzf %{SOURCE2}
 %doc html
 
 %changelog
+* Mon Oct 15 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-2
+- fix static img, static fonts issue
+
 * Wed Sep 26 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.10.rc2
 - more el6 compatibility
 
