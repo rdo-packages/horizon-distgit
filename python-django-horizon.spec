@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -11,9 +11,10 @@ BuildArch:  noarch
 
 Source0:    http://launchpad.net/horizon/folsom/%{version}/+download/horizon-%{version}.tar.gz
 Source1:    openstack-dashboard.conf
+Source2:    openstack-dashboard-httpd-2.4.conf
 
 # offline compressed css, js
-Source2:    python-django-horizon-compressed-css.tar.gz
+Source3:    python-django-horizon-compressed-css.tar.gz
 
 # change settings to use offline compression
 Patch0:     python-django-horizon-dashboard-settings.patch
@@ -28,7 +29,14 @@ Patch3:     python-django-horizon-no_webroot.patch
 
 
 %if 0%{?rhel}<7 || 0%{?fedora} < 18
+
+# epel6 has a separate Django14 package
+%if 0%{?rhel}==6
+Requires:   Django14
+%else
 Requires:   Django
+%endif
+
 %else
 Requires:   python-django
 %endif
@@ -88,8 +96,11 @@ Summary:    Documentation for Django Horizon
 Group:      Documentation
 
 Requires:   %{name} = %{version}-%{release}
-
+%if 0%{?rhel}==6
+BuildRequires: python-sphinx10
+%else
 BuildRequires: python-sphinx >= 1.1.3
+%endif
 
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-cloudfiles >= 1.7.9.3
@@ -118,7 +129,7 @@ find . -name "django*.po" -exec rm -f '{}' \;
 %patch2 -p1
 
 # move dashboard login/logout to /dashboard
-%patch3 -p1
+%patch3 
 
 %build
 %{__python} setup.py build
@@ -126,10 +137,20 @@ find . -name "django*.po" -exec rm -f '{}' \;
 %install
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
+# drop httpd-conf snippet
+%if 0%{?rhel} || 0%{?fedora} <18
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
+%else
+# httpd-2.4 changed the syntax
+install -m 0644 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
+%endif
 
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
+%if 0%{?rhel}==6
+sphinx-1.0-build -b html doc/source html
+%else
 sphinx-build -b html doc/source html
+%endif
 
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
@@ -179,7 +200,7 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 # finally put compressed js, css to the right place, and also manifest.json
 cd %{buildroot}%{_datadir}/openstack-dashboard
-tar xzf %{SOURCE2}
+tar xzf %{SOURCE3}
 
 
 %files -f horizon.lang
@@ -229,6 +250,11 @@ tar xzf %{SOURCE2}
 %doc html
 
 %changelog
+* Mon Oct 22 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-3
+- require Django14 for EPEL6
+- finally move login/logout to /dashboard/auth/login
+- adapt httpd config to httpd-2.4 (bz 868408)
+
 * Mon Oct 15 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-2
 - fix static img, static fonts issue
 
