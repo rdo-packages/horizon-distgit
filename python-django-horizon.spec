@@ -41,7 +41,6 @@ Requires:   Django
 Requires:   python-django
 %endif
 
-Requires:   python-cloudfiles >= 1.7.9.3
 Requires:   python-dateutil
 Requires:   python-glanceclient
 Requires:   python-keystoneclient 
@@ -103,7 +102,6 @@ BuildRequires: python-sphinx >= 1.1.3
 %endif
 
 # Doc building basically means we have to mirror Requires:
-BuildRequires: python-cloudfiles >= 1.7.9.3
 BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
