@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2012.2
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -240,29 +240,33 @@ tar xzf %{SOURCE3}
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 
 %{_sharedstatedir}/openstack-dashboard
-%dir %{_sysconfdir}/openstack-dashboard
+%dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
-%config(noreplace) %{_sysconfdir}/openstack-dashboard/local_settings
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
 
 %files doc
 %doc html
 
 %changelog
-* Mon Oct 22 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-3
+* Tue Nov 13 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-4
+- drop dependency to python-cloudfiles
+- fix /etc/openstack-dashboard permission CVE-2012-5474 (rhbz#873120)
+
+* Mon Oct 22 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-3
 - require Django14 for EPEL6
 - finally move login/logout to /dashboard/auth/login
 - adapt httpd config to httpd-2.4 (bz 868408)
 
-* Mon Oct 15 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-2
+* Mon Oct 15 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-2
 - fix static img, static fonts issue
 
-* Wed Sep 26 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.10.rc2
+* Wed Sep 26 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.10.rc2
 - more el6 compatibility
 
-* Tue Sep 25 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.9.rc2
+* Tue Sep 25 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.9.rc2
 - remove %%post section
 
-* Mon Sep 24 2012 Matthias Runge <mrunge@redhat.com> - 2012-2-0.8.rc2
+* Mon Sep 24 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.8.rc2
 - also require pytz
 
 * Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.7.rc2
