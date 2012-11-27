@@ -1,6 +1,6 @@
 Name:       python-django-horizon
-Version:    2012.2
-Release:    4%{?dist}
+Version:    2013.1
+Release:    0.1.g1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -8,8 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-
-Source0:    http://launchpad.net/horizon/folsom/%{version}/+download/horizon-%{version}.tar.gz
+Source0:     https://launchpad.net/horizon/grizzly/grizzly-1/+download/horizon-%{version}~g1.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -119,15 +118,15 @@ Documentation for the Django Horizon application for talking with Openstack
 find . -name "django*.po" -exec rm -f '{}' \;
 
 # patch settings
-%patch0 -p1
+# %patch0 -p1
 # disable debug also in local_settings.py
-%patch1 -p1
+#%patch1 -p1
 
 # correct compressed output
-%patch2 -p1
+#%patch2 -p1
 
 # move dashboard login/logout to /dashboard
-%patch3 
+#%patch3 
 
 %build
 %{__python} setup.py build
@@ -204,22 +203,17 @@ tar xzf %{SOURCE3}
 %files -f horizon.lang
 %dir %{python_sitelib}/horizon
 %{python_sitelib}/horizon/*.py*
-%{python_sitelib}/horizon/api
 %{python_sitelib}/horizon/browsers
 %{python_sitelib}/horizon/conf
-%{python_sitelib}/horizon/dashboards
 %{python_sitelib}/horizon/forms
 %{python_sitelib}/horizon/management
-%{python_sitelib}/horizon/openstack
 %{python_sitelib}/horizon/static
 %{python_sitelib}/horizon/tables
 %{python_sitelib}/horizon/tabs
 %{python_sitelib}/horizon/templates
 %{python_sitelib}/horizon/templatetags
-%{python_sitelib}/horizon/tests
-%{python_sitelib}/horizon/usage
+%{python_sitelib}/horizon/test
 %{python_sitelib}/horizon/utils
-%{python_sitelib}/horizon/views
 %{python_sitelib}/horizon/workflows
 %{python_sitelib}/*.egg-info
 %exclude %{python_sitelib}/bin
@@ -229,10 +223,14 @@ tar xzf %{SOURCE3}
 %{_datadir}/openstack-dashboard/*.py*
 %{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
+%{_datadir}/openstack-dashboard/openstack_dashboard/api
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
+%{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
+%{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/wsgi
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??
@@ -248,6 +246,9 @@ tar xzf %{SOURCE3}
 %doc html
 
 %changelog
+* Tue Nov 27 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.1.g1
+- update to grizzly-1 milestone
+
 * Tue Nov 13 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-4
 - drop dependency to python-cloudfiles
 - fix /etc/openstack-dashboard permission CVE-2012-5474 (rhbz#873120)
