@@ -15,17 +15,10 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 # offline compressed css, js
 Source3:    python-django-horizon-compressed-css.tar.gz
 
-# change settings to use offline compression
-Patch0:     python-django-horizon-dashboard-settings.patch
-# disable debug also in local_settings.py
-Patch1:     python-django-horizon-disable-debug.patch
-
-# take variables out of compressed output
-Patch2:     python-django-horizon-template_conf.patch
-
-# move dashboard login/logout to /dashboard
-Patch3:     python-django-horizon-no_webroot.patch
-
+#
+# patches_base=grizzly-1
+#
+Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 
 %if 0%{?rhel}<7 || 0%{?fedora} < 18
 
@@ -120,13 +113,10 @@ find . -name "django*.po" -exec rm -f '{}' \;
 # patch settings
 # %patch0 -p1
 # disable debug also in local_settings.py
-#%patch1 -p1
 
 # correct compressed output
-#%patch2 -p1
 
 # move dashboard login/logout to /dashboard
-#%patch3 
 
 %build
 %{__python} setup.py build
