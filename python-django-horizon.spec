@@ -18,7 +18,9 @@ Source3:    python-django-horizon-compressed-css.tar.gz
 #
 # patches_base=grizzly-1
 #
-Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
+Patch0001: 0001-disable-debug.patch
+Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
+
 
 %if 0%{?rhel}<7 || 0%{?fedora} < 18
 
@@ -107,9 +109,10 @@ Documentation for the Django Horizon application for talking with Openstack
 %prep
 %setup -q -n horizon-%{version}
 
+%patch0001 -p1
+%patch0002 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
-
 # patch settings
 # %patch0 -p1
 # disable debug also in local_settings.py
@@ -236,7 +239,7 @@ tar xzf %{SOURCE3}
 %doc html
 
 %changelog
-* Tue Nov 27 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.1.g1
+* Thu Nov 29 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.1.g1
 - update to grizzly-1 milestone
 
 * Tue Nov 13 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-4
