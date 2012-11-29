@@ -20,6 +20,7 @@ Source3:    python-django-horizon-compressed-css.tar.gz
 #
 Patch0001: 0001-disable-debug.patch
 Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
+Patch0003: 0003-take-variables-out-of-compressed-output.patch
 
 
 %if 0%{?rhel}<7 || 0%{?fedora} < 18
@@ -111,6 +112,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %patch0001 -p1
 %patch0002 -p1
+%patch0003 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
 # patch settings
