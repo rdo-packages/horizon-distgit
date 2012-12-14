@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.1
-Release:    0.1.g1%{?dist}
+Release:    0.2.g1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -14,6 +14,9 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 
 # offline compressed css, js
 Source3:    python-django-horizon-compressed-css.tar.gz
+
+# demo config for separate logging
+Source4:    openstack-dashboard-httpd-logging.conf
 
 #
 # patches_base=grizzly-1
@@ -115,13 +118,9 @@ Documentation for the Django Horizon application for talking with Openstack
 %patch0003 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
-# patch settings
-# %patch0 -p1
-# disable debug also in local_settings.py
 
-# correct compressed output
-
-# move dashboard login/logout to /dashboard
+# drop config snippet
+cp -p %{SOURCE4} .
 
 %build
 %{__python} setup.py build
@@ -194,8 +193,8 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 cd %{buildroot}%{_datadir}/openstack-dashboard
 tar xzf %{SOURCE3}
 
-
 %files -f horizon.lang
+%doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
 %dir %{python_sitelib}/horizon
 %{python_sitelib}/horizon/*.py*
 %{python_sitelib}/horizon/browsers
@@ -238,9 +237,12 @@ tar xzf %{SOURCE3}
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
 
 %files doc
-%doc html
+%doc html 
 
 %changelog
+* Fri Dec 14 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.2.g1
+- add config example snippet to enable logging to separate files
+
 * Thu Nov 29 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.1.g1
 - update to grizzly-1 milestone
 
