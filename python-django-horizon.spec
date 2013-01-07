@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.1
-Release:    0.2.g1%{?dist}
+Release:    0.3.g1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -13,7 +13,7 @@ Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # offline compressed css, js
-Source3:    python-django-horizon-compressed-css.tar.gz
+#Source3:    python-django-horizon-compressed-css.tar.gz
 
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
@@ -80,6 +80,8 @@ Requires:   python-django-openstack-auth
 Requires:   python-django-compressor
 
 BuildRequires: python2-devel
+BuildRequires: nodejs
+BuildRequires: lessjs
 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
@@ -191,7 +193,9 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 # finally put compressed js, css to the right place, and also manifest.json
 cd %{buildroot}%{_datadir}/openstack-dashboard
-tar xzf %{SOURCE3}
+#tar xzf %{SOURCE3}
+python manage.py collectstatic --noinput
+python manage.py compress
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
@@ -240,6 +244,9 @@ tar xzf %{SOURCE3}
 %doc html 
 
 %changelog
+* Mon Jan 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.3.g1
+- use nodejs/lessjs to compress
+
 * Fri Dec 14 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.2.g1
 - add config example snippet to enable logging to separate files
 
