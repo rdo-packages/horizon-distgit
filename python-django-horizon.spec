@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.1
-Release:    0.3.g1%{?dist}
+Release:    0.3.g2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -32,11 +32,14 @@ Patch0004: 0004-disable-to-set-mount-point-as-it-s-unsupported-here.patch
 # epel6 has a separate Django14 package
 %if 0%{?rhel}==6
 Requires:   Django14
+BuildRequires:   Django14
 %else
+BuildRequires:   Django
 Requires:   Django
 %endif
 
 %else
+BuildRequires:   python-django
 Requires:   python-django
 %endif
 
@@ -196,8 +199,8 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 # finally put compressed js, css to the right place, and also manifest.json
 cd %{buildroot}%{_datadir}/openstack-dashboard
 #tar xzf %{SOURCE3}
-python manage.py collectstatic --noinput
-python manage.py compress
+python ./manage.py collectstatic --noinput
+python ./manage.py compress
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
