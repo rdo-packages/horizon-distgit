@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/grizzly/grizzly-1/+download/horizon-%{version}~g1.tar.gz
+Source0:     https://launchpad.net/horizon/grizzly/grizzly-2/+download/horizon-%{version}~g2.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
