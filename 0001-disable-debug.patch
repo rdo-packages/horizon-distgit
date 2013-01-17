@@ -1,4 +1,4 @@
-From 861c7dd0e53de6a72a1cdb1cdcef802d35f2c927 Mon Sep 17 00:00:00 2001
+From 1035c29e1187fbae31d13d3bb75b35173a509307 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Tue, 27 Nov 2012 14:08:00 +0100
 Subject: [PATCH] - disable debug - make url movable (currently moved to
@@ -10,7 +10,7 @@ Subject: [PATCH] - disable debug - make url movable (currently moved to
  2 files changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index e9918cd..2ca2de5 100644
+index c622915..930d19a 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
