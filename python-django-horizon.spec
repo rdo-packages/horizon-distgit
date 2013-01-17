@@ -19,7 +19,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=grizzly-1
+# patches_base=grizzly-2
 #
 Patch0001: 0001-disable-debug.patch
 Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
@@ -244,6 +244,9 @@ python manage.py compress
 %doc html 
 
 %changelog
+* Thu Jan 17 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.4.g2
+- update to grizzly-2
+
 * Mon Jan 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.3.g1
 - use nodejs/lessjs to compress
 
