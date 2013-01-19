@@ -12,9 +12,6 @@ Source0:     https://launchpad.net/horizon/grizzly/grizzly-2/+download/horizon-%
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
-# offline compressed css, js
-#Source3:    python-django-horizon-compressed-css.tar.gz
-
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
 
@@ -82,11 +79,17 @@ Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
 Requires:   python-django-openstack-auth
 Requires:   python-django-compressor
+Requires:   python-django-appconf
 
 BuildRequires: python2-devel
+BuildRequires: python-django-openstack-auth
+BuildRequires: python-django-compressor
+BuildRequires: python-django-appconf
 BuildRequires: nodejs
 BuildRequires: lessjs
 
+BuildRequires:   python-dateutil
+BuildRequires:   pytz 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
 provides a reference implementation using the Django Horizon project,
@@ -111,6 +114,8 @@ BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2012.1
 BuildRequires: python-quantumclient
+BuildRequires: python-cinderclient
+BuildRequires: python-swiftclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -198,9 +203,10 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 # finally put compressed js, css to the right place, and also manifest.json
 cd %{buildroot}%{_datadir}/openstack-dashboard
-#tar xzf %{SOURCE3}
-python ./manage.py collectstatic --noinput
-python ./manage.py compress
+%{__python} manage.py help --settings=openstack_dashboard/settings --pythonpath=openstack_dashboard --pythonpath=.
+%{__python} %{buildroot}%{_datadir}/openstack-dashboard/manage.py help
+%{__python} manage.py collectstatic --noinput --pythonpath=../../lib/python2.7/site-packages/ 
+%{__python} manage.py compress --pythonpath=../../lib/python2.7/site-packages/
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
@@ -249,8 +255,9 @@ python ./manage.py compress
 %doc html 
 
 %changelog
-* Thu Jan 17 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.4.g2
+* Sat Jan 19 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.4.g2
 - update to grizzly-2
+- fix compression during build
 
 * Mon Jan 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.3.g1
 - use nodejs/lessjs to compress
