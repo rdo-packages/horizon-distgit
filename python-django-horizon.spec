@@ -88,7 +88,6 @@ BuildRequires: python-django-appconf
 BuildRequires: nodejs
 BuildRequires: lessjs
 
-BuildRequires:   python-dateutil
 BuildRequires:   pytz 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
@@ -201,10 +200,8 @@ mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
 
-# finally put compressed js, css to the right place, and also manifest.json
+# compress css, js etc.
 cd %{buildroot}%{_datadir}/openstack-dashboard
-%{__python} manage.py help --settings=openstack_dashboard/settings --pythonpath=openstack_dashboard --pythonpath=.
-%{__python} %{buildroot}%{_datadir}/openstack-dashboard/manage.py help
 %{__python} manage.py collectstatic --noinput --pythonpath=../../lib/python2.7/site-packages/ 
 %{__python} manage.py compress --pythonpath=../../lib/python2.7/site-packages/
 
