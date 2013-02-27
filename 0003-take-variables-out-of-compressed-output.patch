@@ -1,4 +1,4 @@
-From ad45e1a7341df1522eee32fc6264e8b936caea37 Mon Sep 17 00:00:00 2001
+From 75baecee3b897505492e28f005042247790dc756 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 29 Nov 2012 11:14:29 +0100
 Subject: [PATCH] take variables out of compressed output

@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/grizzly/grizzly-2/+download/horizon-%{version}~g2.tar.gz
+Source0:     https://launchpad.net/horizon/grizzly/grizzly-3/+download/horizon-%{version}.g3.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -121,7 +121,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 
 %prep
-%setup -q -n horizon-%{version}
+%setup -q -n horizon-%{version}.g3
 
 %patch0001 -p1
 %patch0002 -p1

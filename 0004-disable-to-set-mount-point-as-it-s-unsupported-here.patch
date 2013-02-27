@@ -1,21 +1,25 @@
-From 00b180b664e6ae9e456b270db218f62415b1a362 Mon Sep 17 00:00:00 2001
+From d691a94942328f6924077f985f4290f93a9a7bb6 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 17 Jan 2013 10:06:25 +0100
 Subject: [PATCH] disable to set mount point, as it's unsupported here
 
 ---
- openstack_dashboard/local/local_settings.py.example | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ openstack_dashboard/local/local_settings.py.example | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 930d19a..ce9d4e4 100644
+index 6ee1988..268d65d 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
-@@ -91,7 +91,7 @@ OPENSTACK_KEYSTONE_BACKEND = {
+@@ -97,11 +97,10 @@ OPENSTACK_KEYSTONE_BACKEND = {
  }
  
  OPENSTACK_HYPERVISOR_FEATURES = {
--    'can_set_mount_point': True
+-    'can_set_mount_point': True,
+-
+     # NOTE: as of Grizzly this is not yet supported in Nova so enabling this
+     # setting will not do anything useful
+     'can_encrypt_volumes': False
 +    'can_set_mount_point': False
  }
  
