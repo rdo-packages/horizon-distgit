@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.1
-Release:    0.6.g3%{?dist}
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -16,7 +16,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=2013.1.g3
+# patches_base=2013.1
 #
 Patch0001: 0001-disable-debug.patch
 Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
@@ -252,6 +252,9 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
+* Fri Apr 05 2013 Matthias Runge <mrunge@redhat.com> - 2013.1.1
+- update to 2013.1 
+
 * Fri Mar 08 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.6.g3
 - fix syntax error in config
 
