@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/grizzly/grizzly-3/+download/horizon-%{version}.g3.tar.gz
+Source0:     https://launchpad.net/horizon/grizzly/%{version}/+download/horizon-%{version}.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -18,10 +18,8 @@ Source4:    openstack-dashboard-httpd-logging.conf
 #
 # patches_base=2013.1
 #
-Patch0001: 0001-disable-debug.patch
+Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
-Patch0003: 0003-take-variables-out-of-compressed-output.patch
-Patch0004: 0004-disable-to-set-mount-point-as-it-s-unsupported-here.patch
 
 
 %if 0%{?rhel}<7 || 0%{?fedora} < 18
@@ -125,8 +123,6 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %patch0001 -p1
 %patch0002 -p1
-%patch0003 -p1
-%patch0004 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
 

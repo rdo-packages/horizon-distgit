@@ -1,9 +1,9 @@
-From 9ec313da0a17efe80ac38f8a037ff967da2aaac0 Mon Sep 17 00:00:00 2001
+From c6accfed876324f56a84ddd1e80e48a1420dc45d Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Wed, 28 Nov 2012 11:37:48 +0100
-Subject: [PATCH] Don't access the net while building docs
+Date: Fri, 5 Apr 2013 10:16:19 +0200
+Subject: [PATCH] Don't access the net while building docs (Note this hasn't
+ been submitted upstream)
 
-(Note this hasn't been submitted upstream)
 ---
  doc/source/conf.py | 1 -
  1 file changed, 1 deletion(-)

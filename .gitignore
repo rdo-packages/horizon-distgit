@@ -9,3 +9,7 @@
 /horizon-2013.1~g1.tar.gz
 /horizon-2013.1~g2.tar.gz
 /horizon-2013.1.g3.tar.gz
+/horizon-2013.1.tar.gz
+/openstack-dashboard.conf
+/openstack-dashboard-httpd-2.4.conf
+/openstack-dashboard-httpd-logging.conf

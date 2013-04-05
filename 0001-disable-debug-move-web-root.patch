@@ -1,16 +1,15 @@
-From 8cf09673312cf401c89e01f7293b2332a9dc33f2 Mon Sep 17 00:00:00 2001
+From 89c1473e29ba768299b59e1fecadac247f9e6614 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Tue, 27 Nov 2012 14:08:00 +0100
-Subject: [PATCH] - disable debug - make url movable (currently moved to
- /dashboard - enable offline compression
+Date: Fri, 5 Apr 2013 10:07:53 +0200
+Subject: [PATCH] disable debug, move web root
 
 ---
- openstack_dashboard/local/local_settings.py.example |  2 +-
+ openstack_dashboard/local/local_settings.py.example |  4 ++--
  openstack_dashboard/settings.py                     | 12 +++++++-----
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index b85fa80..6ee1988 100644
+index 8f79020..d6d6d7a 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -22,8 +21,17 @@ index b85fa80..6ee1988 100644
  TEMPLATE_DEBUG = DEBUG
  
  # Set SSL proxy settings:
+@@ -116,7 +116,7 @@ OPENSTACK_KEYSTONE_BACKEND = {
+ }
+ 
+ OPENSTACK_HYPERVISOR_FEATURES = {
+-    'can_set_mount_point': True,
++    'can_set_mount_point': False,
+ 
+     # NOTE: as of Grizzly this is not yet supported in Nova so enabling this
+     # setting will not do anything useful
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index da89944..9e7cec9 100644
+index d568533..bbe2870 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -29,7 +29,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
@@ -52,7 +60,7 @@ index da89944..9e7cec9 100644
  
  MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
  MEDIA_URL = '/media/'
-@@ -108,7 +109,7 @@ STATICFILES_FINDERS = (
+@@ -113,7 +114,7 @@ STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.AppDirectoriesFinder',
  )
  
@@ -61,7 +69,7 @@ index da89944..9e7cec9 100644
  COMPRESS_PRECOMPILERS = (
      ('text/less', (less_binary + ' {infile} {outfile}')),
  )
-@@ -121,6 +122,7 @@ COMPRESS_ENABLED = True
+@@ -126,6 +127,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'
