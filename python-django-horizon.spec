@@ -119,7 +119,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 
 %prep
-%setup -q -n horizon-%{version}.g3
+%setup -q -n horizon-%{version}
 
 %patch0001 -p1
 %patch0002 -p1
