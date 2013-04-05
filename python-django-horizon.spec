@@ -34,8 +34,8 @@ Requires:   Django
 %endif
 
 %else
-BuildRequires:   python-django
-Requires:   python-django
+BuildRequires:   python-django14
+Requires:   python-django14
 %endif
 
 Requires:   python-dateutil
