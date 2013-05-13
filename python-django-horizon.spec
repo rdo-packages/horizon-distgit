@@ -18,8 +18,8 @@ Source4:    openstack-dashboard-httpd-logging.conf
 #
 # patches_base=2013.1.1+1
 #
-Patch0001: 0001-disable-debug-move-web-root.patch
-Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
+Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
+Patch0002: 0002-disable-debug-move-web-root.patch
 
 
 %if 0%{?rhel}>6 || 0%{?fedora} > 17
