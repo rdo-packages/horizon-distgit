@@ -1,6 +1,6 @@
 Name:       python-django-horizon
-Version:    2013.1
-Release:    2%{?dist}
+Version:    2013.1.1
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -16,7 +16,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=2013.1
+# patches_base=2013.1.1+1
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-Don-t-access-the-net-while-building-docs.patch
@@ -85,7 +85,7 @@ BuildRequires: python-django-openstack-auth
 BuildRequires: python-django-compressor
 BuildRequires: python-django-appconf
 BuildRequires: nodejs
-BuildRequires: lessjs
+BuildRequires: nodejs-less
 
 BuildRequires:   pytz 
 %description -n openstack-dashboard
@@ -249,6 +249,10 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
+* Mon May 13 2013 Matthias Runge <mrunge@redhat.com> - 2013.1.1-1
+- change buildrequires from lessjs to nodejs-less
+- update to 2013.1.1
+
 * Fri Apr 05 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-2
 - explicitly require python-django14
 
