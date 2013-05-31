@@ -1,4 +1,4 @@
-From 523383967c5fd15ddcb09d8fdae5144c038737a3 Mon Sep 17 00:00:00 2001
+From 49d587ea6b374f10e7150b2d1043cf525664ca49 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -9,7 +9,7 @@ Subject: [PATCH] disable debug, move web root
  2 files changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 8f79020..d6d6d7a 100644
+index 8ee9495..b743d0e 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -20,8 +20,8 @@ index 8f79020..d6d6d7a 100644
 +DEBUG = False
  TEMPLATE_DEBUG = DEBUG
  
- # Set SSL proxy settings:
-@@ -116,7 +116,7 @@ OPENSTACK_KEYSTONE_BACKEND = {
+ # Required for Django 1.5.
+@@ -143,7 +143,7 @@ OPENSTACK_KEYSTONE_BACKEND = {
  }
  
  OPENSTACK_HYPERVISOR_FEATURES = {
@@ -31,7 +31,7 @@ index 8f79020..d6d6d7a 100644
      # NOTE: as of Grizzly this is not yet supported in Nova so enabling this
      # setting will not do anything useful
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index d568533..bbe2870 100644
+index 254f0ce..cae6247 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -29,7 +29,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
@@ -60,7 +60,7 @@ index d568533..bbe2870 100644
  
  MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
  MEDIA_URL = '/media/'
-@@ -113,7 +114,7 @@ STATICFILES_FINDERS = (
+@@ -112,7 +113,7 @@ STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.AppDirectoriesFinder',
  )
  
@@ -69,7 +69,7 @@ index d568533..bbe2870 100644
  COMPRESS_PRECOMPILERS = (
      ('text/less', (less_binary + ' {infile} {outfile}')),
  )
-@@ -126,6 +127,7 @@ COMPRESS_ENABLED = True
+@@ -125,6 +126,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'
