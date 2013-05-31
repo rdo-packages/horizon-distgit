@@ -1,5 +1,5 @@
 Name:       python-django-horizon
-Version:    2013.1
+Version:    2013.2
 Release:    0.1b1%{?dist}
 Summary:    Django application for talking to Openstack
 
@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/grizzly/%{version}/+download/horizon-%{version}.tar.gz
+Source0:     https://launchpad.net/horizon/havana/havana-1/+download/horizon-%{version}.b1.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -51,6 +51,8 @@ Requires:   pytz
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
+BuildRequires: python-d2to1
+BuildRequires: python-pbr
 
 # for checks:
 #BuildRequires:   python-django-nose
@@ -122,7 +124,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 
 %prep
-%setup -q -n horizon-%{version}
+%setup -q -n horizon-%{version}.b1
 
 %patch0001 -p1
 %patch0002 -p1
@@ -221,7 +223,6 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %{python_sitelib}/horizon/utils
 %{python_sitelib}/horizon/workflows
 %{python_sitelib}/*.egg-info
-%exclude %{python_sitelib}/bin
 
 %files -n openstack-dashboard -f dashboard.lang
 %dir %{_datadir}/openstack-dashboard/
@@ -231,7 +232,6 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
-%{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
