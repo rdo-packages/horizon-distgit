@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.1b1%{?dist}
+Release:    0.2b1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -22,12 +22,6 @@ Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
 
 
-%if 0%{?rhel}>6 || 0%{?fedora} > 17
-# grizzly requires python-django14
-BuildRequires:   python-django14
-Requires:   python-django14
-
-%else
 # epel6 has a separate Django14 package
 %if 0%{?rhel}==6
 Requires:   Django14
@@ -37,7 +31,6 @@ BuildRequires:   Django
 Requires:   Django
 %endif
 
-%endif
 
 Requires:   python-dateutil
 Requires:   python-glanceclient
@@ -251,6 +244,9 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
+* Thu Jun 06 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.2b1
+- havana doesn't require explicitly Django-1.4
+
 * Fri May 31 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.1b1
 - prepare for havana-1
 
