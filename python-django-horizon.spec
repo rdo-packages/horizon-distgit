@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.2b1%{?dist}
+Release:    0.3b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -16,7 +16,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=2013.2.b1
+# patches_base=2013.2.b2
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -244,6 +244,9 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
+* Mon Jul 22 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.3b2
+- havana-2
+
 * Thu Jun 06 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.2b1
 - havana doesn't require explicitly Django-1.4
 
