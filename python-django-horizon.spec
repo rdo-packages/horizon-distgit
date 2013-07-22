@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/havana/havana-1/+download/horizon-%{version}.b1.tar.gz
+Source0:     https://launchpad.net/horizon/havana/havana-2/+download/horizon-%{version}.b2.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -117,7 +117,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 
 %prep
-%setup -q -n horizon-%{version}.b1
+%setup -q -n horizon-%{version}.b2
 
 %patch0001 -p1
 %patch0002 -p1
