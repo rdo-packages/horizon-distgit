@@ -36,10 +36,11 @@ Requires:   python-dateutil
 Requires:   python-glanceclient
 Requires:   python-keystoneclient 
 Requires:   python-novaclient >= 2012.1
-Requires:   python-quantumclient
+Requires:   python-neutronclient
 Requires:   python-cinderclient
 Requires:   python-swiftclient
 Requires:   python-heatclient
+Requires:   python-ceilometerclient
 Requires:   pytz
 
 BuildRequires: python2-devel
@@ -107,10 +108,11 @@ BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2012.1
-BuildRequires: python-quantumclient
+BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
+BuildRequires: python-ceilometerclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -164,7 +166,7 @@ rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
-ln -s %{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
+ln -s ../../../../../%{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
 %if 0%{?rhel} > 6 || 0%{?fedora} >= 16
 %find_lang django
@@ -225,10 +227,12 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
+%{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
+%{_datadir}/openstack-dashboard/openstack_dashboard/utils
 %{_datadir}/openstack-dashboard/openstack_dashboard/wsgi
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??
@@ -244,8 +248,10 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
-* Mon Jul 22 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.3b2
+* Wed Jul 24 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.3b2
 - havana-2
+- change requirements from python-quantumclient to neutronclient
+- require python-ceilometerclient
 
 * Thu Jun 06 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.2b1
 - havana doesn't require explicitly Django-1.4
