@@ -42,11 +42,13 @@ Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
 Requires:   pytz
+Requires:   python-lockfile
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
 BuildRequires: python-d2to1
 BuildRequires: python-pbr
+BuildRequires: python-lockfile
 
 # for checks:
 #BuildRequires:   python-django-nose
