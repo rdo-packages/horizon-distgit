@@ -1,0 +1,32 @@
+From fcf8b00597925b908f565bd27b29b440f41b3e78 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Thu, 25 Jul 2013 11:32:38 +0200
+Subject: [PATCH] change lockfile location to '/tmp' and also add localhost to
+ ALLOWED_HOSTS
+
+---
+ openstack_dashboard/local/local_settings.py.example | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
+index 3f5da3d..52f1656 100644
+--- a/openstack_dashboard/local/local_settings.py.example
++++ b/openstack_dashboard/local/local_settings.py.example
+@@ -12,7 +12,7 @@ TEMPLATE_DEBUG = DEBUG
+ # with the list of host/domain names that the application can serve.
+ # For more information see:
+ # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+-#ALLOWED_HOSTS = ['horizon.example.com', ]
++ALLOWED_HOSTS = ['horizon.example.com', 'localhost']
+ 
+ # Set SSL proxy settings:
+ # For Django 1.4+ pass this header from the proxy after terminating the SSL,
+@@ -77,7 +77,7 @@ HORIZON_CONFIG = {
+ # Turn off browser autocompletion for the login form if so desired.
+ # HORIZON_CONFIG["password_autocomplete"] = "off"
+ 
+-LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
++LOCAL_PATH = '/tmp'
+ 
+ # Set custom secret key:
+ # You can either set it to a specific value or you can let horizion generate a

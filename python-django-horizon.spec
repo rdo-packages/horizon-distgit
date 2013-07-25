@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.3b2%{?dist}
+Release:    0.4b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -20,6 +20,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
+Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
 
 
 # epel6 has a separate Django14 package
@@ -125,6 +126,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %patch0001 -p1
 %patch0002 -p1
+%patch0003 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
 
@@ -250,10 +252,11 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
-* Wed Jul 24 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.3b2
+* Thu Jul 25 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.4b2
 - havana-2
 - change requirements from python-quantumclient to neutronclient
 - require python-ceilometerclient
+- add requirement python-lockfile, change lockfile location to /tmp
 
 * Thu Jun 06 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.2b1
 - havana doesn't require explicitly Django-1.4
