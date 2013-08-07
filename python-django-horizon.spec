@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.4b2%{?dist}
+Release:    0.5b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -34,14 +34,6 @@ Requires:   Django
 
 
 Requires:   python-dateutil
-Requires:   python-glanceclient
-Requires:   python-keystoneclient 
-Requires:   python-novaclient >= 2012.1
-Requires:   python-neutronclient
-Requires:   python-cinderclient
-Requires:   python-swiftclient
-Requires:   python-heatclient
-Requires:   python-ceilometerclient
 Requires:   pytz
 Requires:   python-lockfile
 
@@ -76,13 +68,21 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
-Requires:   python-django-openstack-auth
-Requires:   python-django-compressor
+Requires:   python-django-openstack-auth >= 1.0.11
+Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
+Requires:   python-glanceclient
+Requires:   python-keystoneclient >= 0.3
+Requires:   python-novaclient >= 2012.1
+Requires:   python-neutronclient
+Requires:   python-cinderclient
+Requires:   python-swiftclient
+Requires:   python-heatclient
+Requires:   python-ceilometerclient
 
 BuildRequires: python2-devel
-BuildRequires: python-django-openstack-auth
-BuildRequires: python-django-compressor
+BuildRequires: python-django-openstack-auth >= 1.0.11
+BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: nodejs
 BuildRequires: nodejs-less
@@ -252,6 +252,10 @@ cd %{buildroot}%{_datadir}/openstack-dashboard
 %doc html 
 
 %changelog
+* Wed Aug 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.5b2
+- move requirements from horizon to openstack-dashboard package
+- introduce explicit requirements for dependencies
+
 * Thu Jul 25 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.4b2
 - havana-2
 - change requirements from python-quantumclient to neutronclient
