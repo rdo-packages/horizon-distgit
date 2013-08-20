@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.5b2%{?dist}
+Release:    0.6b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -130,11 +130,21 @@ Documentation for the Django Horizon application for talking with Openstack
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
 
+# Remove the requirements file so that pbr hooks don't add it
+# to distutils requires_dist config
+rm -rf {test-,}requirements.txt tools/{pip,test}-requires
+
 # drop config snippet
 cp -p %{SOURCE4} .
 
 %build
+# SKIP_PIP_INSTALL=1 %{__python} setup.py build
 %{__python} setup.py build
+
+# compress css, js etc.
+cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
+%{__python} manage.py collectstatic --noinput --pythonpath=../../lib/python2.7/site-packages/ 
+%{__python} manage.py compress --pythonpath=../../lib/python2.7/site-packages/
 
 %install
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
@@ -199,11 +209,6 @@ cat djangojs.lang >> horizon.lang
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
-
-# compress css, js etc.
-cd %{buildroot}%{_datadir}/openstack-dashboard
-%{__python} manage.py collectstatic --noinput --pythonpath=../../lib/python2.7/site-packages/ 
-%{__python} manage.py compress --pythonpath=../../lib/python2.7/site-packages/
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
