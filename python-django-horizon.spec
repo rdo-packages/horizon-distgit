@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.6b2%{?dist}
+Release:    0.7b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -21,6 +21,9 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
 Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
+
+# patch will be included in 2013.2.b3
+Patch99: fix-tests.patch
 
 
 # epel6 has a separate Django14 package
@@ -44,11 +47,18 @@ BuildRequires: python-pbr
 BuildRequires: python-lockfile
 
 # for checks:
-#BuildRequires:   python-django-nose
-#BuildRequires:   python-cinderclient
-#BuildRequires:   python-django-appconf
-#BuildRequires:   python-django-openstack-auth
-#BuildRequires:   python-django-compressor
+BuildRequires:   python-django-nose
+BuildRequires:   python-coverage
+BuildRequires:   python-mox
+BuildRequires:   python-nose-exclude
+BuildRequires:   python-netaddr
+BuildRequires:   python-eventlet
+BuildRequires:   python-kombu
+BuildRequires:   python-anyjson
+BuildRequires:   pytz
+BuildRequires:   python-iso8601
+BuildRequires:   python-nose
+
 
 # additional provides to be consistent with other django packages
 Provides: django-horizon = %{version}-%{release}
@@ -79,6 +89,7 @@ Requires:   python-cinderclient
 Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
+Requires:   python-netaddr
 
 BuildRequires: python2-devel
 BuildRequires: python-django-openstack-auth >= 1.0.11
@@ -109,7 +120,7 @@ BuildRequires: python-sphinx >= 1.1.3
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
-BuildRequires: python-keystoneclient
+BuildRequires: python-keystoneclient >= 0.3
 BuildRequires: python-novaclient >= 2012.1
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
@@ -127,6 +138,8 @@ Documentation for the Django Horizon application for talking with Openstack
 %patch0001 -p1
 %patch0002 -p1
 %patch0003 -p1
+
+%patch99 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
 
@@ -174,7 +187,7 @@ install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
 # Copy everything to /usr/share
 mv %{buildroot}%{python_sitelib}/openstack_dashboard \
    %{buildroot}%{_datadir}/openstack-dashboard
-mv manage.py %{buildroot}%{_datadir}/openstack-dashboard
+cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
 
@@ -209,6 +222,9 @@ cat djangojs.lang >> horizon.lang
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
+
+%check
+./run_tests.sh -N
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
@@ -257,6 +273,9 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %doc html 
 
 %changelog
+* Mon Aug 26 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.7b2
+- enable tests in check section (rhbz#856182)
+
 * Wed Aug 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.5b2
 - move requirements from horizon to openstack-dashboard package
 - introduce explicit requirements for dependencies
