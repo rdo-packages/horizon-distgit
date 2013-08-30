@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.7b2%{?dist}
+Release:    0.8b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -131,6 +131,12 @@ BuildRequires: python-ceilometerclient
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
 
+%package -n openstack-dashboard-rhos
+Summary: OpenStack web user interface reference implementation customized for RHOS
+Requires: openstack-dashboard = %{version}
+
+%description -n openstack-dashboard-rhos
+RHOS customimization module for OpenStack Dashboard
 
 %prep
 %setup -q -n horizon-%{version}.b2
@@ -272,7 +278,16 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %files doc
 %doc html 
 
+%files -n openstack-dashboard-rhos
+%{_datadir}/openstack-dashboard/openstack_dashboard_theme
+%{_datadir}/openstack-dashboard/static/dashboard/less/rhtheme.less
+%{_datadir}/openstack-dashboard/static/dashboard/img/rh-logo.png
+%{_datadir}/openstack-dashboard/static/dashboard/img/rhfavicon.ico
+
 %changelog
+* Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
+- add a -rhos subpackage for the rhos logo
+
 * Mon Aug 26 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.7b2
 - enable tests in check section (rhbz#856182)
 
