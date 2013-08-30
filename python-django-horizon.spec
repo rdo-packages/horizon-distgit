@@ -26,6 +26,10 @@ Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
 Patch99: fix-tests.patch
 
 
+mkdir -p openstack_dashboard_theme/static/dashboard/img
+%{_cp} %{source10} openstack_dashboard_theme/static/dashboard/img
+%{_cp} %{source11} openstack_dashboard_theme/static/dashboard/img 
+
 # epel6 has a separate Django14 package
 %if 0%{?rhel}==6
 Requires:   Django14
