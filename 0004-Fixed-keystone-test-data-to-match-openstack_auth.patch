@@ -1,4 +1,4 @@
-From 355c9ccf90e9787b4f10fefba156569df79e4e8c Mon Sep 17 00:00:00 2001
+From f53bbe8dd6bc08eb4a771dbbe98350014802ec44 Mon Sep 17 00:00:00 2001
 From: Lin Hua Cheng <lin-hua.cheng@hp.com>
 Date: Thu, 1 Aug 2013 20:50:51 -0700
 Subject: [PATCH] Fixed keystone test data to match openstack_auth.
@@ -14,7 +14,7 @@ diff --git a/openstack_dashboard/test/test_data/keystone_data.py b/openstack_das
 index b9d4192..e92131b 100644
 --- a/openstack_dashboard/test/test_data/keystone_data.py
 +++ b/openstack_dashboard/test/test_data/keystone_data.py
-@@ -17,14 +17,15 @@
+@@ -17,14 +17,15 @@ from datetime import timedelta
  from django.conf import settings
  from django.utils import datetime_safe
  
@@ -89,6 +89,3 @@ index b9d4192..e92131b 100644
      TEST.tokens.add(scoped_token, unscoped_token)
      TEST.token = scoped_token  # your "current" token.
      TEST.tokens.scoped_token = scoped_token
--- 
-1.8.1.6
-

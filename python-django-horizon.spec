@@ -21,9 +21,10 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
 Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
+Patch0004: 0004-Fixed-keystone-test-data-to-match-openstack_auth.patch
+Patch0005: 0005-Add-a-customization-module-based-on-RHOS.patch
 
 # patch will be included in 2013.2.b3
-Patch99: fix-tests.patch
 
 
 mkdir -p openstack_dashboard_theme/static/dashboard/img
@@ -148,8 +149,9 @@ RHOS customimization module for OpenStack Dashboard
 %patch0001 -p1
 %patch0002 -p1
 %patch0003 -p1
+%patch0004 -p1
+%patch0005 -p1
 
-%patch99 -p1
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
 
