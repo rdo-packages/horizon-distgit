@@ -1,4 +1,4 @@
-From 633decc4abe5641f6c04ac91680c1f9ab5abc05a Mon Sep 17 00:00:00 2001
+From e502b3e9338648b23afb6e2aebe3ff6ddf94199b Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
@@ -62,11 +62,11 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
 new file mode 100644
-index 0000000..72f60c4
+index 0000000..14cc916
 --- /dev/null
 +++ b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
 @@ -0,0 +1,1594 @@
-+@import "../../bootstrap/less/bootstrap.less";
++@import "static/bootstrap/less/bootstrap.less";
 +
 +/* new clearfix */
 +.clearfix:after {
