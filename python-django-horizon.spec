@@ -15,6 +15,10 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
 
+# custom icons
+Source10:   rhfavicon.ico
+Source11:   rh-logo.png
+
 #
 # patches_base=2013.2.b2
 #
@@ -27,9 +31,6 @@ Patch0005: 0005-Add-a-customization-module-based-on-RHOS.patch
 # patch will be included in 2013.2.b3
 
 
-mkdir -p openstack_dashboard_theme/static/dashboard/img
-%{_cp} %{source10} openstack_dashboard_theme/static/dashboard/img
-%{_cp} %{source11} openstack_dashboard_theme/static/dashboard/img 
 
 # epel6 has a separate Django14 package
 %if 0%{?rhel}==6
@@ -136,12 +137,12 @@ BuildRequires: python-ceilometerclient
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
 
-%package -n openstack-dashboard-rhos
-Summary: OpenStack web user interface reference implementation customized for RHOS
+%package -n openstack-dashboard-theme
+Summary: OpenStack web user interface reference implementation theme module
 Requires: openstack-dashboard = %{version}
 
-%description -n openstack-dashboard-rhos
-RHOS customimization module for OpenStack Dashboard
+%description -n openstack-dashboard-theme
+Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
 %setup -q -n horizon-%{version}.b2
@@ -158,6 +159,11 @@ find . -name "django*.po" -exec rm -f '{}' \;
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
 rm -rf {test-,}requirements.txt tools/{pip,test}-requires
+
+# create images for custom theme
+mkdir -p openstack_dashboard_theme/static/dashboard/img
+cp %{SOURCE10} openstack_dashboard_theme/static/dashboard/img
+cp %{SOURCE11} openstack_dashboard_theme/static/dashboard/img 
 
 # drop config snippet
 cp -p %{SOURCE4} .
@@ -202,6 +208,8 @@ mv %{buildroot}%{python_sitelib}/openstack_dashboard \
 cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
+# move customization stuff to /usr/share
+mv openstack_dashboard_theme %{buildroot}%{_datadir}/openstack-dashboard
 
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
@@ -284,11 +292,11 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %files doc
 %doc html 
 
-%files -n openstack-dashboard-rhos
+%files -n openstack-dashboard-theme
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
-%{_datadir}/openstack-dashboard/static/dashboard/less/rhtheme.less
-%{_datadir}/openstack-dashboard/static/dashboard/img/rh-logo.png
-%{_datadir}/openstack-dashboard/static/dashboard/img/rhfavicon.ico
+#%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+#%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/img/rh-logo.png
+#%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico
 
 %changelog
 * Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
