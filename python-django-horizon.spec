@@ -169,13 +169,25 @@ cp %{SOURCE11} openstack_dashboard_theme/static/dashboard/img
 cp -p %{SOURCE4} .
 
 %build
-# SKIP_PIP_INSTALL=1 %{__python} setup.py build
 %{__python} setup.py build
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput --pythonpath=../../lib/python2.7/site-packages/ 
 %{__python} manage.py compress --pythonpath=../../lib/python2.7/site-packages/
+
+cp -a static/dashboard %{_buildir}
+
+# build docs
+export PYTHONPATH="$( pwd ):$PYTHONPATH"
+%if 0%{?rhel}==6
+sphinx-1.0-build -b html doc/source html
+%else
+sphinx-build -b html doc/source html
+%endif
+
+# Fix hidden-file-or-dir warnings
+rm -fr html/.doctrees html/.buildinfo
 
 %install
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
@@ -187,17 +199,6 @@ install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/opensta
 # httpd-2.4 changed the syntax
 install -m 0644 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %endif
-
-export PYTHONPATH="$( pwd ):$PYTHONPATH"
-%if 0%{?rhel}==6
-sphinx-1.0-build -b html doc/source html
-%else
-sphinx-build -b html doc/source html
-%endif
-
-# Fix hidden-file-or-dir warnings
-rm -fr html/.doctrees html/.buildinfo
-
 install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
@@ -242,6 +243,7 @@ cat djangojs.lang >> horizon.lang
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
+cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 %check
 ./run_tests.sh -N
@@ -300,7 +302,7 @@ cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 %changelog
 * Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
-- add a -rhos subpackage for the rhos logo
+- add a -custom subpackage to use a custom logo
 
 * Mon Aug 26 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.7b2
 - enable tests in check section (rhbz#856182)
