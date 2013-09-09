@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.9b3%{?dist}
+Release:    0.10b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -291,6 +291,7 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/utils
 %{_datadir}/openstack-dashboard/openstack_dashboard/wsgi
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
@@ -313,10 +314,12 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 #%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico
 
 %changelog
-* Mon Sep 09 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.9b3
+* Mon Sep 09 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.10b3
 - Havana-3 snapshot
 - drop node.js and node-less from buildrequirements
 - add runtime requirement python-lesscpy
+- own openstack_dashboard dir
+- fix keystore handling issue
 
 * Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
 - add a -custom subpackage to use a custom logo
