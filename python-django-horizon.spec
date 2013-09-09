@@ -222,6 +222,8 @@ mv openstack_dashboard_theme %{buildroot}%{_datadir}/openstack-dashboard
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s ../../../../../%{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
+mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %{buildroot}%{_sysconfdir}/openstack-dashboard
+
 %if 0%{?rhel} > 6 || 0%{?fedora} >= 16
 %find_lang django
 %find_lang djangojs
@@ -296,6 +298,8 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 
 %files doc
 %doc html 
