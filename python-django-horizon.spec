@@ -99,13 +99,13 @@ Requires:   python-heatclient
 Requires:   python-ceilometerclient
 # Requires:  python-troveclient
 Requires:   python-netaddr
+Requires:   python-lesscpy
 
 BuildRequires: python2-devel
 BuildRequires: python-django-openstack-auth >= 1.0.11
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
-BuildRequires: nodejs
-BuildRequires: nodejs-less
+BuildRequires: python-lesscpy
 
 BuildRequires:   pytz 
 %description -n openstack-dashboard
@@ -313,6 +313,8 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %changelog
 * Mon Sep 09 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.9b3
 - Havana-3 snapshot
+- drop node.js and node-less from buildrequirements
+- add runtime requirement python-lesscpy
 
 * Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
 - add a -custom subpackage to use a custom logo
