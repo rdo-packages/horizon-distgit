@@ -1,0 +1,32 @@
+From 76e15a3cd419a0038b44687effec95b41e656d79 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Mon, 9 Sep 2013 14:13:07 +0200
+Subject: [PATCH] move RBAC policy files and checks to /etc/openstack-dashboard
+
+---
+ openstack_dashboard/local/local_settings.py.example | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
+index 0e8cc55..d0f0ad4 100644
+--- a/openstack_dashboard/local/local_settings.py.example
++++ b/openstack_dashboard/local/local_settings.py.example
+@@ -227,12 +227,13 @@ TIME_ZONE = "UTC"
+ # target installation.
+ 
+ # Path to directory containing policy.json files
+-#POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
++# POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
++POLICY_FILES_PATH = '/etc/openstack-dashboard'
+ # Map of local copy of service policy files
+-#POLICY_FILES = {
+-#    'identity': 'keystone_policy.json',
+-#    'compute': 'nova_policy.json'
+-#}
++POLICY_FILES = {
++    'identity': 'keystone_policy.json',
++    'compute': 'nova_policy.json'
++}
+ 
+ LOGGING = {
+     'version': 1,

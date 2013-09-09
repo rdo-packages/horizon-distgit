@@ -25,8 +25,10 @@ Source11:   rh-logo.png
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
 Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
-Patch0004: 0004-Fixed-keystone-test-data-to-match-openstack_auth.patch
-Patch0005: 0005-Add-a-customization-module-based-on-RHOS.patch
+Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
+Patch0005: 0005-Revert-Adding-panels-for-trove.patch
+Patch0006: 0006-Revert-Use-oslo.sphinx-and-remove-local-copy-of-doc-.patch
+Patch0007: 0007-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
 
 # patch will be included in 2013.2.b3
 
@@ -154,6 +156,8 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %patch0003 -p1
 %patch0004 -p1
 %patch0005 -p1
+%patch0006 -p1
+%patch0007 -p1
 
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;

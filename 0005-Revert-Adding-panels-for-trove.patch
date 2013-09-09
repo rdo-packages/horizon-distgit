@@ -1,0 +1,2375 @@
+From 74bae0b89a51ab55477e9a13e515f69a78fafb07 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Mon, 9 Sep 2013 12:50:57 +0200
+Subject: [PATCH] Revert "Adding panels for trove"
+
+This reverts commit 8c1bc54f9338e0e9ebf06b33e665e0e9e35aee87.
+---
+ openstack_dashboard/api/__init__.py                |   2 -
+ openstack_dashboard/api/trove.py                   | 127 -----------
+ openstack_dashboard/dashboards/admin/info/tests.py |   3 +-
+ .../dashboards/project/dashboard.py                |  13 +-
+ .../project/database_backups/__init__.py           |   0
+ .../dashboards/project/database_backups/panel.py   |  31 ---
+ .../dashboards/project/database_backups/tables.py  | 122 -----------
+ .../database_backups/_backup_details_help.html     |   3 -
+ .../templates/database_backups/backup.html         |  11 -
+ .../templates/database_backups/details.html        |  53 -----
+ .../templates/database_backups/index.html          |  11 -
+ .../dashboards/project/database_backups/tests.py   |  97 ---------
+ .../dashboards/project/database_backups/urls.py    |  28 ---
+ .../dashboards/project/database_backups/views.py   | 100 ---------
+ .../project/database_backups/workflows/__init__.py |   3 -
+ .../database_backups/workflows/create_backup.py    |  88 --------
+ .../dashboards/project/databases/__init__.py       |   0
+ .../dashboards/project/databases/panel.py          |  30 ---
+ .../dashboards/project/databases/tables.py         | 236 ---------------------
+ .../dashboards/project/databases/tabs.py           | 111 ----------
+ .../templates/databases/_detail_overview.html      |  34 ---
+ .../templates/databases/_detail_users.html         |   3 -
+ .../templates/databases/_launch_details_help.html  |  53 -----
+ .../databases/_launch_initialize_help.html         |  19 --
+ .../templates/databases/_launch_restore_help.html  |   4 -
+ .../databases/templates/databases/detail.html      |  15 --
+ .../databases/templates/databases/index.html       |  11 -
+ .../databases/templates/databases/launch.html      |  11 -
+ .../databases/templates/databases/update.html      |  11 -
+ .../dashboards/project/databases/tests.py          | 197 -----------------
+ .../dashboards/project/databases/urls.py           |  29 ---
+ .../dashboards/project/databases/views.py          | 120 -----------
+ .../project/databases/workflows/__init__.py        |   3 -
+ .../project/databases/workflows/create_instance.py | 222 -------------------
+ openstack_dashboard/exceptions.py                  |  10 +-
+ .../local/local_settings.py.example                |   7 -
+ openstack_dashboard/test/helpers.py                |  10 -
+ openstack_dashboard/test/test_data/exceptions.py   |   7 -
+ .../test/test_data/keystone_data.py                |  10 +-
+ openstack_dashboard/test/test_data/trove_data.py   |  79 -------
+ openstack_dashboard/test/test_data/utils.py        |   4 +-
+ requirements.txt                                   |   1 -
+ 42 files changed, 7 insertions(+), 1922 deletions(-)
+ delete mode 100644 openstack_dashboard/api/trove.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/__init__.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/panel.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/tables.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/templates/database_backups/_backup_details_help.html
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/templates/database_backups/backup.html
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/templates/database_backups/details.html
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/templates/database_backups/index.html
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/tests.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/urls.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/views.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/workflows/__init__.py
+ delete mode 100644 openstack_dashboard/dashboards/project/database_backups/workflows/create_backup.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/__init__.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/panel.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/tables.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/tabs.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/_detail_overview.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/_detail_users.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/_launch_details_help.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/_launch_initialize_help.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/_launch_restore_help.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/detail.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/index.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/launch.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/templates/databases/update.html
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/tests.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/urls.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/views.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/workflows/__init__.py
+ delete mode 100644 openstack_dashboard/dashboards/project/databases/workflows/create_instance.py
+ delete mode 100644 openstack_dashboard/test/test_data/trove_data.py
+
+diff --git a/openstack_dashboard/api/__init__.py b/openstack_dashboard/api/__init__.py
+index 602f585..cc2a6bb 100644
+--- a/openstack_dashboard/api/__init__.py
++++ b/openstack_dashboard/api/__init__.py
+@@ -44,7 +44,6 @@ from openstack_dashboard.api import network
+ from openstack_dashboard.api import neutron
+ from openstack_dashboard.api import nova
+ from openstack_dashboard.api import swift
+-from openstack_dashboard.api import trove
+ 
+ assert base
+ assert cinder
+@@ -57,4 +56,3 @@ assert neutron
+ assert lbaas
+ assert swift
+ assert ceilometer
+-assert trove
+diff --git a/openstack_dashboard/api/trove.py b/openstack_dashboard/api/trove.py
+deleted file mode 100644
+index 36e8237..0000000
+--- a/openstack_dashboard/api/trove.py
++++ /dev/null
+@@ -1,127 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting.
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.conf import settings  # noqa
+-
+-from troveclient import auth
+-from troveclient import client
+-
+-
+-class TokenAuth(object):
+-    """Simple Token Authentication handler for trove api"""
+-
+-    def __init__(self, client, auth_strategy, auth_url, username, password,
+-                 tenant, region, service_type, service_name, service_url):
+-        # TODO(rmyers): handle some of these other args
+-        self.username = username
+-        self.service_type = service_type
+-        self.service_name = service_name
+-
+-    def authenticate(self):
+-        catalog = {
+-            'access': {
+-                'serviceCatalog': self.username.service_catalog,
+-                'token': {
+-                    'id': self.username.token.id,
+-                }
+-            }
+-        }
+-        return auth.ServiceCatalog(catalog,
+-                                   service_type=self.service_type,
+-                                   service_name=self.service_name)
+-
+-
+-def troveclient(request):
+-    return client.Dbaas(username=request.user,
+-                        api_key=None,
+-                        auth_strategy=TokenAuth)
+-
+-
+-def instance_list(request, marker=None):
+-    default_page_size = getattr(settings, 'API_RESULT_PAGE_SIZE', 20)
+-    page_size = request.session.get('horizon_pagesize', default_page_size)
+-    return troveclient(request).instances.list(limit=page_size, marker=marker)
+-
+-
+-def instance_get(request, instance_id):
+-    return troveclient(request).instances.get(instance_id)
+-
+-
+-def instance_delete(request, instance_id):
+-    return troveclient(request).instances.delete(instance_id)
+-
+-
+-def instance_create(request, name, volume, flavor, databases=None,
+-                    users=None, restore_point=None):
+-    return troveclient(request).instances.create(
+-        name,
+-        flavor,
+-        {'size': volume},
+-        databases=databases,
+-        users=users,
+-        restorePoint=restore_point)
+-
+-
+-def instance_backups(request, instance_id):
+-    return troveclient(request).instances.backups(instance_id)
+-
+-
+-def instance_restart(request, instance_id):
+-    return troveclient(request).instances.restart(instance_id)
+-
+-
+-def database_list(request, instance_id):
+-    return troveclient(request).databases.list(instance_id)
+-
+-
+-def database_delete(request, instance_id, db_name):
+-    return troveclient(request).databases.delete(instance_id, db_name)
+-
+-
+-def backup_list(request):
+-    return troveclient(request).backups.list()
+-
+-
+-def backup_get(request, backup_id):
+-    return troveclient(request).backups.get(backup_id)
+-
+-
+-def backup_delete(request, backup_id):
+-    return troveclient(request).backups.delete(backup_id)
+-
+-
+-def backup_create(request, name, instance_id, description=None):
+-    return troveclient(request).backups.create(name, instance_id, description)
+-
+-
+-def flavor_list(request):
+-    return troveclient(request).flavors.list()
+-
+-
+-def flavor_get(request, flavor_id):
+-    return troveclient(request).flavors.get(flavor_id)
+-
+-
+-def users_list(request, instance_id):
+-    return troveclient(request).users.list(instance_id)
+-
+-
+-def user_delete(request, instance_id, user):
+-    return troveclient(request).users.delete(instance_id, user)
+-
+-
+-def user_list_access(request, instance_id, user):
+-    return troveclient(request).users.list_access(instance_id, user)
+diff --git a/openstack_dashboard/dashboards/admin/info/tests.py b/openstack_dashboard/dashboards/admin/info/tests.py
+index 46cc43b..60c6cc1 100644
+--- a/openstack_dashboard/dashboards/admin/info/tests.py
++++ b/openstack_dashboard/dashboards/admin/info/tests.py
+@@ -56,8 +56,7 @@ class SystemInfoViewTests(test.BaseAdminViewTests):
+                                   '<Service: network>',
+                                   '<Service: ec2>',
+                                   '<Service: metering>',
+-                                  '<Service: orchestration>',
+-                                  '<Service: database>'])
++                                  '<Service: orchestration>'])
+ 
+         zones_tab = res.context['tab_group'].get_tab('zones')
+         self.assertQuerysetEqual(zones_tab._tables['zones'].data,
+diff --git a/openstack_dashboard/dashboards/project/dashboard.py b/openstack_dashboard/dashboards/project/dashboard.py
+index eabc97a..a18fea4 100644
+--- a/openstack_dashboard/dashboards/project/dashboard.py
++++ b/openstack_dashboard/dashboards/project/dashboard.py
+@@ -50,22 +50,11 @@ class OrchestrationPanels(horizon.PanelGroup):
+     panels = ('stacks',)
+ 
+ 
+-class DatabasePanels(horizon.PanelGroup):
+-    name = _("Manage Databases")
+-    slug = "database"
+-    panels = ('databases',
+-              'database_backups',)
+-
+-
+ class Project(horizon.Dashboard):
+     name = _("Project")
+     slug = "project"
+     panels = (
+-        BasePanels,
+-        NetworkPanels,
+-        ObjectStorePanels,
+-        OrchestrationPanels,
+-        DatabasePanels,)
++        BasePanels, NetworkPanels, ObjectStorePanels, OrchestrationPanels)
+     default_panel = 'overview'
+     supports_tenants = True
+ 
+diff --git a/openstack_dashboard/dashboards/project/database_backups/__init__.py b/openstack_dashboard/dashboards/project/database_backups/__init__.py
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/openstack_dashboard/dashboards/project/database_backups/panel.py b/openstack_dashboard/dashboards/project/database_backups/panel.py
+deleted file mode 100644
+index 3779e53..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/panel.py
++++ /dev/null
+@@ -1,31 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-import horizon
+-
+-from openstack_dashboard.dashboards.project import dashboard
+-
+-
+-class Backups(horizon.Panel):
+-    name = _("Database Backups")
+-    slug = 'database_backups'
+-    permissions = ('openstack.services.database',
+-                   'openstack.services.object-store',)
+-
+-
+-dashboard.Project.register(Backups)
+diff --git a/openstack_dashboard/dashboards/project/database_backups/tables.py b/openstack_dashboard/dashboards/project/database_backups/tables.py
+deleted file mode 100644
+index 877544c..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/tables.py
++++ /dev/null
+@@ -1,122 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-import logging
+-
+-from django.core.urlresolvers import reverse  # noqa
+-from django.template.defaultfilters import title  # noqa
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-from horizon import tables
+-from horizon.utils import filters
+-
+-from openstack_dashboard import api
+-
+-
+-LOG = logging.getLogger(__name__)
+-
+-STATUS_CHOICES = (
+-    ("BUILDING", None),
+-    ("COMPLETED", True),
+-    ("DELETE_FAILED", False),
+-    ("FAILED", False),
+-    ("NEW", None),
+-    ("SAVING", None),
+-)
+-
+-
+-class LaunchLink(tables.LinkAction):
+-    name = "create"
+-    verbose_name = _("Create Backup")
+-    url = "horizon:project:database_backups:create"
+-    classes = ("btn-launch", "ajax-modal")
+-
+-
+-class RestoreLink(tables.LinkAction):
+-    name = "restore"
+-    verbose_name = _("Restore Backup")
+-    url = "horizon:project:databases:launch"
+-    classes = ("btn-launch", "ajax-modal")
+-
+-    def get_link_url(self, datam):
+-        url = reverse(self.url)
+-        return url + '?backup=%s' % datam.id
+-
+-
+-class DeleteBackup(tables.BatchAction):
+-    name = "delete"
+-    action_present = _("Delete")
+-    action_past = _("Scheduled deletion of")
+-    data_type_singular = _("Backup")
+-    data_type_plural = _("Backups")
+-    classes = ('btn-danger', 'btn-terminate')
+-
+-    def action(self, request, obj_id):
+-        api.trove.backup_delete(request, obj_id)
+-
+-
+-class UpdateRow(tables.Row):
+-    ajax = True
+-
+-    def get_data(self, request, backup_id):
+-        backup = api.trove.backup_get(request, backup_id)
+-        try:
+-            backup.instance = api.trove.instance_get(request,
+-                                                     backup.instance_id)
+-        except Exception:
+-            pass
+-        return backup
+-
+-
+-def db_link(obj):
+-    if not hasattr(obj, 'instance'):
+-        return
+-    if hasattr(obj.instance, 'name'):
+-        return reverse(
+-            'horizon:project:databases:detail',
+-            kwargs={'instance_id': obj.instance_id})
+-
+-
+-def db_name(obj):
+-    if hasattr(obj.instance, 'name'):
+-        return obj.instance.name
+-    return obj.instance_id
+-
+-
+-class BackupsTable(tables.DataTable):
+-    name = tables.Column("name",
+-                         link=("horizon:project:database_backups:detail"),
+-                         verbose_name=_("Name"))
+-    created = tables.Column("created", verbose_name=_("Created At"),
+-                            filters=[filters.parse_isotime])
+-    location = tables.Column(lambda obj: _("Download"),
+-                             link=lambda obj: obj.locationRef,
+-                             verbose_name=_("Backup File"))
+-    instance = tables.Column(db_name, link=db_link,
+-                             verbose_name=_("Database"))
+-    status = tables.Column("status",
+-                           filters=(title, filters.replace_underscores),
+-                           verbose_name=_("Status"),
+-                           status=True,
+-                           status_choices=STATUS_CHOICES)
+-
+-    class Meta:
+-        name = "backups"
+-        verbose_name = _("Backups")
+-        status_columns = ["status"]
+-        row_class = UpdateRow
+-        table_actions = (LaunchLink, DeleteBackup)
+-        row_actions = (RestoreLink, DeleteBackup)
+diff --git a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/_backup_details_help.html b/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/_backup_details_help.html
+deleted file mode 100644
+index d428033..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/_backup_details_help.html
++++ /dev/null
+@@ -1,3 +0,0 @@
+-{% load i18n %}
+-
+-<p>{% blocktrans %}Specify the details for the backup.{% endblocktrans %}</p>
+diff --git a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/backup.html b/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/backup.html
+deleted file mode 100644
+index 5053701..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/backup.html
++++ /dev/null
+@@ -1,11 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n %}
+-{% block title %}{% trans "Backup Database" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title=_("Backup Database") %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-  {% include 'horizon/common/_workflow.html' %}
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/details.html b/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/details.html
+deleted file mode 100644
+index 783b582..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/details.html
++++ /dev/null
+@@ -1,53 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n sizeformat %}
+-{% block title %}{% trans "Backup Detail" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title="Backup Detail: "|add:backup.name %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-<div class="row-fluid">
+-  <div class="span12">
+-    <h3>{% trans "Backup Overview" %}</h3>
+-
+-    <div class="status row-fluid detail">
+-      <h4>{% trans "Info" %}</h4>
+-      <hr class="header_rule">
+-      <dl>
+-        <dt>{% trans "Name" %}</dt>
+-        <dd>{{ backup.name }}</dd>
+-        <dt>{% trans "Description" %}</dt>
+-        <dd>{{ backup.description|linebreaksbr }}</dd>
+-        <dt>{% trans "ID" %}</dt>
+-        <dd>{{ backup.id }}</dd>
+-        <dt>{% trans "Status" %}</dt>
+-        <dd>{{ backup.status|title }}</dd>
+-        <dt>{% trans "Backup File Location" %}</dt>
+-        <dd>{{ backup.locationRef }}</dd>
+-        <dt>{% trans "Initial Volume Size" %}</dt>
+-        <dd>{{ backup.size }} {% trans "GB" %}</dd>
+-        <dt>{% trans "Created On" %}</dt>
+-        <dd>{{ backup.updated_at|date:"N jS, Y P" }}</dd>
+-        <dt>{% trans "Backup Duration" %}</dt>
+-        <dd>{{ backup.duration }}</dd>
+-      </dl>
+-    </div>
+-
+-    {% if instance %}
+-    <div class="addresses row-fluid detail">
+-      <h4>{% trans "Database Info" %}</h4>
+-      <hr class="header_rule">
+-      <dl>
+-        <dt>{% trans "Name" %}</dt>
+-        <dd>{{ instance.name }}</dd>
+-        <dt>{% trans "ID" %}</dt>
+-        <dd>{{ instance.id }}</dd>
+-        <dt>{% trans "Status" %}</dt>
+-        <dd>{{ instance.status|title }}</dd>
+-      </dl>
+-    </div>
+-    {% endif %}
+-  </div>
+-</div>
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/index.html b/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/index.html
+deleted file mode 100644
+index aed5ee7..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/templates/database_backups/index.html
++++ /dev/null
+@@ -1,11 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n %}
+-{% block title %}{% trans "Database Backups" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title=_("Backups") %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-  {{ table.render }}
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/database_backups/tests.py b/openstack_dashboard/dashboards/project/database_backups/tests.py
+deleted file mode 100644
+index 2d02cb6..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/tests.py
++++ /dev/null
+@@ -1,97 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Mirantis Inc.
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.core.urlresolvers import reverse  # noqa
+-from django import http
+-from mox import IsA  # noqa
+-
+-from openstack_dashboard import api
+-from openstack_dashboard.test import helpers as test
+-
+-INDEX_URL = reverse('horizon:project:database_backups:index')
+-BACKUP_URL = reverse('horizon:project:database_backups:create')
+-DETAILS_URL = reverse('horizon:project:database_backups:detail', args=['id'])
+-
+-
+-class DatabasesBackupsTests(test.TestCase):
+-
+-    @test.create_stubs({api.trove: ('backup_list', )})
+-    def test_index(self):
+-        api.trove.backup_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.database_backups.list())
+-
+-        self.mox.ReplayAll()
+-
+-        res = self.client.get(INDEX_URL)
+-
+-        self.assertTemplateUsed(res, 'project/database_backups/index.html')
+-
+-    @test.create_stubs({api.trove: ('backup_list',)})
+-    def test_index_exception(self):
+-        api.trove.backup_list(IsA(http.HttpRequest))\
+-            .AndRaise(self.exceptions.trove)
+-
+-        self.mox.ReplayAll()
+-
+-        res = self.client.get(INDEX_URL)
+-
+-        self.assertTemplateUsed(
+-            res, 'project/database_backups/index.html')
+-        self.assertEqual(res.status_code, 200)
+-        self.assertMessageCount(res, error=1)
+-
+-    @test.create_stubs({api.trove: ('instance_list',)})
+-    def test_launch_backup(self):
+-        api.trove.instance_list(IsA(http.HttpRequest))\
+-            .AndReturn([])
+-
+-        self.mox.ReplayAll()
+-
+-        res = self.client.get(BACKUP_URL)
+-        self.assertTemplateUsed(res, 'project/database_backups/backup.html')
+-
+-    @test.create_stubs({api.trove: ('instance_list',)})
+-    def test_launch_backup_exception(self):
+-        api.trove.instance_list(IsA(http.HttpRequest))\
+-            .AndRaise(self.exceptions.trove)
+-
+-        self.mox.ReplayAll()
+-
+-        res = self.client.get(BACKUP_URL)
+-        self.assertMessageCount(res, error=1)
+-        self.assertTemplateUsed(res, 'project/database_backups/backup.html')
+-
+-    @test.create_stubs({api.trove: ('backup_get',)})
+-    def test_detail_backup(self):
+-        api.trove.backup_get(IsA(http.HttpRequest),
+-                             IsA(unicode))\
+-            .AndReturn(self.database_backups.first())
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(DETAILS_URL)
+-
+-        self.assertTemplateUsed(res, 'project/database_backups/details.html')
+-
+-    @test.create_stubs({api.trove: ('backup_get',)})
+-    def test_detail_backup_notfound(self):
+-        api.trove.backup_get(IsA(http.HttpRequest),
+-                             IsA(unicode))\
+-            .AndRaise(self.exceptions.trove)
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(DETAILS_URL)
+-
+-        self.assertRedirectsNoFollow(res, INDEX_URL)
+diff --git a/openstack_dashboard/dashboards/project/database_backups/urls.py b/openstack_dashboard/dashboards/project/database_backups/urls.py
+deleted file mode 100644
+index 5200050..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/urls.py
++++ /dev/null
+@@ -1,28 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-#
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.conf.urls.defaults import patterns  # noqa
+-from django.conf.urls.defaults import url  # noqa
+-
+-from openstack_dashboard.dashboards.project.database_backups import views
+-
+-urlpatterns = patterns(
+-    '',
+-    url(r'^$', views.IndexView.as_view(), name='index'),
+-    url(r'^create$', views.BackupView.as_view(), name='create'),
+-    url(r'^(?P<backup_id>[^/]+)/$', views.DetailView.as_view(),
+-        name='detail'),
+-)
+diff --git a/openstack_dashboard/dashboards/project/database_backups/views.py b/openstack_dashboard/dashboards/project/database_backups/views.py
+deleted file mode 100644
+index fc223fe..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/views.py
++++ /dev/null
+@@ -1,100 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-#
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-"""
+-Views for displaying database backups.
+-"""
+-import logging
+-
+-from django.core.urlresolvers import reverse  # noqa
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-from horizon import exceptions
+-from horizon import tables as horizon_tables
+-from horizon.utils import filters
+-from horizon import views as horizon_views
+-from horizon import workflows as horizon_workflows
+-
+-from openstack_dashboard import api
+-from openstack_dashboard.dashboards.project.database_backups import tables
+-from openstack_dashboard.dashboards.project.database_backups import workflows
+-
+-LOG = logging.getLogger(__name__)
+-
+-
+-class IndexView(horizon_tables.DataTableView):
+-    table_class = tables.BackupsTable
+-    template_name = 'project/database_backups/index.html'
+-
+-    def _get_extra_data(self, backup):
+-        """Apply extra info to the backup."""
+-        instance_id = backup.instance_id
+-        if not hasattr(self, '_instances'):
+-            self._instances = {}
+-        instance = self._instances.get(instance_id)
+-        if instance is None:
+-            try:
+-                instance = api.trove.instance_get(self.request, instance_id)
+-            except Exception:
+-                instance = _('Not Found')
+-        backup.instance = instance
+-        return backup
+-
+-    def get_data(self):
+-        # TODO(rmyers) Add pagination support after it is available
+-        # https://blueprints.launchpad.net/trove/+spec/paginate-backup-list
+-        try:
+-            backups = api.trove.backup_list(self.request)
+-            backups = map(self._get_extra_data, backups)
+-        except Exception:
+-            backups = []
+-            msg = _('Error getting database backup list.')
+-            exceptions.handle(self.request, msg)
+-        return backups
+-
+-
+-class BackupView(horizon_workflows.WorkflowView):
+-    workflow_class = workflows.CreateBackup
+-    template_name = "project/database_backups/backup.html"
+-
+-    def get_context_data(self, **kwargs):
+-        context = super(BackupView, self).get_context_data(**kwargs)
+-        context["instance_id"] = kwargs.get("instance_id")
+-        self._instance = context['instance_id']
+-        return context
+-
+-
+-class DetailView(horizon_views.APIView):
+-    template_name = "project/database_backups/details.html"
+-
+-    def get_data(self, request, context, *args, **kwargs):
+-        backup_id = kwargs.get("backup_id")
+-        try:
+-            backup = api.trove.backup_get(request, backup_id)
+-            backup.created_at = filters.parse_isotime(backup.created)
+-            backup.updated_at = filters.parse_isotime(backup.updated)
+-            backup.duration = backup.updated_at - backup.created_at
+-        except Exception:
+-            redirect = reverse('horizon:project:database_backups:index')
+-            msg = _('Unable to retrieve details for backup: %s') % backup_id
+-            exceptions.handle(self.request, msg, redirect=redirect)
+-        try:
+-            instance = api.trove.instance_get(request, backup.instance_id)
+-        except Exception:
+-            instance = None
+-        context['backup'] = backup
+-        context['instance'] = instance
+-        return context
+diff --git a/openstack_dashboard/dashboards/project/database_backups/workflows/__init__.py b/openstack_dashboard/dashboards/project/database_backups/workflows/__init__.py
+deleted file mode 100644
+index 5564c53..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/workflows/__init__.py
++++ /dev/null
+@@ -1,3 +0,0 @@
+-from create_backup import CreateBackup
+-
+-assert CreateBackup
+diff --git a/openstack_dashboard/dashboards/project/database_backups/workflows/create_backup.py b/openstack_dashboard/dashboards/project/database_backups/workflows/create_backup.py
+deleted file mode 100644
+index 7d1029c..0000000
+--- a/openstack_dashboard/dashboards/project/database_backups/workflows/create_backup.py
++++ /dev/null
+@@ -1,88 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-import logging
+-
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-from horizon import exceptions
+-from horizon import forms
+-from horizon import workflows
+-
+-from openstack_dashboard import api
+-
+-LOG = logging.getLogger(__name__)
+-
+-
+-class BackupDetailsAction(workflows.Action):
+-    name = forms.CharField(max_length=80, label=_("Name"))
+-    instance = forms.ChoiceField(label=_("Database Instance"))
+-    description = forms.CharField(max_length=512, label=_("Description"),
+-                                  widget=forms.TextInput(),
+-                                  required=False,
+-                                  help_text=_("Optional Backup Description"))
+-
+-    class Meta:
+-        name = _("Details")
+-        help_text_template = \
+-            "project/database_backups/_backup_details_help.html"
+-
+-    def populate_instance_choices(self, request, context):
+-        LOG.info("Obtaining list of instances.")
+-        try:
+-            instances = api.trove.instance_list(request)
+-        except Exception:
+-            instances = []
+-            msg = _("Unable to list database instance to backup.")
+-            exceptions.handle(request, msg)
+-        return [(i.id, i.name) for i in instances]
+-
+-
+-class SetBackupDetails(workflows.Step):
+-    action_class = BackupDetailsAction
+-    contributes = ["name", "description", "instance"]
+-
+-
+-class CreateBackup(workflows.Workflow):
+-    slug = "create_backup"
+-    name = _("Backup Database")
+-    finalize_button_name = _("Backup")
+-    success_message = _('Scheduled backup "%(name)s".')
+-    failure_message = _('Unable to launch %(count)s named "%(name)s".')
+-    success_url = "horizon:project:database_backups:index"
+-    default_steps = [SetBackupDetails]
+-
+-    def get_initial(self):
+-        initial = super(CreateBackup, self).get_initial()
+-        initial['instance_id']
+-
+-    def format_status_message(self, message):
+-        name = self.context.get('name', 'unknown instance')
+-        return message % {"count": _("instance"), "name": name}
+-
+-    def handle(self, request, context):
+-        try:
+-            LOG.info("Creating backup")
+-            api.trove.backup_create(request,
+-                                    context['name'],
+-                                    context['instance'],
+-                                    context['description'])
+-            return True
+-        except Exception:
+-            LOG.exception("Exception while creating backup")
+-            msg = _('Error creating database backup.')
+-            exceptions.handle(request, msg)
+-            return False
+diff --git a/openstack_dashboard/dashboards/project/databases/__init__.py b/openstack_dashboard/dashboards/project/databases/__init__.py
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/openstack_dashboard/dashboards/project/databases/panel.py b/openstack_dashboard/dashboards/project/databases/panel.py
+deleted file mode 100644
+index 08bcdb5..0000000
+--- a/openstack_dashboard/dashboards/project/databases/panel.py
++++ /dev/null
+@@ -1,30 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-import horizon
+-
+-from openstack_dashboard.dashboards.project import dashboard
+-
+-
+-class Databases(horizon.Panel):
+-    name = _("Database Instances")
+-    slug = 'databases'
+-    permissions = ('openstack.services.database',)
+-
+-
+-dashboard.Project.register(Databases)
+diff --git a/openstack_dashboard/dashboards/project/databases/tables.py b/openstack_dashboard/dashboards/project/databases/tables.py
+deleted file mode 100644
+index 4f44ca5..0000000
+--- a/openstack_dashboard/dashboards/project/databases/tables.py
++++ /dev/null
+@@ -1,236 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2012 Nebula, Inc.
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-import logging
+-
+-from django.core import urlresolvers
+-from django.template.defaultfilters import title  # noqa
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-from horizon import exceptions
+-from horizon import tables
+-from horizon.templatetags import sizeformat
+-from horizon.utils import filters
+-
+-from openstack_dashboard import api
+-from openstack_dashboard.dashboards.project.database_backups \
+-     import tables as backup_tables
+-
+-
+-LOG = logging.getLogger(__name__)
+-
+-ACTIVE_STATES = ("ACTIVE",)
+-
+-
+-class TerminateInstance(tables.BatchAction):
+-    name = "terminate"
+-    action_present = _("Terminate")
+-    action_past = _("Scheduled termination of")
+-    data_type_singular = _("Instance")
+-    data_type_plural = _("Instances")
+-    classes = ('btn-danger', 'btn-terminate')
+-
+-    def action(self, request, obj_id):
+-        api.trove.instance_delete(request, obj_id)
+-
+-
+-class RestartInstance(tables.BatchAction):
+-    name = "restart"
+-    action_present = _("Restart")
+-    action_past = _("Restarted")
+-    data_type_singular = _("Database")
+-    data_type_plural = _("Databases")
+-    classes = ('btn-danger', 'btn-reboot')
+-
+-    def allowed(self, request, instance=None):
+-        return ((instance.status in ACTIVE_STATES
+-                 or instance.status == 'SHUTOFF'))
+-
+-    def action(self, request, obj_id):
+-        api.trove.instance_restart(request, obj_id)
+-
+-
+-class DeleteUser(tables.DeleteAction):
+-    name = "delete"
+-    action_present = _("Delete")
+-    action_past = _("Deleted")
+-    data_type_singular = _("User")
+-    data_type_plural = _("Users")
+-
+-    def delete(self, request, obj_id):
+-        datum = self.table.get_object_by_id(obj_id)
+-        try:
+-            api.trove.users_delete(request, datum.instance.id, datum.name)
+-        except Exception:
+-            msg = _('Error deleting database user.')
+-            exceptions.handle(request, msg)
+-
+-
+-class DeleteDatabase(tables.DeleteAction):
+-    name = "delete"
+-    action_present = _("Delete")
+-    action_past = _("Deleted")
+-    data_type_singular = _("Database")
+-    data_type_plural = _("Databases")
+-
+-    def delete(self, request, obj_id):
+-        datum = self.table.get_object_by_id(obj_id)
+-        try:
+-            api.trove.database_delete(request, datum.instance.id, datum.name)
+-        except Exception:
+-            msg = _('Error deleting database on instance.')
+-            exceptions.handle(request, msg)
+-
+-
+-class LaunchLink(tables.LinkAction):
+-    name = "launch"
+-    verbose_name = _("Launch Instance")
+-    url = "horizon:project:databases:launch"
+-    classes = ("btn-launch", "ajax-modal")
+-
+-
+-class CreateBackup(tables.LinkAction):
+-    name = "backup"
+-    verbose_name = _("Create Backup")
+-    url = "horizon:project:database_backups:create"
+-    classes = ("ajax-modal", "btn-camera")
+-
+-    def allowed(self, request, instance=None):
+-        return request.user.has_perm('openstack.services.object-store')
+-
+-    def get_link_url(self, datam):
+-        url = urlresolvers.reverse(self.url)
+-        return url + "?instance=%s" % datam.id
+-
+-
+-class UpdateRow(tables.Row):
+-    ajax = True
+-
+-    def get_data(self, request, instance_id):
+-        instance = api.trove.instance_get(request, instance_id)
+-        try:
+-            flavor_id = instance.flavor['id']
+-            instance.full_flavor = api.trove.flavor_get(request, flavor_id)
+-        except Exception:
+-            pass
+-        return instance
+-
+-
+-def get_ips(instance):
+-    if hasattr(instance, "ip"):
+-        if len(instance.ip):
+-            return instance.ip[0]
+-    return _("Not Assigned")
+-
+-
+-def get_size(instance):
+-    if hasattr(instance, "full_flavor"):
+-        size_string = _("%(name)s | %(RAM)s RAM")
+-        vals = {'name': instance.full_flavor.name,
+-                'RAM': sizeformat.mbformat(instance.full_flavor.ram)}
+-        return size_string % vals
+-    return _("Not available")
+-
+-
+-def get_databases(user):
+-    if hasattr(user, "access"):
+-        databases = [db.name for db in user.access]
+-        databases.sort()
+-        return ', '.join(databases)
+-    return _("-")
+-
+-
+-class InstancesTable(tables.DataTable):
+-    STATUS_CHOICES = (
+-        ("active", True),
+-        ("shutoff", True),
+-        ("suspended", True),
+-        ("paused", True),
+-        ("error", False),
+-    )
+-    name = tables.Column("name",
+-                         link=("horizon:project:databases:detail"),
+-                         verbose_name=_("Database Name"))
+-    ip = tables.Column(get_ips, verbose_name=_("IP Address"))
+-    size = tables.Column(get_size,
+-                         verbose_name=_("Size"),
+-                         attrs={'data-type': 'size'})
+-    status = tables.Column("status",
+-                           filters=(title, filters.replace_underscores),
+-                           verbose_name=_("Status"),
+-                           status=True,
+-                           status_choices=STATUS_CHOICES)
+-
+-    class Meta:
+-        name = "databases"
+-        verbose_name = _("Databases")
+-        status_columns = ["status"]
+-        row_class = UpdateRow
+-        table_actions = (LaunchLink, TerminateInstance)
+-        row_actions = (CreateBackup,
+-                       RestartInstance, TerminateInstance)
+-
+-
+-class UsersTable(tables.DataTable):
+-    name = tables.Column("name", verbose_name=_("User Name"))
+-    host = tables.Column("host", verbose_name=_("Allowed Hosts"))
+-    databases = tables.Column(get_databases, verbose_name=_("Databases"))
+-
+-    class Meta:
+-        name = "users"
+-        verbose_name = _("Database Instance Users")
+-        table_actions = [DeleteUser]
+-        row_actions = [DeleteUser]
+-
+-    def get_object_id(self, datum):
+-        return datum.name
+-
+-
+-class DatabaseTable(tables.DataTable):
+-    name = tables.Column("name", verbose_name=_("Database Name"))
+-
+-    class Meta:
+-        name = "databases"
+-        verbose_name = _("Databases")
+-        table_actions = [DeleteDatabase]
+-        row_actions = [DeleteDatabase]
+-
+-    def get_object_id(self, datum):
+-        return datum.name
+-
+-
+-class InstanceBackupsTable(tables.DataTable):
+-    name = tables.Column("name",
+-                         link=("horizon:project:database_backups:detail"),
+-                         verbose_name=_("Name"))
+-    created = tables.Column("created", verbose_name=_("Created At"),
+-                            filters=[filters.parse_isotime])
+-    location = tables.Column(lambda obj: _("Download"),
+-                             link=lambda obj: obj.locationRef,
+-                             verbose_name=_("Backup File"))
+-    status = tables.Column("status",
+-                           filters=(title, filters.replace_underscores),
+-                           verbose_name=_("Status"),
+-                           status=True,
+-                           status_choices=backup_tables.STATUS_CHOICES)
+-
+-    class Meta:
+-        name = "backups"
+-        verbose_name = _("Backups")
+-        status_columns = ["status"]
+-        row_class = UpdateRow
+-        table_actions = (backup_tables.LaunchLink, backup_tables.DeleteBackup)
+-        row_actions = (backup_tables.RestoreLink, backup_tables.DeleteBackup)
+diff --git a/openstack_dashboard/dashboards/project/databases/tabs.py b/openstack_dashboard/dashboards/project/databases/tabs.py
+deleted file mode 100644
+index a49e1b5..0000000
+--- a/openstack_dashboard/dashboards/project/databases/tabs.py
++++ /dev/null
+@@ -1,111 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.conf import settings  # noqa
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-from horizon import tabs
+-
+-from openstack_dashboard import api
+-from openstack_dashboard.dashboards.project.databases import tables
+-
+-
+-class OverviewTab(tabs.Tab):
+-    name = _("Overview")
+-    slug = "overview"
+-    template_name = ("project/databases/_detail_overview.html")
+-
+-    def get_context_data(self, request):
+-        return {"instance": self.tab_group.kwargs['instance']}
+-
+-
+-class UserTab(tabs.TableTab):
+-    table_classes = [tables.UsersTable]
+-    name = _("Users")
+-    slug = "users_tab"
+-    instance = None
+-    template_name = "horizon/common/_detail_table.html"
+-    preload = False
+-
+-    def get_users_data(self):
+-        instance = self.tab_group.kwargs['instance']
+-        try:
+-            data = api.trove.users_list(self.request, instance.id)
+-            for user in data:
+-                user.instance = instance
+-                user.access = api.trove.user_list_access(self.request,
+-                                                         instance.id,
+-                                                         user.name)
+-        except Exception:
+-            data = []
+-        return data
+-
+-    def allowed(self, request):
+-        perms = getattr(settings, 'TROVE_ADD_USER_PERMS', [])
+-        if perms:
+-            return request.user.has_perms(perms)
+-        return True
+-
+-
+-class DatabaseTab(tabs.TableTab):
+-    table_classes = [tables.DatabaseTable]
+-    name = _("Databases")
+-    slug = "database_tab"
+-    instance = None
+-    template_name = "horizon/common/_detail_table.html"
+-    preload = False
+-
+-    def get_databases_data(self):
+-        instance = self.tab_group.kwargs['instance']
+-        try:
+-            data = api.trove.database_list(self.request, instance.id)
+-            add_instance = lambda d: setattr(d, 'instance', instance)
+-            map(add_instance, data)
+-        except Exception:
+-            data = []
+-        return data
+-
+-    def allowed(self, request):
+-        perms = getattr(settings, 'TROVE_ADD_DATABASE_PERMS', [])
+-        if perms:
+-            return request.user.has_perms(perms)
+-        return True
+-
+-
+-class BackupsTab(tabs.TableTab):
+-    table_classes = [tables.InstanceBackupsTable]
+-    name = _("Backups")
+-    slug = "backups_tab"
+-    instance = None
+-    template_name = "horizon/common/_detail_table.html"
+-    preload = False
+-
+-    def get_backups_data(self):
+-        instance = self.tab_group.kwargs['instance']
+-        try:
+-            data = api.trove.instance_backups(self.request, instance.id)
+-        except Exception:
+-            data = []
+-        return data
+-
+-    def allowed(self, request):
+-        return request.user.has_perm('openstack.services.object-store')
+-
+-
+-class InstanceDetailTabs(tabs.TabGroup):
+-    slug = "instance_details"
+-    tabs = (OverviewTab, UserTab, DatabaseTab, BackupsTab)
+-    sticky = True
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/_detail_overview.html b/openstack_dashboard/dashboards/project/databases/templates/databases/_detail_overview.html
+deleted file mode 100644
+index 6cc0e1b..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/_detail_overview.html
++++ /dev/null
+@@ -1,34 +0,0 @@
+-{% load i18n sizeformat %}
+-
+-<h3>{% trans "Instance Overview" %}</h3>
+-
+-<div class="status row-fluid detail">
+-  <h4>{% trans "Info" %}</h4>
+-  <hr class="header_rule">
+-  <dl>
+-    <dt>{% trans "Name" %}</dt>
+-    <dd>{{ instance.name }}</dd>
+-    <dt>{% trans "ID" %}</dt>
+-    <dd>{{ instance.id }}</dd>
+-    <dt>{% trans "Status" %}</dt>
+-    <dd>{{ instance.status|title }}</dd>
+-    <dt>{% trans "RAM" %}</dt>
+-    <dd>{{ instance.full_flavor.ram|mbformat }}</dd>
+-  </dl>
+-</div>
+-
+-<div class="addresses row-fluid detail">
+-  <h4>{% trans "Connection Info" %}</h4>
+-  <hr class="header_rule">
+-  <dl>
+-    {% with instance.ip.0 as ipaddress %}
+-    <dt>{% trans "Instance IP Address" %}</dt>
+-    <dd>{{ ipaddress }}</dd>
+-    <dt>{% trans "Database Port" %}</dt>
+-    <dd>3306</dd> {# TODO: This should be a config #}
+-    <dt>{% trans "Connection Examples" %}</dt>
+-    <dd>mysql -h {{ ipaddress }} -u USERNAME -p</dd>
+-    <dd>mysql://USERNAME:PASSWORD@{{ ipaddress }}:3306/DATABASE</dd>
+-    {% endwith %}
+-  </dl>
+-</div>
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/_detail_users.html b/openstack_dashboard/dashboards/project/databases/templates/databases/_detail_users.html
+deleted file mode 100644
+index 001cef2..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/_detail_users.html
++++ /dev/null
+@@ -1,3 +0,0 @@
+-{% load i18n %}
+-
+-{{ table.render }}
+\ No newline at end of file
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_details_help.html b/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_details_help.html
+deleted file mode 100644
+index 93a2154..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_details_help.html
++++ /dev/null
+@@ -1,53 +0,0 @@
+-{% load i18n horizon humanize %}
+-
+-<p>{% blocktrans %}Specify the details for launching an instance.{% endblocktrans %}</p>
+-<p>{% blocktrans %}The chart below shows the resources used by this project in relation to the project's quotas.{% endblocktrans %}</p>
+-
+-<h4>{% trans "Flavor Details" %}</h4>
+-<table class="flavor_table table-striped">
+-  <tbody>
+-    <tr><td class="flavor_name">{% trans "Name" %}</td><td><span id="flavor_name"></span></td></tr>
+-    <tr><td class="flavor_name">{% trans "VCPUs" %}</td><td><span id="flavor_vcpus"></span></td></tr>
+-    <tr><td class="flavor_name">{% trans "Root Disk" %}</td><td><span id="flavor_disk"> </span> {% trans "GB" %}</td></tr>
+-    <tr><td class="flavor_name">{% trans "Ephemeral Disk" %}</td><td><span id="flavor_ephemeral"></span> {% trans "GB" %}</td></tr>
+-    <tr><td class="flavor_name">{% trans "Total Disk" %}</td><td><span id="flavor_disk_total"></span> {% trans "GB" %}</td></tr>
+-    <tr><td class="flavor_name">{% trans "RAM" %}</td><td><span id="flavor_ram"></span> {% trans "MB" %}</td></tr>
+-  </tbody>
+-</table>
+-
+-<div class="quota-dynamic">
+-  <h4>{% trans "Project Quotas" %}</h4>
+-  <div class="quota_title clearfix">
+-    <strong>{% trans "Number of Instances" %} <span>({{ usages.instances.used|intcomma }})</span></strong>
+-    <p>{{ usages.instances.available|quota|intcomma }}</p>
+-  </div>
+-  <div id="quota_instances" class="quota_bar" data-progress-indicator-flavor data-quota-limit="{{ usages.instances.quota }}" data-quota-used="{{ usages.instances.used }}">
+-    {% horizon_progress_bar usages.instances.used usages.instances.quota %}
+-  </div>
+-
+-  <div class="quota_title clearfix">
+-    <strong>{% trans "Number of VCPUs" %} <span>({{ usages.cores.used|intcomma }})</span></strong>
+-    <p>{{ usages.cores.available|quota|intcomma }}</p>
+-  </div>
+-  <div id="quota_vcpus" class="quota_bar" data-progress-indicator-flavor data-quota-limit="{{ usages.cores.quota }}" data-quota-used="{{ usages.cores.used }}">
+-    {% horizon_progress_bar usages.cores.used usages.cores.quota %}
+-  </div>
+-
+-  <div class="quota_title clearfix">
+-    <strong>{% trans "Total RAM" %} <span>({{ usages.ram.used|intcomma }} {% trans "MB" %})</span></strong>
+-    <p>{{ usages.ram.available|quota:"MB"|intcomma }}</p>
+-  </div>
+-  <div id="quota_ram" data-progress-indicator-flavor data-quota-limit="{{ usages.ram.quota }}" data-quota-used="{{ usages.ram.used }}" class="quota_bar">
+-    {% horizon_progress_bar usages.ram.used usages.ram.quota %}
+-  </div>
+-</div>
+-
+-<script type="text/javascript" charset="utf-8">
+-  if(typeof horizon.Quota !== 'undefined') {
+-    horizon.Quota.initWithFlavors({{ flavors|safe|default:"{}" }});
+-  } else {
+-    addHorizonLoadEvent(function() {
+-      horizon.Quota.initWithFlavors({{ flavors|safe|default:"{}" }});
+-    });
+-  }
+-</script>
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_initialize_help.html b/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_initialize_help.html
+deleted file mode 100644
+index 2be87b5..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_initialize_help.html
++++ /dev/null
+@@ -1,19 +0,0 @@
+-{% load i18n horizon humanize %}
+-
+-<p>{% blocktrans %}Create an initial database and/or add initial users.{% endblocktrans %}</p>
+-
+-<h4>{% trans "Create Initial Databases" %}</h4>
+-<p>{% trans "Optionally provide a comma separated list of databases to create:" %}</p>
+-<pre>database1, database2, database3</pre>
+-
+-<h4>{% trans "Create Initial Admin User" %}</h4>
+-<p>{% blocktrans %}Create an optional initial user.
+-   This user will have access to all databases you create.{% endblocktrans %}</p>
+-<ul>
+-  <li><strong>{% trans "Username (required)" %}</strong></li>
+-  <li><strong>{% trans "Password (required)" %}</strong></li>
+-  <li><strong>{% trans "Host (optional)" %}</strong>
+-    <em>{% blocktrans %}Allow the user to connect from this host
+-    only. If not provided this use will be allowed to connect from anywhere.
+-    {% endblocktrans %}</em></li>
+-</ul>
+\ No newline at end of file
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_restore_help.html b/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_restore_help.html
+deleted file mode 100644
+index ce82f68..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/_launch_restore_help.html
++++ /dev/null
+@@ -1,4 +0,0 @@
+-{% load i18n horizon humanize %}
+-
+-<p>{% blocktrans %}Create this database from a previous backup.{% endblocktrans %}</p>
+-
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/detail.html b/openstack_dashboard/dashboards/project/databases/templates/databases/detail.html
+deleted file mode 100644
+index 2f48557..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/detail.html
++++ /dev/null
+@@ -1,15 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n sizeformat %}
+-{% block title %}{% trans "Database Detail" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title="Database Detail: "|add:instance.name %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-<div class="row-fluid">
+-  <div class="span12">
+-  {{ tab_group.render }}
+-  </div>
+-</div>
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/index.html b/openstack_dashboard/dashboards/project/databases/templates/databases/index.html
+deleted file mode 100644
+index 0bc3171..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/index.html
++++ /dev/null
+@@ -1,11 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n %}
+-{% block title %}{% trans "Databases" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title=_("Databases") %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-  {{ table.render }}
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/launch.html b/openstack_dashboard/dashboards/project/databases/templates/databases/launch.html
+deleted file mode 100644
+index 8cf2f48..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/launch.html
++++ /dev/null
+@@ -1,11 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n %}
+-{% block title %}{% trans "Launch Instance" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title=_("Launch Database") %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-  {% include 'horizon/common/_workflow.html' %}
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/databases/templates/databases/update.html b/openstack_dashboard/dashboards/project/databases/templates/databases/update.html
+deleted file mode 100644
+index e3aa915..0000000
+--- a/openstack_dashboard/dashboards/project/databases/templates/databases/update.html
++++ /dev/null
+@@ -1,11 +0,0 @@
+-{% extends 'base.html' %}
+-{% load i18n %}
+-{% block title %}{% trans "Edit Instance" %}{% endblock %}
+-
+-{% block page_header %}
+-  {% include "horizon/common/_page_header.html" with title=_("Edit Instance") %}
+-{% endblock page_header %}
+-
+-{% block main %}
+-  {% include 'horizon/common/_workflow.html' %}
+-{% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/databases/tests.py b/openstack_dashboard/dashboards/project/databases/tests.py
+deleted file mode 100644
+index 2c58428..0000000
+--- a/openstack_dashboard/dashboards/project/databases/tests.py
++++ /dev/null
+@@ -1,197 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Mirantis Inc.
+-# Copyright 2013 Rackspace Hosting.
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.core.urlresolvers import reverse  # noqa
+-from django import http
+-
+-from mox import IsA  # noqa
+-
+-from openstack_dashboard import api
+-from openstack_dashboard.test import helpers as test
+-from troveclient import common
+-
+-
+-INDEX_URL = reverse('horizon:project:databases:index')
+-LAUNCH_URL = reverse('horizon:project:databases:launch')
+-DETAILS_URL = reverse('horizon:project:databases:detail', args=['id'])
+-
+-
+-class DatabaseTests(test.TestCase):
+-
+-    @test.create_stubs(
+-        {api.trove: ('instance_list', 'flavor_list')})
+-    def test_index(self):
+-        # Mock database instances
+-        databases = common.Paginated(self.databases.list())
+-        api.trove.instance_list(IsA(http.HttpRequest), marker=None)\
+-            .AndReturn(databases)
+-        # Mock flavors
+-        api.trove.flavor_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.flavors.list())
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(INDEX_URL)
+-        self.assertTemplateUsed(res, 'project/databases/index.html')
+-
+-    @test.create_stubs(
+-        {api.trove: ('instance_list', 'flavor_list')})
+-    def test_index_flavor_exception(self):
+-        # Mock database instances
+-        databases = common.Paginated(self.databases.list())
+-        api.trove.instance_list(IsA(http.HttpRequest), marker=None)\
+-            .AndReturn(databases)
+-        # Mock flavors
+-        api.trove.flavor_list(IsA(http.HttpRequest))\
+-            .AndRaise(self.exceptions.trove)
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(INDEX_URL)
+-        self.assertTemplateUsed(res, 'project/databases/index.html')
+-        self.assertMessageCount(res, error=1)
+-
+-    @test.create_stubs(
+-        {api.trove: ('instance_list',)})
+-    def test_index_list_exception(self):
+-        # Mock database instances
+-        api.trove.instance_list(IsA(http.HttpRequest), marker=None)\
+-            .AndRaise(self.exceptions.trove)
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(INDEX_URL)
+-        self.assertTemplateUsed(res, 'project/databases/index.html')
+-        self.assertMessageCount(res, error=1)
+-
+-    @test.create_stubs(
+-        {api.trove: ('instance_list', 'flavor_list')})
+-    def test_index_pagination(self):
+-        # Mock database instances
+-        databases = common.Paginated(self.databases.list(), next_marker="foo")
+-        api.trove.instance_list(IsA(http.HttpRequest), marker=None)\
+-            .AndReturn(databases)
+-        # Mock flavors
+-        api.trove.flavor_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.flavors.list())
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(INDEX_URL)
+-        self.assertTemplateUsed(res, 'project/databases/index.html')
+-        self.assertContains(
+-            res, 'marker=6ddc36d9-73db-4e23-b52e-368937d72719')
+-
+-    @test.create_stubs(
+-        {api.trove: ('instance_list', 'flavor_list')})
+-    def test_index_flavor_list_exception(self):
+-        #Mocking instances
+-        databases = common.Paginated(self.databases.list())
+-        api.trove.instance_list(IsA(http.HttpRequest), marker=None)\
+-            .AndReturn(databases)
+-        #Mocking flavor list with raising an exception
+-        api.trove.flavor_list(IsA(http.HttpRequest))\
+-            .AndRaise(self.exceptions.trove)
+-
+-        self.mox.ReplayAll()
+-
+-        res = self.client.get(INDEX_URL)
+-
+-        self.assertTemplateUsed(res, 'project/databases/index.html')
+-        self.assertMessageCount(res, error=1)
+-
+-    @test.create_stubs({
+-        api.nova: ('flavor_list', 'tenant_absolute_limits'),
+-        api.trove: ('backup_list',)})
+-    def test_launch_instance(self):
+-        api.nova.flavor_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.flavors.list())
+-        api.nova.tenant_absolute_limits(IsA(http.HttpRequest))\
+-            .AndReturn([])
+-        api.trove.backup_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.database_backups.list())
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(LAUNCH_URL)
+-        self.assertTemplateUsed(res, 'project/databases/launch.html')
+-
+-    @test.create_stubs({
+-        api.nova: ('flavor_list',),
+-        api.trove: ('backup_list', 'instance_create',)})
+-    def test_create_simple_instance(self):
+-        api.nova.flavor_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.flavors.list())
+-        api.trove.backup_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.database_backups.list())
+-
+-        # Actual create database call
+-        api.trove.instance_create(
+-            IsA(http.HttpRequest),
+-            IsA(unicode),
+-            IsA(int),
+-            IsA(unicode),
+-            databases=None,
+-            restore_point=None,
+-            users=None).AndReturn(self.databases.first())
+-
+-        self.mox.ReplayAll()
+-        post = {
+-            'name': "MyDB",
+-            'volume': '1',
+-            'flavor': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+-        }
+-
+-        res = self.client.post(LAUNCH_URL, post)
+-        self.assertRedirectsNoFollow(res, INDEX_URL)
+-
+-    @test.create_stubs({
+-        api.nova: ('flavor_list',),
+-        api.trove: ('backup_list', 'instance_create',)})
+-    def test_create_simple_instance_exception(self):
+-        trove_exception = self.exceptions.nova
+-        api.nova.flavor_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.flavors.list())
+-        api.trove.backup_list(IsA(http.HttpRequest))\
+-            .AndReturn(self.database_backups.list())
+-
+-        # Actual create database call
+-        api.trove.instance_create(
+-            IsA(http.HttpRequest),
+-            IsA(unicode),
+-            IsA(int),
+-            IsA(unicode),
+-            databases=None,
+-            restore_point=None,
+-            users=None).AndRaise(trove_exception)
+-
+-        self.mox.ReplayAll()
+-        post = {
+-            'name': "MyDB",
+-            'volume': '1',
+-            'flavor': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+-        }
+-
+-        res = self.client.post(LAUNCH_URL, post)
+-        self.assertRedirectsNoFollow(res, INDEX_URL)
+-
+-    @test.create_stubs(
+-        {api.trove: ('instance_get', 'flavor_get',)})
+-    def test_details(self):
+-        api.trove.instance_get(IsA(http.HttpRequest), IsA(unicode))\
+-            .AndReturn(self.databases.first())
+-        api.trove.flavor_get(IsA(http.HttpRequest), IsA(str))\
+-            .AndReturn(self.flavors.first())
+-
+-        self.mox.ReplayAll()
+-        res = self.client.get(DETAILS_URL)
+-        self.assertTemplateUsed(res, 'project/databases/detail.html')
+diff --git a/openstack_dashboard/dashboards/project/databases/urls.py b/openstack_dashboard/dashboards/project/databases/urls.py
+deleted file mode 100644
+index 0a2a7a3..0000000
+--- a/openstack_dashboard/dashboards/project/databases/urls.py
++++ /dev/null
+@@ -1,29 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-#
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from django.conf.urls.defaults import patterns  # noqa
+-from django.conf.urls.defaults import url  # noqa
+-
+-from openstack_dashboard.dashboards.project.databases import views
+-
+-
+-urlpatterns = patterns(
+-    '',
+-    url(r'^$', views.IndexView.as_view(), name='index'),
+-    url(r'^launch$', views.LaunchInstanceView.as_view(), name='launch'),
+-    url(r'^(?P<instance_id>[^/]+)/$', views.DetailView.as_view(),
+-        name='detail'),
+-)
+diff --git a/openstack_dashboard/dashboards/project/databases/views.py b/openstack_dashboard/dashboards/project/databases/views.py
+deleted file mode 100644
+index c2c2f48..0000000
+--- a/openstack_dashboard/dashboards/project/databases/views.py
++++ /dev/null
+@@ -1,120 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-"""
+-Views for managing database instances.
+-"""
+-import logging
+-
+-from django.core.urlresolvers import reverse  # noqa
+-from django.utils.datastructures import SortedDict  # noqa
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-
+-from horizon import exceptions
+-from horizon import tables as horizon_tables
+-from horizon import tabs as horizon_tabs
+-from horizon import workflows as horizon_workflows
+-
+-from openstack_dashboard import api
+-from openstack_dashboard.dashboards.project.databases import tables
+-from openstack_dashboard.dashboards.project.databases import tabs
+-from openstack_dashboard.dashboards.project.databases import workflows
+-
+-
+-LOG = logging.getLogger(__name__)
+-
+-
+-class IndexView(horizon_tables.DataTableView):
+-    table_class = tables.InstancesTable
+-    template_name = 'project/databases/index.html'
+-
+-    def has_more_data(self, table):
+-        return self._more
+-
+-    def _extra_data(self, instance):
+-        if not hasattr(self, '_flavors'):
+-            try:
+-                flavors = api.trove.flavor_list(self.request)
+-            except Exception:
+-                flavors = []
+-                msg = _('Unable to retrieve database size information.')
+-                exceptions.handle(self.request, msg)
+-            self._flavors = SortedDict([(unicode(flavor.id), flavor)
+-                                       for flavor in flavors])
+-        flavor = self._flavors.get(instance.flavor["id"])
+-        if flavor is not None:
+-            instance.full_flavor = flavor
+-        return instance
+-
+-    def get_data(self):
+-        marker = self.request.GET.get(
+-            tables.InstancesTable._meta.pagination_param)
+-        # Gather our instances
+-        try:
+-            instances = api.trove.instance_list(self.request, marker=marker)
+-            self._more = instances.next or False
+-        except Exception:
+-            self._more = False
+-            instances = []
+-            msg = _('Unable to retrieve database instances.')
+-            exceptions.handle(self.request, msg)
+-        map(self._extra_data, instances)
+-        return instances
+-
+-
+-class LaunchInstanceView(horizon_workflows.WorkflowView):
+-    workflow_class = workflows.LaunchInstance
+-    template_name = "project/databases/launch.html"
+-
+-    def get_initial(self):
+-        initial = super(LaunchInstanceView, self).get_initial()
+-        initial['project_id'] = self.request.user.project_id
+-        initial['user_id'] = self.request.user.id
+-        return initial
+-
+-
+-class DetailView(horizon_tabs.TabbedTableView):
+-    tab_group_class = tabs.InstanceDetailTabs
+-    template_name = 'project/databases/detail.html'
+-
+-    def get_context_data(self, **kwargs):
+-        context = super(DetailView, self).get_context_data(**kwargs)
+-        context["instance"] = self.get_data()
+-        return context
+-
+-    def get_data(self):
+-        if not hasattr(self, "_instance"):
+-            try:
+-                LOG.info("Obtaining instance for detailed view ")
+-                instance_id = self.kwargs['instance_id']
+-                instance = api.trove.instance_get(self.request, instance_id)
+-            except Exception:
+-                redirect = reverse('horizon:project:databases:index')
+-                msg = _('Unable to retrieve details '
+-                        'for database instance: %s') % instance_id
+-                exceptions.handle(self.request, msg, redirect=redirect)
+-            try:
+-                instance.full_flavor = api.trove.flavor_get(
+-                    self.request, instance.flavor["id"])
+-            except Exception:
+-                LOG.error('Unable to retrieve flavor details'
+-                          ' for database instance: %s') % instance_id
+-            self._instance = instance
+-        return self._instance
+-
+-    def get_tabs(self, request, *args, **kwargs):
+-        instance = self.get_data()
+-        return self.tab_group_class(request, instance=instance, **kwargs)
+diff --git a/openstack_dashboard/dashboards/project/databases/workflows/__init__.py b/openstack_dashboard/dashboards/project/databases/workflows/__init__.py
+deleted file mode 100644
+index 1c7134f..0000000
+--- a/openstack_dashboard/dashboards/project/databases/workflows/__init__.py
++++ /dev/null
+@@ -1,3 +0,0 @@
+-from create_instance import LaunchInstance
+-
+-assert LaunchInstance
+diff --git a/openstack_dashboard/dashboards/project/databases/workflows/create_instance.py b/openstack_dashboard/dashboards/project/databases/workflows/create_instance.py
+deleted file mode 100644
+index 28b7b84..0000000
+--- a/openstack_dashboard/dashboards/project/databases/workflows/create_instance.py
++++ /dev/null
+@@ -1,222 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-import logging
+-import simplejson as json
+-
+-from django.conf import settings  # noqa
+-from django.utils.translation import ugettext_lazy as _  # noqa
+-from horizon import exceptions
+-from horizon import forms
+-from horizon import workflows
+-
+-from openstack_dashboard import api
+-
+-LOG = logging.getLogger(__name__)
+-
+-
+-class SetInstanceDetailsAction(workflows.Action):
+-    name = forms.CharField(max_length=80, label=_("Database Name"))
+-    flavor = forms.ChoiceField(label=_("Flavor"),
+-                               help_text=_("Size of image to launch."))
+-    volume = forms.IntegerField(label=_("Volume Size"),
+-                                min_value=1,
+-                                initial=1,
+-                                help_text=_("Size of the volume in GB."))
+-
+-    class Meta:
+-        name = _("Details")
+-        help_text_template = ("project/instances/_launch_details_help.html")
+-
+-    def flavors(self, request):
+-        if not hasattr(self, '_flavors'):
+-            try:
+-                self._flavors = api.nova.flavor_list(request)
+-            except Exception:
+-                LOG.exception("Exception while obtaining flavors list")
+-                self._flavors = []
+-        return self._flavors
+-
+-    def populate_flavor_choices(self, request, context):
+-        flavor_list = [(f.id, "%s" % f.name) for f in self.flavors(request)]
+-        return sorted(flavor_list)
+-
+-    def get_help_text(self):
+-        flavors = json.dumps([f._info for f in self.flavors(self.request)])
+-        extra = {'flavors': flavors}
+-        try:
+-            LOG.debug("Obtaining absolute tenant limits")
+-            extra['usages'] = api.nova.tenant_absolute_limits(self.request)
+-            extra['usages_json'] = json.dumps(extra['usages'])
+-        except Exception:
+-            exceptions.handle(self.request,
+-                              _("Unable to retrieve quota information."))
+-        return super(SetInstanceDetailsAction, self).get_help_text(extra)
+-
+-
+-TROVE_ADD_USER_PERMS = getattr(settings, 'TROVE_ADD_USER_PERMS', [])
+-TROVE_ADD_DATABASE_PERMS = getattr(settings, 'TROVE_ADD_DATABASE_PERMS', [])
+-TROVE_ADD_PERMS = TROVE_ADD_USER_PERMS + TROVE_ADD_DATABASE_PERMS
+-
+-
+-class SetInstanceDetails(workflows.Step):
+-    action_class = SetInstanceDetailsAction
+-    contributes = ("name", "volume", "flavor")
+-
+-
+-class AddDatabasesAction(workflows.Action):
+-    """
+-    Initialize the database with users/databases. This tab will honor
+-    the settings which should be a list of permissions required:
+-
+-    * TROVE_ADD_USER_PERMS = []
+-    * TROVE_ADD_DATABASE_PERMS = []
+-    """
+-    databases = forms.CharField(label=_('Initial Database'),
+-                                required=False,
+-                                help_text=_('Comma separated list of '
+-                                            'databases to create'))
+-    user = forms.CharField(label=_('Initial Admin User'),
+-                           required=False,
+-                           help_text=_("Initial admin user to add"))
+-    password = forms.CharField(widget=forms.PasswordInput(),
+-                               label=_("Password"),
+-                               required=False)
+-    host = forms.CharField(label=_("Host (optional)"),
+-                           required=False,
+-                           help_text=_("Host or IP that the user is allowed "
+-                                       "to connect through."))
+-
+-    class Meta:
+-        name = _("Initialize Databases")
+-        permissions = TROVE_ADD_PERMS
+-        help_text_template = "project/databases/_launch_initialize_help.html"
+-
+-    def clean(self):
+-        cleaned_data = super(AddDatabasesAction, self).clean()
+-        if cleaned_data.get('user'):
+-            if not cleaned_data.get('password'):
+-                msg = _('You must specify a password if you create a user.')
+-                self._errors["password"] = self.error_class([msg])
+-            if not cleaned_data.get('databases'):
+-                msg = _('You must specify at least one database if '
+-                        'you create a user.')
+-                self._errors["databases"] = self.error_class([msg])
+-        return cleaned_data
+-
+-
+-class InitializeDatabase(workflows.Step):
+-    action_class = AddDatabasesAction
+-    contributes = ["databases", 'user', 'password', 'host']
+-
+-
+-class RestoreAction(workflows.Action):
+-    backup = forms.ChoiceField(label=_("Backup"),
+-                               required=False,
+-                               help_text=_('Select a backup to Restore'))
+-
+-    class Meta:
+-        name = _("Restore From Backup")
+-        permissions = ('openstack.services.object-store',)
+-        help_text_template = "project/databases/_launch_restore_help.html"
+-
+-    def populate_backup_choices(self, request, context):
+-        empty = [('', '-')]
+-        try:
+-            backups = api.trove.backup_list(request)
+-            backup_list = [(b.id, b.name) for b in backups]
+-        except Exception:
+-            backup_list = []
+-        return empty + backup_list
+-
+-    def clean_backup(self):
+-        backup = self.cleaned_data['backup']
+-        if backup:
+-            try:
+-                # Make sure the user is not "hacking" the form
+-                # and that they have access to this backup_id
+-                LOG.debug("Obtaining backups")
+-                bkup = api.trove.backup_get(self.request, backup)
+-                self.cleaned_data['backup'] = bkup.id
+-            except Exception:
+-                raise forms.ValidationError(_("Unable to find backup!"))
+-        return backup
+-
+-
+-class RestoreBackup(workflows.Step):
+-    action_class = RestoreAction
+-    contributes = ['backup']
+-
+-
+-class LaunchInstance(workflows.Workflow):
+-    slug = "launch_database"
+-    name = _("Launch Database")
+-    finalize_button_name = _("Launch")
+-    success_message = _('Launched %(count)s named "%(name)s".')
+-    failure_message = _('Unable to launch %(count)s named "%(name)s".')
+-    success_url = "horizon:project:databases:index"
+-    default_steps = (SetInstanceDetails, InitializeDatabase, RestoreBackup)
+-
+-    def format_status_message(self, message):
+-        name = self.context.get('name', 'unknown instance')
+-        return message % {"count": _("instance"), "name": name}
+-
+-    def _get_databases(self, context):
+-        """Returns the initial databases for this instance."""
+-        databases = None
+-        if context.get('databases'):
+-            dbs = context['databases']
+-            databases = [{'name': d.strip()} for d in dbs.split(',')]
+-        return databases
+-
+-    def _get_users(self, context):
+-        users = None
+-        if context.get('user'):
+-            user = {
+-                'name': context['user'],
+-                'password': context['password'],
+-                'databases': self._get_databases(context)
+-            }
+-            if context['host']:
+-                user['host'] = context['host']
+-            users = [user]
+-        return users
+-
+-    def _get_backup(self, context):
+-        backup = None
+-        if context.get('backup'):
+-            backup = {'backupRef': context['backup']}
+-        return backup
+-
+-    def handle(self, request, context):
+-        try:
+-            LOG.info("Launching instance with parameters "
+-                     "{name=%s, volume=%s, flavor=%s, dbs=%s, users=%s, "
+-                     "backups=%s}",
+-                     context['name'], context['volume'], context['flavor'],
+-                     self._get_databases(context), self._get_users(context),
+-                     self._get_backup(context))
+-            api.trove.instance_create(request,
+-                                      context['name'],
+-                                      context['volume'],
+-                                      context['flavor'],
+-                                      databases=self._get_databases(context),
+-                                      users=self._get_users(context),
+-                                      restore_point=self._get_backup(context))
+-            return True
+-        except Exception:
+-            exceptions.handle(request)
+-            return False
+diff --git a/openstack_dashboard/exceptions.py b/openstack_dashboard/exceptions.py
+index 9934b73..e5dc97d 100644
+--- a/openstack_dashboard/exceptions.py
++++ b/openstack_dashboard/exceptions.py
+@@ -25,7 +25,6 @@ from keystoneclient import exceptions as keystoneclient
+ from neutronclient.common import exceptions as neutronclient
+ from novaclient import exceptions as novaclient
+ from swiftclient import client as swiftclient
+-from troveclient import exceptions as troveclient
+ 
+ 
+ UNAUTHORIZED = (keystoneclient.Unauthorized,
+@@ -38,8 +37,7 @@ UNAUTHORIZED = (keystoneclient.Unauthorized,
+                 neutronclient.Unauthorized,
+                 neutronclient.Forbidden,
+                 heatclient.HTTPUnauthorized,
+-                heatclient.HTTPForbidden,
+-                troveclient.Unauthorized)
++                heatclient.HTTPForbidden)
+ 
+ NOT_FOUND = (keystoneclient.NotFound,
+              cinderclient.NotFound,
+@@ -47,8 +45,7 @@ NOT_FOUND = (keystoneclient.NotFound,
+              glanceclient.NotFound,
+              neutronclient.NetworkNotFoundClient,
+              neutronclient.PortNotFoundClient,
+-             heatclient.HTTPNotFound,
+-             troveclient.NotFound)
++             heatclient.HTTPNotFound)
+ 
+ # NOTE(gabriel): This is very broad, and may need to be dialed in.
+ RECOVERABLE = (keystoneclient.ClientException,
+@@ -66,5 +63,4 @@ RECOVERABLE = (keystoneclient.ClientException,
+                neutronclient.AlreadyAttachedClient,
+                neutronclient.StateInvalidClient,
+                swiftclient.ClientException,
+-               heatclient.HTTPException,
+-               troveclient.ClientException)
++               heatclient.HTTPException)
+diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
+index 9e4675c..0e8cc55 100644
+--- a/openstack_dashboard/local/local_settings.py.example
++++ b/openstack_dashboard/local/local_settings.py.example
+@@ -234,13 +234,6 @@ TIME_ZONE = "UTC"
+ #    'compute': 'nova_policy.json'
+ #}
+ 
+-# Trove user and database extension support. By default support for
+-# creating users and databases on database instances is turned on.
+-# To disable these extensions set the permission here to something
+-# unusable such as ["!"].
+-# TROVE_ADD_USER_PERMS = []
+-# TROVE_ADD_DATABASE_PERMS = []
+-
+ LOGGING = {
+     'version': 1,
+     # When set to True this will disable all logging except
+diff --git a/openstack_dashboard/test/helpers.py b/openstack_dashboard/test/helpers.py
+index 0f86317..2fa9e80 100644
+--- a/openstack_dashboard/test/helpers.py
++++ b/openstack_dashboard/test/helpers.py
+@@ -38,7 +38,6 @@ from keystoneclient.v2_0 import client as keystone_client
+ from neutronclient.v2_0 import client as neutron_client
+ from novaclient.v1_1 import client as nova_client
+ from swiftclient import client as swift_client
+-from troveclient import client as trove_client
+ 
+ import httplib2
+ import mox
+@@ -265,7 +264,6 @@ class APITestCase(TestCase):
+         self._original_cinderclient = api.cinder.cinderclient
+         self._original_heatclient = api.heat.heatclient
+         self._original_ceilometerclient = api.ceilometer.ceilometerclient
+-        self._original_troveclient = api.trove.troveclient
+ 
+         # Replace the clients with our stubs.
+         api.glance.glanceclient = lambda request: self.stub_glanceclient()
+@@ -276,7 +274,6 @@ class APITestCase(TestCase):
+         api.heat.heatclient = lambda request: self.stub_heatclient()
+         api.ceilometer.ceilometerclient = lambda request: \
+             self.stub_ceilometerclient()
+-        api.trove.troveclient = lambda request: self.stub_troveclient()
+ 
+     def tearDown(self):
+         super(APITestCase, self).tearDown()
+@@ -287,7 +284,6 @@ class APITestCase(TestCase):
+         api.cinder.cinderclient = self._original_cinderclient
+         api.heat.heatclient = self._original_heatclient
+         api.ceilometer.ceilometerclient = self._original_ceilometerclient
+-        api.trove.troveclient = self._original_troveclient
+ 
+     def stub_novaclient(self):
+         if not hasattr(self, "novaclient"):
+@@ -353,12 +349,6 @@ class APITestCase(TestCase):
+                 CreateMock(ceilometer_client.Client)
+         return self.ceilometerclient
+ 
+-    def stub_troveclient(self):
+-        if not hasattr(self, "troveclient"):
+-            self.mox.StubOutWithMock(trove_client, 'Client')
+-            self.troveclient = self.mox.CreateMock(trove_client.Client)
+-        return self.troveclient
+-
+ 
+ @unittest.skipUnless(os.environ.get('WITH_SELENIUM', False),
+                      "The WITH_SELENIUM env variable is not set.")
+diff --git a/openstack_dashboard/test/test_data/exceptions.py b/openstack_dashboard/test/test_data/exceptions.py
+index 272c426..fe7a946 100644
+--- a/openstack_dashboard/test/test_data/exceptions.py
++++ b/openstack_dashboard/test/test_data/exceptions.py
+@@ -19,7 +19,6 @@ from keystoneclient import exceptions as keystone_exceptions
+ from neutronclient.common import exceptions as neutron_exceptions
+ from novaclient import exceptions as nova_exceptions
+ from swiftclient import client as swift_exceptions
+-from troveclient import exceptions as trove_exceptions
+ 
+ from openstack_dashboard.test.test_data import utils
+ 
+@@ -73,9 +72,3 @@ def data(TEST):
+ 
+     cinder_exception = cinder_exceptions.BadRequest
+     TEST.exceptions.cinder = create_stubbed_exception(cinder_exception)
+-
+-    trove_exception = trove_exceptions.ClientException
+-    TEST.exceptions.trove = create_stubbed_exception(trove_exception)
+-
+-    trove_auth = trove_exceptions.Unauthorized
+-    TEST.exceptions.trove_unauthorized = create_stubbed_exception(trove_auth)
+diff --git a/openstack_dashboard/test/test_data/keystone_data.py b/openstack_dashboard/test/test_data/keystone_data.py
+index aefc896..ec62fd1 100644
+--- a/openstack_dashboard/test/test_data/keystone_data.py
++++ b/openstack_dashboard/test/test_data/keystone_data.py
+@@ -113,15 +113,7 @@ SERVICE_CATALOG = [
+         {"region": "RegionOne",
+          "adminURL": "http://admin.heat.example.com:8004/v1",
+          "publicURL": "http://public.heat.example.com:8004/v1",
+-         "internalURL": "http://int.heat.example.com:8004/v1"}]},
+-    {"type": "database",
+-     "name": "Trove",
+-     "endpoints_links": [],
+-     "endpoints": [
+-        {"region": "RegionOne",
+-         "adminURL": "http://admin.trove.example.com:8779/v1.0",
+-         "publicURL": "http://public.trove.example.com:8779/v1.0",
+-         "internalURL": "http://int.trove.example.com:8779/v1.0"}]}
++         "internalURL": "http://int.heat.example.com:8004/v1"}]}
+ ]
+ 
+ 
+diff --git a/openstack_dashboard/test/test_data/trove_data.py b/openstack_dashboard/test/test_data/trove_data.py
+deleted file mode 100644
+index cc848a4..0000000
+--- a/openstack_dashboard/test/test_data/trove_data.py
++++ /dev/null
+@@ -1,79 +0,0 @@
+-# vim: tabstop=4 shiftwidth=4 softtabstop=4
+-
+-# Copyright 2013 Rackspace Hosting.
+-#
+-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+-#    not use this file except in compliance with the License. You may obtain
+-#    a copy of the License at
+-#
+-#         http://www.apache.org/licenses/LICENSE-2.0
+-#
+-#    Unless required by applicable law or agreed to in writing, software
+-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+-#    License for the specific language governing permissions and limitations
+-#    under the License.
+-
+-from troveclient import backups
+-from troveclient import instances
+-
+-from openstack_dashboard.test.test_data import utils
+-
+-
+-DATABASE_DATA = {
+-    "status": "ACTIVE",
+-    "updated": "2013-08-12T22:00:09",
+-    "name": "Test Database",
+-    "links": [],
+-    "created": "2013-08-12T22:00:03",
+-    "ip": [
+-        "10.0.0.3"
+-    ],
+-    "volume": {
+-        "used": 0.13,
+-        "size": 1
+-    },
+-    "flavor": {
+-        "id": "1",
+-        "links": []
+-    },
+-    "id": "6ddc36d9-73db-4e23-b52e-368937d72719"
+-}
+-
+-
+-BACKUP_ONE = {
+-    "instance_id": "6ddc36d9-73db-4e23-b52e-368937d72719",
+-    "status": "COMPLETED",
+-    "updated": "2013-08-13T19:39:38",
+-    "locationRef": "http://swift/v1/AUTH/database_backups/0edb.tar.gz",
+-    "name": "backup1",
+-    "created": "2013-08-15T18:10:14",
+-    "size": 0.13,
+-    "id": "0edb3c14-8919-4583-9add-00df9e524081",
+-    "description": "Long description of backup"
+-}
+-
+-
+-BACKUP_TWO = {
+-    "instance_id": "4d7b3f57-44f5-41d2-8e86-36b88cad572a",
+-    "status": "COMPLETED",
+-    "updated": "2013-08-10T20:20:44",
+-    "locationRef": "http://swift/v1/AUTH/database_backups/e460.tar.gz",
+-    "name": "backup2",
+-    "created": "2013-08-10T20:20:37",
+-    "size": 0.13,
+-    "id": "e4602a3c-2bca-478f-b059-b6c215510fb4",
+-    "description": "Longer description of backup"
+-}
+-
+-
+-def data(TEST):
+-    database = instances.Instance(instances.Instances(None), DATABASE_DATA)
+-    bkup1 = backups.Backup(backups.Backups(None), BACKUP_ONE)
+-    bkup2 = backups.Backup(backups.Backups(None), BACKUP_TWO)
+-
+-    TEST.databases = utils.TestDataContainer()
+-    TEST.database_backups = utils.TestDataContainer()
+-    TEST.databases.add(database)
+-    TEST.database_backups.add(bkup1)
+-    TEST.database_backups.add(bkup2)
+diff --git a/openstack_dashboard/test/test_data/utils.py b/openstack_dashboard/test/test_data/utils.py
+index 18a8757..6a65b12 100644
+--- a/openstack_dashboard/test/test_data/utils.py
++++ b/openstack_dashboard/test/test_data/utils.py
+@@ -23,7 +23,6 @@ def load_test_data(load_onto=None):
+     from openstack_dashboard.test.test_data import neutron_data
+     from openstack_dashboard.test.test_data import nova_data
+     from openstack_dashboard.test.test_data import swift_data
+-    from openstack_dashboard.test.test_data import trove_data
+ 
+     # The order of these loaders matters, some depend on others.
+     loaders = (exceptions.data,
+@@ -34,8 +33,7 @@ def load_test_data(load_onto=None):
+                neutron_data.data,
+                swift_data.data,
+                heat_data.data,
+-               ceilometer_data.data,
+-               trove_data.data)
++               ceilometer_data.data)
+     if load_onto:
+         for data_func in loaders:
+             data_func(load_onto)
+diff --git a/requirements.txt b/requirements.txt
+index f4426df..313124f 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -16,7 +16,6 @@ python-novaclient>=2.12.0
+ python-neutronclient>=2.3.0,<3
+ python-swiftclient>=1.2
+ python-ceilometerclient>=1.0.2
+-python-troveclient
+ pytz>=2010h
+ # Horizon Utility Requirements
+ # for SECURE_KEY generation

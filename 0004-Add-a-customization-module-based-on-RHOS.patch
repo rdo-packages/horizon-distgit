@@ -1,0 +1,260 @@
+From cdbb878b1c43671873e21836dd8ba65e8a9a4750 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Thu, 14 Feb 2013 12:55:54 +0100
+Subject: [PATCH] Add a customization module based on RHOS
+
+Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
+
+Conflicts:
+	openstack_dashboard/settings.py
+---
+ openstack_dashboard/settings.py                    | 12 ++++-
+ openstack_dashboard_theme/__init__.py              |  0
+ openstack_dashboard_theme/models.py                |  0
+ .../static/dashboard/less/rhtheme.less             | 55 ++++++++++++++++++++++
+ .../templates/_stylesheets.html                    |  7 +++
+ .../templates/auth/_login.html                     | 29 ++++++++++++
+ .../templates/auth/login.html                      | 10 ++++
+ .../templates/horizon/common/_sidebar.html         | 35 ++++++++++++++
+ openstack_dashboard_theme/templates/splash.html    | 17 +++++++
+ 9 files changed, 163 insertions(+), 2 deletions(-)
+ create mode 100644 openstack_dashboard_theme/__init__.py
+ create mode 100644 openstack_dashboard_theme/models.py
+ create mode 100644 openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+ create mode 100644 openstack_dashboard_theme/templates/_stylesheets.html
+ create mode 100644 openstack_dashboard_theme/templates/auth/_login.html
+ create mode 100644 openstack_dashboard_theme/templates/auth/login.html
+ create mode 100644 openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+ create mode 100644 openstack_dashboard_theme/templates/splash.html
+
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 9d1ee84..7bad6f8 100644
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -107,14 +107,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
+ )
+ 
+ TEMPLATE_LOADERS = (
+-    'django.template.loaders.filesystem.Loader',
+     'django.template.loaders.app_directories.Loader',
+     'horizon.loaders.TemplateLoader'
+ )
+ 
+ TEMPLATE_DIRS = (
+     os.path.join(ROOT_PATH, 'templates'),
+-)
++) 
+ 
+ STATICFILES_FINDERS = (
+     'compressor.finders.CompressorFinder',
+@@ -152,6 +151,15 @@ INSTALLED_APPS = (
+     'openstack_dashboard.dashboards.router',
+ )
+ 
++THEME_APP = 'openstack_dashboard_theme'
++
++try:
++    __import__(THEME_APP)
++    INSTALLED_APPS = (THEME_APP,) + INSTALLED_APPS
++except:
++    pass
++
++
+ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+ AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
+ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+diff --git a/openstack_dashboard_theme/__init__.py b/openstack_dashboard_theme/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/openstack_dashboard_theme/models.py b/openstack_dashboard_theme/models.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+new file mode 100644
+index 0000000..5350db3
+--- /dev/null
++++ b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+@@ -0,0 +1,55 @@
++@import "/static/dashboard/less/horizon.less";
++
++/* Login Splash Page */
++
++#splash .rhlogin {
++  background: #fff url(/static/dashboard/img/rh-logo.png) no-repeat center 35px;
++  position: absolute;
++  top: 80px;
++  left: 50%;
++  margin: 0 0 0 -195px;
++  padding-top: 170px;
++  width: 390px;
++  border: 1px solid #e1e1e1;
++  max-height: none;
++  -webkit-border-radius: 6px;
++  -moz-border-radius: 6px;
++  border-radius: 6px;
++  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
++  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
++  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
++  -webkit-background-clip: padding-box;
++  -moz-background-clip: padding-box;
++  background-clip: padding-box;
++
++  form {
++    .error {
++      width: 100%;
++    }
++    input {
++      width: 350px;
++    }
++    select {
++      width: 360px;
++    }
++  }
++}
++
++h1.rhos {
++    width: 100%;
++    margin: 0;
++    background-color: #f5f5f5;
++    padding-bottom: 40px;
++}
++
++h1.rhos a {
++    background: url(/static/dashboard/img/rh-logo.png) top left no-repeat;
++    display: block;
++    float: left;
++    width: 116px;
++    height: 123px;
++    text-indent: -9999px;
++    margin-left: 56px;
++    margin-top: 15px;
++    margin-bottom: 25px;
++}
+diff --git a/openstack_dashboard_theme/templates/_stylesheets.html b/openstack_dashboard_theme/templates/_stylesheets.html
+new file mode 100644
+index 0000000..88463e1
+--- /dev/null
++++ b/openstack_dashboard_theme/templates/_stylesheets.html
+@@ -0,0 +1,7 @@
++{% load compress %}
++
++{% compress css %}
++<link href='{{ STATIC_URL }}dashboard/less/rhtheme.less' type='text/less' media='screen' rel='stylesheet' />
++{% endcompress %}
++
++<link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>
+diff --git a/openstack_dashboard_theme/templates/auth/_login.html b/openstack_dashboard_theme/templates/auth/_login.html
+new file mode 100644
+index 0000000..1cb6036
+--- /dev/null
++++ b/openstack_dashboard_theme/templates/auth/_login.html
+@@ -0,0 +1,29 @@
++{% extends "horizon/common/_modal_form.html" %}
++{% load i18n %}
++{% load url from future %}
++
++{% block modal-header %}{% trans "Log In" %}{% endblock %}
++{% block modal_class %}rhlogin{% if hide %}modal hide{% endif %}{% endblock %}
++
++{% block form_action %}{% url 'login' %}{% endblock %}
++{% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
++
++{% block modal-body %}
++  <fieldset>
++    {% if request.user.is_authenticated and 'next' in request.GET %}
++    <div class="control-group clearfix error">
++      <span class="help-inline"><p>{% trans "You don't have permissions to access:" %}</p>
++        <p><b>{{ request.GET.next }}</b></p>
++        <p>{% trans "Login as different user or go back to" %}
++        <a href="{% url 'horizon:user_home' %}">{% trans "home page" %}</a></p>
++      </span>
++    </div>
++    {% endif %}
++    {% if next %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />{% endif %}
++    {% include "horizon/common/_form_fields.html" %}
++  </fieldset>
++{% endblock %}
++
++{% block modal-footer %}
++  <button type="submit" class="btn btn-primary pull-right">{% trans "Sign In" %}</button>
++{% endblock %}
+diff --git a/openstack_dashboard_theme/templates/auth/login.html b/openstack_dashboard_theme/templates/auth/login.html
+new file mode 100644
+index 0000000..6fa7746
+--- /dev/null
++++ b/openstack_dashboard_theme/templates/auth/login.html
+@@ -0,0 +1,10 @@
++{% extends "base.html" %}
++{% load i18n %}
++
++{% block title %}{% trans "Login" %}{% endblock %}
++
++{% block body_id %}splash{% endblock %}
++
++{% block content %}
++  {% include 'auth/_login.html' %}
++{% endblock %}
+diff --git a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+new file mode 100644
+index 0000000..5672846
+--- /dev/null
++++ b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+@@ -0,0 +1,35 @@
++{% load branding horizon i18n %}
++
++<div class='sidebar'>
++  <h1 class="rhos clearfix"><a href="{% url horizon:user_home %}">{% site_branding %}</a></h1>
++
++  {% horizon_main_nav %}
++
++  {% if request.horizon.dashboard.supports_tenants %}
++  <div id="tenant_switcher" class="dropdown switcher_bar" tabindex="1">
++    {% with num_of_tenants=authorized_tenants|length %}
++      {% if num_of_tenants > 1 %}
++        <a class="dropdown-toggle" data-toggle="dropdown" href="#tenant_switcher">
++      {% endif %}
++        <h4>{% trans "Current Project" %}</h4>
++        <h3>{{ request.user.tenant_name }}</h3>
++      {% if num_of_tenants > 1 %}
++      </a>
++      {% endif %}
++
++      {% if num_of_tenants > 1 %}
++        <ul id="tenant_list" class="dropdown-menu">
++          <li class='divider'></li>
++          {% for tenant in authorized_tenants %}
++            {% if tenant.enabled and tenant.id != request.user.tenant_id %}
++              <li><a href="{% url switch_tenants tenant.id %}">{{ tenant.name }}</a></li>
++            {% endif %}
++          {% endfor %}
++        </ul>
++      {% endif %}
++    {% endwith %}
++  </div>
++  {% endif %}
++
++  {% horizon_dashboard_nav %}
++</div>
+diff --git a/openstack_dashboard_theme/templates/splash.html b/openstack_dashboard_theme/templates/splash.html
+new file mode 100644
+index 0000000..4a5cfe1
+--- /dev/null
++++ b/openstack_dashboard_theme/templates/splash.html
+@@ -0,0 +1,17 @@
++{% load i18n branding %}
++
++<!DOCTYPE html>
++<html lang="en" xml:lang="en">
++  <head>
++    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
++    <title>{% trans "Login" %} - {% site_branding %}</title>
++    {% include "_stylesheets.html" %}
++  </head>
++  <body id="splash">
++    <div class="container">
++      <div class="row large-rounded">
++        {% include 'auth/_login.html' %}
++      </div>
++    </div>
++  </body>
++</html>
