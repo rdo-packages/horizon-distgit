@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.8b2%{?dist}
+Release:    0.9b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/havana/havana-2/+download/horizon-%{version}.b2.tar.gz
+Source0:     https://launchpad.net/horizon/havana/havana-3/+download/horizon-%{version}.b3.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -20,7 +20,7 @@ Source10:   rhfavicon.ico
 Source11:   rh-logo.png
 
 #
-# patches_base=2013.2.b2
+# patches_base=2013.2.b3
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -95,6 +95,7 @@ Requires:   python-cinderclient
 Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
+# Requires:  python-troveclient
 Requires:   python-netaddr
 
 BuildRequires: python2-devel
@@ -133,6 +134,7 @@ BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
+# BuildRequires:  python-troveclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -145,7 +147,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.b2
+%setup -q -n horizon-%{version}.b3
 
 %patch0001 -p1
 %patch0002 -p1
@@ -301,6 +303,9 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 #%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico
 
 %changelog
+* Mon Sep 09 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.9b3
+- Havana-3 snapshot
+
 * Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
 - add a -custom subpackage to use a custom logo
 
