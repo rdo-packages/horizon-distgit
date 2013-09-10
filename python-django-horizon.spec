@@ -101,12 +101,14 @@ Requires:   python-ceilometerclient
 # Requires:  python-troveclient
 Requires:   python-netaddr
 Requires:   python-lesscpy
+Requires:   python-oslo-config
 
 BuildRequires: python2-devel
 BuildRequires: python-django-openstack-auth >= 1.0.11
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
+BuildRequires: python-oslo-config
 
 BuildRequires:   pytz 
 %description -n openstack-dashboard
