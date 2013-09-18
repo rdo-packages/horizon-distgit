@@ -52,8 +52,9 @@ Requires:   python-lockfile
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
 BuildRequires: python-d2to1
-BuildRequires: python-pbr
+BuildRequires: python-pbr >= 0.5.21
 BuildRequires: python-lockfile
+BuildRequires: python-eventlet
 
 # for checks:
 BuildRequires:   python-django-nose
