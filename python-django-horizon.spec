@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.10b3%{?dist}
+Release:    0.11b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -184,8 +184,8 @@ cp -p %{SOURCE4} .
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
-%{__python} manage.py collectstatic --noinput --pythonpath=../../lib/python2.7/site-packages/ 
-%{__python} manage.py compress --pythonpath=../../lib/python2.7/site-packages/
+%{__python} manage.py collectstatic --noinput 
+%{__python} manage.py compress 
 
 cp -a static/dashboard %{_buildir}
 
@@ -312,11 +312,12 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 %files -n openstack-dashboard-theme
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
-#%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
-#%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/img/rh-logo.png
-#%{_datadir}/openstack-dashboard/openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico
 
 %changelog
+* Thu Sep 19 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.11b3
+- add BuildRequires python-eventlet to fix ./manage.py issue during build
+- fix import in rhteme.less
+
 * Mon Sep 09 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.10b3
 - Havana-3 snapshot
 - drop node.js and node-less from buildrequirements
