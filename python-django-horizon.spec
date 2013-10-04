@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.11b3%{?dist}
+Release:    0.12.rc1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -20,7 +20,7 @@ Source10:   rhfavicon.ico
 Source11:   rh-logo.png
 
 #
-# patches_base=2013.2.b3
+# patches_base=2013.2.rc1
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -30,8 +30,6 @@ Patch0005: 0005-Revert-Adding-panels-for-trove.patch
 Patch0006: 0006-Revert-Use-oslo.sphinx-and-remove-local-copy-of-doc-.patch
 Patch0007: 0007-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
 Patch0008: 0008-move-SECRET_KEY-secret_key_store-to-tmp.patch
-
-# patch will be included in 2013.2.b3
 
 
 
@@ -101,7 +99,6 @@ Requires:   python-heatclient
 Requires:   python-ceilometerclient
 # Requires:  python-troveclient
 Requires:   python-netaddr
-Requires:   python-lesscpy
 Requires:   python-oslo-config
 
 BuildRequires: python2-devel
@@ -258,6 +255,8 @@ cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/s
 cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
 cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
+# create /var/run/openstack-dashboard/ and own it
+mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
 %check
 ./run_tests.sh -N
 
@@ -302,6 +301,7 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 %{_sharedstatedir}/openstack-dashboard
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
+%dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
@@ -314,6 +314,10 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Fru Oct 04 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.12.rc1
+- update to Havana-rc1
+- move secret_keystone to /var/lib/openstack-dashboard
+
 * Thu Sep 19 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.11b3
 - add BuildRequires python-eventlet to fix ./manage.py issue during build
 - fix import in rhteme.less
