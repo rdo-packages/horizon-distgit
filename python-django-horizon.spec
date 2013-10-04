@@ -186,7 +186,7 @@ cp -p %{SOURCE4} .
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # dirty hack to make SECRET_KEY work:
-sed -i 's:^SECRET_KEY =.*:ECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
 %{__python} manage.py compress 
 cp -a static/dashboard %{_buildir}
@@ -266,7 +266,7 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 # create /var/run/openstack-dashboard/ and own it
 mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
 %check
-sed -i 's:^SECRET_KEY =.*:ECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 ./run_tests.sh -N
 
 %files -f horizon.lang
