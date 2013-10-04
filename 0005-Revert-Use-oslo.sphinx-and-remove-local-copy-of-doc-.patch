@@ -1,4 +1,4 @@
-From 597dc95e0455195a7e97b3432472531f1498c0ca Mon Sep 17 00:00:00 2001
+From 3681cec52e0a20183ec22ac69bb8abcbf41dee06 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 9 Sep 2013 13:51:19 +0200
 Subject: [PATCH] Revert "Use oslo.sphinx and remove local copy of doc theme"
@@ -1305,7 +1305,7 @@ index 0000000..1cc4004
 +stylesheet = nature.css
 +pygments_style = tango
 diff --git a/doc/source/conf.py b/doc/source/conf.py
-index 0a7f677..adb3d14 100644
+index 30e4b6d..ec9e63f 100644
 --- a/doc/source/conf.py
 +++ b/doc/source/conf.py
 @@ -144,12 +144,13 @@ extensions = ['sphinx.ext.autodoc',
@@ -1338,7 +1338,7 @@ index 0a7f677..adb3d14 100644
  # Theme options are theme-specific and customize the look and feel of a theme
  # further.  For a list of options available for each theme, see the
 diff --git a/test-requirements.txt b/test-requirements.txt
-index e634373..727d09e 100644
+index 6f771b2..3ddb8a0 100644
 --- a/test-requirements.txt
 +++ b/test-requirements.txt
 @@ -14,4 +14,3 @@ selenium

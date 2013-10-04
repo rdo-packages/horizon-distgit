@@ -1,4 +1,4 @@
-From e843606f059684957482b85db841b2623eddeda2 Mon Sep 17 00:00:00 2001
+From a993b31582bd052a92b96a8ed50dd1bbcce05053 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:16:19 +0200
 Subject: [PATCH] Don't access the net while building docs (Note this hasn't
@@ -9,7 +9,7 @@ Subject: [PATCH] Don't access the net while building docs (Note this hasn't
  1 file changed, 1 deletion(-)
 
 diff --git a/doc/source/conf.py b/doc/source/conf.py
-index b708972..0a7f677 100644
+index 2c84fb3..30e4b6d 100644
 --- a/doc/source/conf.py
 +++ b/doc/source/conf.py
 @@ -141,7 +141,6 @@ write_autodoc_index()

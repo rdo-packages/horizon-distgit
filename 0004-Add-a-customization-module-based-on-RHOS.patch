@@ -1,4 +1,4 @@
-From cdbb878b1c43671873e21836dd8ba65e8a9a4750 Mon Sep 17 00:00:00 2001
+From a08b8f8fd6e4c86d918e2053b5bd181abb3d0e87 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
@@ -28,10 +28,10 @@ Conflicts:
  create mode 100644 openstack_dashboard_theme/templates/splash.html
 
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 9d1ee84..7bad6f8 100644
+index 09a5ec3..20edb90 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -107,14 +107,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
+@@ -119,14 +119,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
  )
  
  TEMPLATE_LOADERS = (
@@ -47,7 +47,7 @@ index 9d1ee84..7bad6f8 100644
  
  STATICFILES_FINDERS = (
      'compressor.finders.CompressorFinder',
-@@ -152,6 +151,15 @@ INSTALLED_APPS = (
+@@ -164,6 +163,15 @@ INSTALLED_APPS = (
      'openstack_dashboard.dashboards.router',
  )
  

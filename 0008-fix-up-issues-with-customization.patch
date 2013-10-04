@@ -1,0 +1,81 @@
+From c82f4ea6134d579ca3b7b3c6ebea81d1a15f870e Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Thu, 19 Sep 2013 12:58:00 +0200
+Subject: [PATCH] fix up issues with customization
+
+---
+ openstack_dashboard_theme/__init__.py              |  1 +
+ openstack_dashboard_theme/models.py                |  1 +
+ .../static/dashboard/less/rhtheme.less             |  2 +-
+ .../templates/horizon/common/_sidebar.html         | 23 ++++++++++++++++++++--
+ 4 files changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/openstack_dashboard_theme/__init__.py b/openstack_dashboard_theme/__init__.py
+index e69de29..94456ab 100644
+--- a/openstack_dashboard_theme/__init__.py
++++ b/openstack_dashboard_theme/__init__.py
+@@ -0,0 +1 @@
++# intentionally left blank
+diff --git a/openstack_dashboard_theme/models.py b/openstack_dashboard_theme/models.py
+index e69de29..94456ab 100644
+--- a/openstack_dashboard_theme/models.py
++++ b/openstack_dashboard_theme/models.py
+@@ -0,0 +1 @@
++# intentionally left blank
+diff --git a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+index 5350db3..2d8b2d0 100644
+--- a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
++++ b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+@@ -1,4 +1,4 @@
+-@import "/static/dashboard/less/horizon.less";
++@import "horizon.less";
+ 
+ /* Login Splash Page */
+ 
+diff --git a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+index 5672846..df66c62 100644
+--- a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
++++ b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+@@ -1,7 +1,8 @@
+ {% load branding horizon i18n %}
++{% load url from future %}
+ 
+ <div class='sidebar'>
+-  <h1 class="rhos clearfix"><a href="{% url horizon:user_home %}">{% site_branding %}</a></h1>
++  <h1 class="rhos clearfix"><a href="{% url 'horizon:user_home' %}">{% site_branding %}</a></h1>
+ 
+   {% horizon_main_nav %}
+ 
+@@ -22,7 +23,7 @@
+           <li class='divider'></li>
+           {% for tenant in authorized_tenants %}
+             {% if tenant.enabled and tenant.id != request.user.tenant_id %}
+-              <li><a href="{% url switch_tenants tenant.id %}">{{ tenant.name }}</a></li>
++              <li><a href="{% url 'switch_tenants' tenant.id %}?next={{ request.horizon.dashboard.get_absolute_url }}">{{ tenant.name }}</a></li>
+             {% endif %}
+           {% endfor %}
+         </ul>
+@@ -31,5 +32,23 @@
+   </div>
+   {% endif %}
+ 
++  {% with num_of_regions=request.user.available_services_regions|length %}
++  {% if num_of_regions > 1 %}
++  <div id="services_region_switcher" class="dropdown switcher_bar" tabindex="1">
++    <a class="dropdown-toggle" data-toggle="dropdown" href="#services_region_switcher">
++        <h4>{% trans "Managing Region" %}</h4>
++        <h3>{{ request.user.services_region }}</h3>
++    </a>
++
++    <ul id="services_regions_list" class="dropdown-menu">
++        <li class='divider'></li>
++        {% for region in request.user.available_services_regions %}
++        <li><a href="{% url 'switch_services_region' region %}?next={{ request.horizon.panel.get_absolute_url }}">{{ region }}</a></li>
++        {% endfor %}
++    </ul>
++  </div>
++  {% endif %}
++  {% endwith %}
++
+   {% horizon_dashboard_nav %}
+ </div>

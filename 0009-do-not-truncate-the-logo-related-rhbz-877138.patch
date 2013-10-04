@@ -1,0 +1,26 @@
+From eb46f4b4265fded3d5908d34de2ccef1892edde1 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Thu, 19 Sep 2013 13:58:16 +0200
+Subject: [PATCH] do not truncate the logo (related rhbz 877138)
+
+---
+ openstack_dashboard_theme/static/dashboard/less/rhtheme.less | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+index 2d8b2d0..d70852e 100644
+--- a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
++++ b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+@@ -46,10 +46,10 @@ h1.rhos a {
+     background: url(/static/dashboard/img/rh-logo.png) top left no-repeat;
+     display: block;
+     float: left;
+-    width: 116px;
++    width: 123px;
+     height: 123px;
+     text-indent: -9999px;
+-    margin-left: 56px;
++    margin-left: 53px;
+     margin-top: 15px;
+     margin-bottom: 25px;
+ }

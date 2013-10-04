@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/havana/havana-3/+download/horizon-%{version}.b3.tar.gz
+Source0:     https://launchpad.net/horizon/havana/havana-rc1/+download/horizon-%{version}.rc1.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -26,10 +26,12 @@ Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
 Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
 Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
-Patch0005: 0005-Revert-Adding-panels-for-trove.patch
-Patch0006: 0006-Revert-Use-oslo.sphinx-and-remove-local-copy-of-doc-.patch
-Patch0007: 0007-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
-Patch0008: 0008-move-SECRET_KEY-secret_key_store-to-tmp.patch
+Patch0005: 0005-Revert-Use-oslo.sphinx-and-remove-local-copy-of-doc-.patch
+Patch0006: 0006-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
+Patch0007: 0007-move-SECRET_KEY-secret_key_store-to-tmp.patch
+Patch0008: 0008-fix-up-issues-with-customization.patch
+Patch0009: 0009-do-not-truncate-the-logo-related-rhbz-877138.patch
+Patch0010: 0010-move-SECRET_KEYSTORE-to-var-lib-openstack-dashboard.patch
 
 
 
@@ -150,7 +152,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.b3
+%setup -q -n horizon-%{version}.rc1
 
 %patch0001 -p1
 %patch0002 -p1
@@ -160,6 +162,8 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %patch0006 -p1
 %patch0007 -p1
 %patch0008 -p1
+%patch0009 -p1
+%patch0010 -p1
 
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
@@ -181,9 +185,10 @@ cp -p %{SOURCE4} .
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
+# dirty hack to make SECRET_KEY work:
+sed -i 's:^SECRET_KEY =.*:ECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
 %{__python} manage.py compress 
-
 cp -a static/dashboard %{_buildir}
 
 # build docs
@@ -193,6 +198,9 @@ sphinx-1.0-build -b html doc/source html
 %else
 sphinx-build -b html doc/source html
 %endif
+
+# undo hack
+cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
@@ -258,6 +266,7 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 # create /var/run/openstack-dashboard/ and own it
 mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
 %check
+sed -i 's:^SECRET_KEY =.*:ECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 ./run_tests.sh -N
 
 %files -f horizon.lang
@@ -314,7 +323,7 @@ mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
-* Fru Oct 04 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.12.rc1
+* Fri Oct 04 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.12.rc1
 - update to Havana-rc1
 - move secret_keystone to /var/lib/openstack-dashboard
 

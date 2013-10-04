@@ -1,4 +1,4 @@
-From c1ad47c868f41c4e7f2a8c94b02242741c487534 Mon Sep 17 00:00:00 2001
+From 3cc31a7ab2e7ffd89680f4b7472dd492fc54fa2d Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -9,7 +9,7 @@ Subject: [PATCH] disable debug, move web root
  2 files changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 9c3f714..fa4bb18 100644
+index 6d333e2..11b02d6 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -35,11 +35,11 @@ index 9c3f714..fa4bb18 100644
  
  # The OPENSTACK_NEUTRON_NETWORK settings can be used to enable optional
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 378917b..9d1ee84 100644
+index 1216099..09a5ec3 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -29,7 +29,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
-                                 '%s: %s' % (category.__name__, message)
+@@ -31,7 +31,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
+     '%s: %s' % (category.__name__, message)
  
  ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 -BIN_DIR = os.path.abspath(os.path.join(ROOT_PATH, '..', 'bin'))
@@ -47,7 +47,7 @@ index 378917b..9d1ee84 100644
  
  if ROOT_PATH not in sys.path:
      sys.path.append(ROOT_PATH)
-@@ -47,12 +47,13 @@ SECRET_KEY = secret_key.generate_or_read_from_file(os.path.join(LOCAL_PATH,
+@@ -41,12 +41,13 @@ TEMPLATE_DEBUG = DEBUG
  
  SITE_BRANDING = 'OpenStack Dashboard'
  
@@ -64,7 +64,7 @@ index 378917b..9d1ee84 100644
  
  MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
  MEDIA_URL = '/media/'
-@@ -132,6 +133,7 @@ COMPRESS_ENABLED = True
+@@ -144,6 +145,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'
