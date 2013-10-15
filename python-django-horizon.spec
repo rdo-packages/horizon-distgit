@@ -152,7 +152,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.rc1
+%setup -q -n horizon-%{version}.rc2
 
 %patch0001 -p1
 %patch0002 -p1

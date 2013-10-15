@@ -1,4 +1,4 @@
-From 3cc31a7ab2e7ffd89680f4b7472dd492fc54fa2d Mon Sep 17 00:00:00 2001
+From ca2e5852377a438a997bdb5c7da2489e2a312b5a Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -9,7 +9,7 @@ Subject: [PATCH] disable debug, move web root
  2 files changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 6d333e2..11b02d6 100644
+index 6e426c9..d2db3cd 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -35,7 +35,7 @@ index 6d333e2..11b02d6 100644
  
  # The OPENSTACK_NEUTRON_NETWORK settings can be used to enable optional
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 1216099..09a5ec3 100644
+index 852a895..84da859 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -31,7 +31,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \

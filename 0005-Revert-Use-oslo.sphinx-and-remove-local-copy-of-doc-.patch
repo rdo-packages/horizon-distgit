@@ -1,4 +1,4 @@
-From 3681cec52e0a20183ec22ac69bb8abcbf41dee06 Mon Sep 17 00:00:00 2001
+From d2be0ab6922c1133de4a5c98d9711745c5d6cecb Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 9 Sep 2013 13:51:19 +0200
 Subject: [PATCH] Revert "Use oslo.sphinx and remove local copy of doc theme"

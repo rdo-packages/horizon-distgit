@@ -1,4 +1,4 @@
-From 5a2c2139a821c865f8b9de9501453ddd33d27b4b Mon Sep 17 00:00:00 2001
+From bd493f10d0387e9209f6b5bb155d18287af49901 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 9 Sep 2013 14:13:07 +0200
 Subject: [PATCH] move RBAC policy files and checks to /etc/openstack-dashboard
@@ -8,7 +8,7 @@ Subject: [PATCH] move RBAC policy files and checks to /etc/openstack-dashboard
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index cbf3d9b..e899a1e 100644
+index d386d46..afa95f1 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -228,12 +228,13 @@ TIME_ZONE = "UTC"

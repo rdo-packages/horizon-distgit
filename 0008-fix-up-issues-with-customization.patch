@@ -1,4 +1,4 @@
-From c82f4ea6134d579ca3b7b3c6ebea81d1a15f870e Mon Sep 17 00:00:00 2001
+From 7901d2b031e4aaa83850b72d84f91e3f718e20cf Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 19 Sep 2013 12:58:00 +0200
 Subject: [PATCH] fix up issues with customization
