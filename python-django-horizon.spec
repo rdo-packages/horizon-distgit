@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    0.12.rc1%{?dist}
+Release:    0.14.rc2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:     https://launchpad.net/horizon/havana/havana-rc1/+download/horizon-%{version}.rc1.tar.gz
+Source0:    https://launchpad.net/horizon/havana/havana-rc2/+download/horizon-%{version}.rc2.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -20,7 +20,7 @@ Source10:   rhfavicon.ico
 Source11:   rh-logo.png
 
 #
-# patches_base=2013.2.rc1
+# patches_base=2013.2.rc2
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -323,6 +323,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Tue Oct 15 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.14.rc2
+- rebase to Havana-rc2
+
 * Fri Oct 04 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.12.rc1
 - update to Havana-rc1
 - move secret_keystone to /var/lib/openstack-dashboard
