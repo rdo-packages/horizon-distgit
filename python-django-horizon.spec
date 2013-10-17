@@ -110,7 +110,7 @@ BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
 
-BuildRequires:   pytz 
+BuildRequires:   pytz
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
 provides a reference implementation using the Django Horizon project,
@@ -152,7 +152,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.rc2
+%setup -q -n horizon-%{version}.rc3
 
 %patch0001 -p1
 %patch0002 -p1
