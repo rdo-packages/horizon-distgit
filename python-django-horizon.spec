@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -62,7 +62,6 @@ BuildRequires:   python-coverage
 BuildRequires:   python-mox
 BuildRequires:   python-nose-exclude
 BuildRequires:   python-netaddr
-BuildRequires:   python-eventlet
 BuildRequires:   python-kombu
 BuildRequires:   python-anyjson
 BuildRequires:   pytz
@@ -102,6 +101,7 @@ Requires:   python-ceilometerclient
 # Requires:  python-troveclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
+Requires:   python-eventlet
 
 BuildRequires: python2-devel
 BuildRequires: python-django-openstack-auth >= 1.0.11
@@ -265,6 +265,11 @@ cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 # create /var/run/openstack-dashboard/ and own it
 mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
+
+# create /var/log/horizon and own it
+mkdir -p %{buildroot}%{_var}/log/horizon
+
+
 %check
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 ./run_tests.sh -N
@@ -308,23 +313,25 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 
-%{_sharedstatedir}/openstack-dashboard
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
+%dir %attr(0750, apache, apache) %{_var}/log/horizon
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 
 %files doc
-%doc html 
+%doc html
 
 %files -n openstack-dashboard-theme
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
-* Fri Oct 18 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-1
+* Fri Oct 18 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-2
 - update to Horizon-2013.2 release
+- require python-eventlet
+- create /var/log/horizon
 
 * Thu Oct 17 2013 Matthias Runge <mrunge@redhat.com> - 2013.2.0.15.rc3
 - rebase to Havana rc3
