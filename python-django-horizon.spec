@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -48,6 +48,7 @@ Requires:   Django
 Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
+Requires:   python-pbr
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -328,6 +329,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Wed Nov 13 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-3
+- add requirement python-pbr
+
 * Fri Oct 18 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-2
 - update to Horizon-2013.2 release
 - require python-eventlet
