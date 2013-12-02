@@ -1,4 +1,4 @@
-From 739b10c814b688bbf79f648b63ac1c23d029d692 Mon Sep 17 00:00:00 2001
+From a589f3805381cabca1a3b66dddc1717483191c7e Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS

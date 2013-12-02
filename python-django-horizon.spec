@@ -1,6 +1,6 @@
 Name:       python-django-horizon
 Version:    2013.2
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -32,6 +32,7 @@ Patch0007: 0007-move-SECRET_KEY-secret_key_store-to-tmp.patch
 Patch0008: 0008-fix-up-issues-with-customization.patch
 Patch0009: 0009-do-not-truncate-the-logo-related-rhbz-877138.patch
 Patch0010: 0010-move-SECRET_KEYSTORE-to-var-lib-openstack-dashboard.patch
+Patch0011: 0011-Fix-bug-by-escaping-strings-from-Nova-before-display.patch
 
 
 
@@ -165,6 +166,7 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %patch0008 -p1
 %patch0009 -p1
 %patch0010 -p1
+%patch0011 -p1
 
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
@@ -329,6 +331,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Mon Dec 02 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-4
+- fixes CVE-2013-6406 (rhbz#1035913)
+
 * Wed Nov 13 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-3
 - add requirement python-pbr
 

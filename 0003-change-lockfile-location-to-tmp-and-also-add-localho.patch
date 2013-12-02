@@ -1,4 +1,4 @@
-From 1ee6b707c9be851daf1e823b65926501e2438ac5 Mon Sep 17 00:00:00 2001
+From c767b5ecbde0729499dab5ea6cce842ebf221403 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 25 Jul 2013 11:32:38 +0200
 Subject: [PATCH] change lockfile location to '/tmp' and also add localhost to

@@ -1,4 +1,4 @@
-From 9fbf589a1f2c3b1bb58566eac8963847a12f5b9f Mon Sep 17 00:00:00 2001
+From ca2e5852377a438a997bdb5c7da2489e2a312b5a Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
