@@ -1,6 +1,6 @@
 Name:       python-django-horizon
-Version:    2013.2
-Release:    4%{?dist}
+Version:    2014.1
+Release:    0.1b1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -8,7 +8,7 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 BuildArch:  noarch
-Source0:    https://launchpad.net/horizon/havana/%{version}/+download/horizon-%{version}.tar.gz
+Source0:    https://launchpad.net/horizon/icehouse/icehouse-1/+download/horizon-%{version}.b1.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -20,7 +20,7 @@ Source10:   rhfavicon.ico
 Source11:   rh-logo.png
 
 #
-# patches_base=2013.2
+# patches_base=2014.1.b1
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -100,7 +100,7 @@ Requires:   python-cinderclient >= 1.0.6
 Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
-# Requires:  python-troveclient
+Requires:   python-troveclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
@@ -141,7 +141,7 @@ BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
-# BuildRequires:  python-troveclient
+BuildRequires: python-troveclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -331,6 +331,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Fri Dec 06 2013 Matthias Runge <mrunge@redhat.com> - 2014.1-0.1b1
+- rebase to 2014.1.b1
+
 * Mon Dec 02 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-4
 - fixes CVE-2013-6406 (rhbz#1035913)
 
