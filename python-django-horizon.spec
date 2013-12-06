@@ -140,6 +140,7 @@ BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
 BuildRequires: python-troveclient >= 1.0.0
+BuildRequires: python-oslo-sphinx
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -271,7 +272,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 
 %check
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
-./run_tests.sh -N
+./run_tests.sh -N -P
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
