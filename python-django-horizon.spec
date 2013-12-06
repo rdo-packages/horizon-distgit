@@ -26,13 +26,11 @@ Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
 Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
 Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
-Patch0005: 0005-Revert-Use-oslo.sphinx-and-remove-local-copy-of-doc-.patch
-Patch0006: 0006-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
-Patch0007: 0007-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0008: 0008-fix-up-issues-with-customization.patch
-Patch0009: 0009-do-not-truncate-the-logo-related-rhbz-877138.patch
-Patch0010: 0010-move-SECRET_KEYSTORE-to-var-lib-openstack-dashboard.patch
-Patch0011: 0011-Fix-bug-by-escaping-strings-from-Nova-before-display.patch
+Patch0005: 0005-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
+Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
+Patch0007: 0007-fix-up-issues-with-customization.patch
+Patch0008: 0008-do-not-truncate-the-logo-related-rhbz-877138.patch
+Patch0009: 0009-move-SECRET_KEYSTORE-to-var-lib-openstack-dashboard.patch
 
 
 
@@ -89,7 +87,7 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
-Requires:   python-django-openstack-auth >= 1.0.11
+Requires:   python-django-openstack-auth >= 1.1.3
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
 Requires:   python-glanceclient
@@ -100,13 +98,13 @@ Requires:   python-cinderclient >= 1.0.6
 Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
-Requires:   python-troveclient
+Requires:   python-troveclient >= 1.0.0
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
 
 BuildRequires: python2-devel
-BuildRequires: python-django-openstack-auth >= 1.0.11
+BuildRequires: python-django-openstack-auth >= 1.1.3
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
@@ -141,7 +139,7 @@ BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
-BuildRequires: python-troveclient
+BuildRequires: python-troveclient >= 1.0.0
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -154,7 +152,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}
+%setup -q -n horizon-%{version}.b1
 
 %patch0001 -p1
 %patch0002 -p1
@@ -165,8 +163,6 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %patch0007 -p1
 %patch0008 -p1
 %patch0009 -p1
-%patch0010 -p1
-%patch0011 -p1
 
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
