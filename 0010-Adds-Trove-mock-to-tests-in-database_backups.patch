@@ -1,0 +1,56 @@
+From 38f856cf18e6a009cf286efcece6d4b2afbdb2e3 Mon Sep 17 00:00:00 2001
+From: Cristian A Sanchez <cristian.a.sanchez@intel.com>
+Date: Mon, 9 Dec 2013 12:23:28 -0800
+Subject: [PATCH] Adds Trove mock to tests in database_backups
+
+Test cases in database_backups/tests.py now have a mock for the
+method api.trove.instance_get(). The absence of this mock was
+causing real HTTP requests to Trove.
+
+Change-Id: Icf760d7eaba2d136626dbbbbf6e49260a18fb874
+Closes-Bug: #1255936
+(cherry picked from commit 6afa1fdf1b660cf5932a0848f84a5262f26e3bb3)
+---
+ .../dashboards/project/database_backups/tests.py            | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/project/database_backups/tests.py b/openstack_dashboard/dashboards/project/database_backups/tests.py
+index ccff48d..68996d5 100644
+--- a/openstack_dashboard/dashboards/project/database_backups/tests.py
++++ b/openstack_dashboard/dashboards/project/database_backups/tests.py
+@@ -27,11 +27,16 @@ DETAILS_URL = reverse('horizon:project:database_backups:detail', args=['id'])
+ 
+ 
+ class DatabasesBackupsTests(test.TestCase):
+-    @test.create_stubs({api.trove: ('backup_list', )})
++    @test.create_stubs({api.trove: ('backup_list', 'instance_get')})
+     def test_index(self):
+         api.trove.backup_list(IsA(http.HttpRequest))\
+             .AndReturn(self.database_backups.list())
+ 
++        api.trove.instance_get(IsA(http.HttpRequest),
++                               IsA(str))\
++            .MultipleTimes()\
++            .AndReturn(self.databases.first())
++
+         self.mox.ReplayAll()
+ 
+         res = self.client.get(INDEX_URL)
+@@ -75,12 +80,16 @@ class DatabasesBackupsTests(test.TestCase):
+         self.assertTemplateUsed(res,
+             'project/database_backups/backup.html')
+ 
+-    @test.create_stubs({api.trove: ('backup_get',)})
++    @test.create_stubs({api.trove: ('backup_get', 'instance_get')})
+     def test_detail_backup(self):
+         api.trove.backup_get(IsA(http.HttpRequest),
+                              IsA(unicode))\
+             .AndReturn(self.database_backups.first())
+ 
++        api.trove.instance_get(IsA(http.HttpRequest),
++                               IsA(str))\
++            .AndReturn(self.databases.first())
++
+         self.mox.ReplayAll()
+         res = self.client.get(DETAILS_URL)
+ 

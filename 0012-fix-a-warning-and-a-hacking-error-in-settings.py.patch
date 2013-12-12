@@ -1,0 +1,49 @@
+From de4dba8d54b477f4d940c63d87ae2db62730396e Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Wed, 11 Dec 2013 12:26:02 +0100
+Subject: [PATCH] fix a warning and a hacking error in settings.py
+
+---
+ openstack_dashboard/settings.py | 4 ++--
+ tox.ini                         | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 20edb90..08bffb5 100644
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -125,7 +125,7 @@ TEMPLATE_LOADERS = (
+ 
+ TEMPLATE_DIRS = (
+     os.path.join(ROOT_PATH, 'templates'),
+-) 
++)
+ 
+ STATICFILES_FINDERS = (
+     'compressor.finders.CompressorFinder',
+@@ -168,7 +168,7 @@ THEME_APP = 'openstack_dashboard_theme'
+ try:
+     __import__(THEME_APP)
+     INSTALLED_APPS = (THEME_APP,) + INSTALLED_APPS
+-except:
++except Exception:
+     pass
+ 
+ 
+diff --git a/tox.ini b/tox.ini
+index 23ad8d6..9f450f2 100644
+--- a/tox.ini
++++ b/tox.ini
+@@ -32,9 +32,11 @@ downloadcache = ~/cache/pip
+ [flake8]
+ builtins = _
+ exclude =  .venv,.git,.tox,dist,doc,*openstack/common*,*lib/python*,*egg,build,panel_template,dash_template,local_settings.py
++# E122 continuation line missing indentation or outdented
++# E126 continuation line over-indented for hanging indent
+ # E127 continuation line over-indented for visual indent
+ # E128 continuation line under-indented for visual indent
+ # H701 empty localization string
+ # H702 Formatting operation should be outside of localization method call
+ # H803 git commit title should not end with period (disabled on purpose, see bug #1236621)
+-ignore = E127,E128,H701,H702,H803
++ignore = E122,E126,E127,E128,H701,H702,H803
