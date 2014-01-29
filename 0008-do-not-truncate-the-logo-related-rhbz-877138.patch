@@ -1,4 +1,4 @@
-From e796f196d00cd5d8ca1258df54f52bcd16e413f1 Mon Sep 17 00:00:00 2001
+From a1a388a61db4094e5ac8a8bed05fdbf009094a2a Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 19 Sep 2013 13:58:16 +0200
 Subject: [PATCH] do not truncate the logo (related rhbz 877138)
