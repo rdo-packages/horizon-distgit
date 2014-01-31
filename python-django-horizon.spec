@@ -7,7 +7,6 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-BuildArch:  noarch
 Source0:    https://launchpad.net/horizon/icehouse/icehouse-2/+download/horizon-%{version}.b2.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
@@ -36,6 +35,7 @@ Patch0011: 0011-Run-selenium-tests-only-when-requested.patch
 Patch0012: 0012-fix-a-warning-and-a-hacking-error-in-settings.py.patch
 
 
+BuildArch:  noarch
 
 # epel6 has a separate Django14 package
 %if 0%{?rhel}==6
@@ -106,14 +106,14 @@ Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
 
-BuildRequires: python2-devel
 BuildRequires: python-django-openstack-auth >= 1.1.3
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
 
-BuildRequires:   pytz
+BuildRequires: pytz
+
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
 provides a reference implementation using the Django Horizon project,
