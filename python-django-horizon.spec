@@ -27,12 +27,8 @@ Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
 Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
 Patch0005: 0005-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
 Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0007: 0007-fix-up-issues-with-customization.patch
-Patch0008: 0008-do-not-truncate-the-logo-related-rhbz-877138.patch
-Patch0009: 0009-CSV-Summary-not-working-inside-Admin-panel.patch
-Patch0010: 0010-Adds-Trove-mock-to-tests-in-database_backups.patch
-Patch0011: 0011-Run-selenium-tests-only-when-requested.patch
-Patch0012: 0012-fix-a-warning-and-a-hacking-error-in-settings.py.patch
+Patch0007: 0007-Settings-cleanup-use-newer-customization.patch
+Patch0008: 0008-RCUE-navbar-and-login-screen.patch
 
 
 BuildArch:  noarch
@@ -158,18 +154,14 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %prep
 %setup -q -n horizon-%{version}.b2
 
-%patch0001 -p1
-%patch0002 -p1
-%patch0003 -p1
-%patch0004 -p1
-%patch0005 -p1
-%patch0006 -p1
-%patch0007 -p1
-%patch0008 -p1
-%patch0009 -p1
-%patch0010 -p1
-%patch0011 -p1
-%patch0012 -p1
+# Use git to manage patches.
+# http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
+git init
+git config user.email "python-django-horizon-owner@fedoraproject.org"
+git config user.name "python-django-horizon"
+git add .
+git commit -a -q -m "%{version} baseline"
+git am %{patches}
 
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
@@ -194,7 +186,6 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 # dirty hack to make SECRET_KEY work:
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
-%{__python} manage.py compress 
 cp -a static/dashboard %{_buildir}
 
 # build docs
@@ -305,6 +296,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
+%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
@@ -324,6 +316,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %dir %attr(0750, apache, apache) %{_var}/log/horizon
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 
