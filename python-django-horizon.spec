@@ -1,6 +1,7 @@
+%global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.1b2%{?dist}
+Release:    0.2b2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -13,10 +14,6 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
-
-# custom icons
-Source10:   rhfavicon.ico
-Source11:   rh-logo.png
 
 #
 # patches_base=2014.1.b2
@@ -31,6 +28,9 @@ Patch0007: 0007-Settings-cleanup-use-newer-customization.patch
 Patch0008: 0008-RCUE-navbar-and-login-screen.patch
 
 
+#
+# BuildArch needs to be located below patches in the spec file. Don't ask!
+#
 BuildArch:  noarch
 
 # epel6 has a separate Django14 package
@@ -56,16 +56,17 @@ BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 
 # for checks:
+%if 0%{?rhel} == 0
 BuildRequires:   python-django-nose
 BuildRequires:   python-coverage
 BuildRequires:   python-mox
 BuildRequires:   python-nose-exclude
+BuildRequires:   python-nose
+%endif
 BuildRequires:   python-netaddr
 BuildRequires:   python-kombu
 BuildRequires:   python-anyjson
-BuildRequires:   pytz
 BuildRequires:   python-iso8601
-BuildRequires:   python-nose
 
 
 # additional provides to be consistent with other django packages
@@ -89,6 +90,10 @@ Requires:   python-django-horizon >= %{version}
 Requires:   python-django-openstack-auth >= 1.1.3
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
+%if %{with_compression} > 0
+Requires:   python-lesscpy
+%endif
+
 Requires:   python-glanceclient
 Requires:   python-keystoneclient >= 0.3.2
 Requires:   python-novaclient >= 2012.1
@@ -172,8 +177,6 @@ rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 
 # create images for custom theme
 mkdir -p openstack_dashboard_theme/static/dashboard/img
-cp %{SOURCE10} openstack_dashboard_theme/static/dashboard/img
-cp %{SOURCE11} openstack_dashboard_theme/static/dashboard/img 
 
 # drop config snippet
 cp -p %{SOURCE4} .
@@ -186,6 +189,17 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 # dirty hack to make SECRET_KEY work:
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
+
+%if %{with_compression} > 0
+# set COMPRESS_OFFLINE=True
+sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
+%{__python} manage.py compress 
+cp -a static/dashboard %{_buildir}
+%else
+# set COMPRESS_OFFLINE=False
+sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
+%endif
+
 cp -a static/dashboard %{_buildir}
 
 # build docs
@@ -268,8 +282,11 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 
 
 %check
+# don't run tests on rhel
+%if 0%{?rhel} == 0
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 ./run_tests.sh -N -P
+%endif
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
@@ -327,8 +344,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
-* Fri Jan 24 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.2b2
+* Sun Feb 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.2b2
 - rebase to 2014.1.b2
+- make compression conditional
 
 * Fri Dec 06 2013 Matthias Runge <mrunge@redhat.com> - 2014.1-0.1b1
 - rebase to 2014.1.b1
