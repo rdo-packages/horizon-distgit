@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
