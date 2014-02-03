@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
@@ -31,6 +32,7 @@ Patch0008: 0008-RCUE-navbar-and-login-screen.patch
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
 #
+
 BuildArch:  noarch
 
 # epel6 has a separate Django14 package
@@ -54,6 +56,7 @@ BuildRequires: python-d2to1
 BuildRequires: python-pbr >= 0.5.21
 BuildRequires: python-lockfile
 BuildRequires: python-eventlet
+BuildRequires: git
 
 # for checks:
 %if 0%{?rhel} == 0
@@ -158,7 +161,6 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
 %setup -q -n horizon-%{version}.b2
-
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -335,6 +337,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 
 %files doc
