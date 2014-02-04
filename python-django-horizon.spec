@@ -92,7 +92,7 @@ Requires:   python-django-horizon >= %{version}
 Requires:   python-django-openstack-auth >= 1.1.3
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
-%if %{with_compression} > 0
+%if %{?with_compression} > 0
 Requires:   python-lesscpy
 %endif
 
@@ -191,7 +191,7 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
 
-%if %{with_compression} > 0
+%if %{?with_compression} > 0
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
 %{__python} manage.py compress 
