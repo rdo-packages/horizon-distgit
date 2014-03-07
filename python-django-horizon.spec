@@ -1,14 +1,14 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.2b2%{?dist}
+Release:    0.3.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    https://launchpad.net/horizon/icehouse/icehouse-2/+download/horizon-%{version}.b2.tar.gz
+Source0:    https://launchpad.net/horizon/icehouse/icehouse-3/+download/horizon-%{version}.b3.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -16,7 +16,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=2014.1.b2
+# patches_base=2014.1.b3
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -48,6 +48,7 @@ Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-pbr
+Requires:   python-six >= 1.4.1
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -56,6 +57,7 @@ BuildRequires: python-pbr >= 0.5.21
 BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
+BuildRequires: python-six >= 1.4.1
 
 # for checks:
 %if 0%{?rhel} == 0
@@ -98,7 +100,7 @@ Requires:   python-lesscpy
 
 Requires:   python-glanceclient
 Requires:   python-keystoneclient >= 0.3.2
-Requires:   python-novaclient >= 2012.1
+Requires:   python-novaclient >= 2.15.0
 Requires:   python-neutronclient
 Requires:   python-cinderclient >= 1.0.6
 Requires:   python-swiftclient
@@ -139,7 +141,7 @@ BuildRequires: python-sphinx >= 1.1.3
 BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient >= 0.3.2
-BuildRequires: python-novaclient >= 2012.1
+BuildRequires: python-novaclient >= 2.15.0
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
@@ -159,7 +161,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.b2
+%setup -q -n horizon-%{version}.b3
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -221,7 +223,7 @@ rm -fr html/.doctrees html/.buildinfo
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 # drop httpd-conf snippet
-%if 0%{?rhel} || 0%{?fedora} <18
+%if 0%{?rhel} <7 && 0%{?fedora} <18
 install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %else
 # httpd-2.4 changed the syntax
@@ -346,6 +348,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Fri Mar 07 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.3.b3
+- rebase to 2014.1.b3
+
 * Sun Feb 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.2b2
 - rebase to 2014.1.b2
 - make compression conditional
