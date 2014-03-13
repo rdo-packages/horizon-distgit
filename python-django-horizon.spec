@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.3.b3%{?dist}
+Release:    0.4.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -350,6 +350,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Thu Mar 13 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.4.b3
+- remove hard selenium requirement for tests
+
 * Fri Mar 07 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.3.b3
 - rebase to 2014.1.b3
 
