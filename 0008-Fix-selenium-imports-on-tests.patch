@@ -1,0 +1,30 @@
+From 10bced8fc589b427a0356e40bfa15bd7338465a4 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Fri, 7 Mar 2014 13:44:16 +0100
+Subject: [PATCH] Fix selenium imports on tests
+
+tests require selenium to be installed, no matter if
+integration tests or selenium tests are executed or
+not.
+
+Change-Id: Ie55d64c19b00b5b22f62948d4a24a3f322082b0c
+Closes-Bug: #1289270
+---
+ run_tests.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/run_tests.sh b/run_tests.sh
+index a0c10cf..6d5b118 100755
+--- a/run_tests.sh
++++ b/run_tests.sh
+@@ -296,6 +296,10 @@ function run_tests {
+     export SKIP_UNITTESTS=1
+   fi
+ 
++  if [ $with_selenium -eq 0 -a $integration -eq 0 ]; then
++      testopts="$testopts --exclude-dir=openstack_dashboard/test/integration_tests"
++  fi
++
+   if [ -z "$testargs" ]; then
+      run_tests_all
+   else

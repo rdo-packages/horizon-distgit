@@ -1,12 +1,16 @@
-From 56ee637318de1c0c17cf93a43d7bcb5778566959 Mon Sep 17 00:00:00 2001
+From ee9965e6c5c42f5d33426f92783c3da2d329956a Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Thu, 19 Sep 2013 13:58:16 +0200
+Date: Fri, 7 Mar 2014 09:48:30 +0100
 Subject: [PATCH] RCUE navbar and login screen
 
+Conflicts:
+	tox.ini
 ---
- openstack_dashboard/settings.py                    |   8 +-
+ openstack_dashboard/dashboards/theme/__init__.py   |   1 +
+ openstack_dashboard/dashboards/theme/dashboard.py  |  30 ++
+ openstack_dashboard/dashboards/theme/models.py     |   1 +
  .../static/dashboard/css/font-awesome.min.css      |   4 +
- .../static/dashboard/fonts/FontAwesome.otf         | Bin 0 -> 62856 bytes
+ .../theme/static/dashboard/fonts/FontAwesome.otf   | Bin 0 -> 62856 bytes
  .../dashboard/fonts/OpenSans-Bold-webfont.eot      | Bin 0 -> 21190 bytes
  .../dashboard/fonts/OpenSans-Bold-webfont.svg      | 146 +++++++
  .../dashboard/fonts/OpenSans-Bold-webfont.ttf      | Bin 0 -> 21012 bytes
@@ -56,133 +60,194 @@ Subject: [PATCH] RCUE navbar and login screen
  .../static/dashboard/fonts/fontawesome-webfont.svg | 414 +++++++++++++++++++
  .../static/dashboard/fonts/fontawesome-webfont.ttf | Bin 0 -> 80652 bytes
  .../dashboard/fonts/fontawesome-webfont.woff       | Bin 0 -> 44432 bytes
- .../static/dashboard/fonts/logo.svg                |  94 +++++
- .../static/dashboard/img/bg-login.jpg              | Bin 0 -> 114191 bytes
- .../static/dashboard/img/brand.svg                 | 240 +++++++++++
- .../static/dashboard/img/logo.svg                  |  94 +++++
- .../static/dashboard/img/rh-logo.png               | Bin 0 -> 60337 bytes
- .../static/dashboard/img/rhfavicon.ico             | Bin 0 -> 446 bytes
- .../static/dashboard/less/rcue/fonts.less          |  52 +++
- .../static/dashboard/less/rcue/icons.less          | 114 +++++
- .../static/dashboard/less/rcue/login.less          | 139 +++++++
- .../static/dashboard/less/rcue/navbar.less         | 458 +++++++++++++++++++++
+ .../theme/static/dashboard/fonts/logo.svg          |  94 +++++
+ .../theme/static/dashboard/img/bg-login.jpg        | Bin 0 -> 114191 bytes
+ .../theme/static/dashboard/img/brand.svg           | 240 +++++++++++
+ .../dashboards/theme/static/dashboard/img/logo.svg |  94 +++++
+ .../theme/static/dashboard/img/rh-logo.png         | Bin 0 -> 60337 bytes
+ .../theme/static/dashboard/img/rhfavicon.ico       | Bin 0 -> 446 bytes
+ .../theme/static/dashboard/less/rcue/fonts.less    |  52 +++
+ .../theme/static/dashboard/less/rcue/icons.less    | 114 +++++
+ .../theme/static/dashboard/less/rcue/login.less    | 139 +++++++
+ .../theme/static/dashboard/less/rcue/navbar.less   | 458 +++++++++++++++++++++
  .../static/dashboard/less/rcue/variables.less      |  92 +++++
- .../static/dashboard/less/rhtheme.less             |  95 ++---
- openstack_dashboard_theme/templates/_header.html   |  16 +
- .../templates/_stylesheets.html                    |   3 +
- .../templates/auth/_login.html                     |   4 +-
- .../templates/auth/login.html                      |  10 +-
- openstack_dashboard_theme/templates/base.html      |  37 ++
- .../templates/horizon/_nav_list.html               |  11 +
- .../templates/horizon/_subnav_list.html            |  20 +
- .../templates/horizon/common/_sidebar.html         |  98 +++--
- openstack_dashboard_theme/templates/splash.html    |  19 +-
- 73 files changed, 3403 insertions(+), 117 deletions(-)
- create mode 100644 openstack_dashboard_theme/static/dashboard/css/font-awesome.min.css
- create mode 100644 openstack_dashboard_theme/static/dashboard/fonts/FontAwesome.otf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.woff
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.woff
- create mode 100644 openstack_dashboard_theme/static/dashboard/fonts/font-awesome.min.css
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.eot
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.svg
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.ttf
- create mode 100755 openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.woff
- create mode 100644 openstack_dashboard_theme/static/dashboard/fonts/logo.svg
- create mode 100644 openstack_dashboard_theme/static/dashboard/img/bg-login.jpg
- create mode 100644 openstack_dashboard_theme/static/dashboard/img/brand.svg
- create mode 100644 openstack_dashboard_theme/static/dashboard/img/logo.svg
- create mode 100644 openstack_dashboard_theme/static/dashboard/img/rh-logo.png
- create mode 100644 openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico
- create mode 100644 openstack_dashboard_theme/static/dashboard/less/rcue/fonts.less
- create mode 100644 openstack_dashboard_theme/static/dashboard/less/rcue/icons.less
- create mode 100755 openstack_dashboard_theme/static/dashboard/less/rcue/login.less
- create mode 100644 openstack_dashboard_theme/static/dashboard/less/rcue/navbar.less
- create mode 100755 openstack_dashboard_theme/static/dashboard/less/rcue/variables.less
- create mode 100644 openstack_dashboard_theme/templates/_header.html
- create mode 100644 openstack_dashboard_theme/templates/base.html
- create mode 100644 openstack_dashboard_theme/templates/horizon/_nav_list.html
- create mode 100644 openstack_dashboard_theme/templates/horizon/_subnav_list.html
+ .../theme/static/dashboard/less/rhtheme.less       |  50 +++
+ .../dashboards/theme/templates/_header.html        |  16 +
+ .../dashboards/theme/templates/_stylesheets.html   |  10 +
+ .../dashboards/theme/templates/auth/_login.html    |  29 ++
+ .../dashboards/theme/templates/auth/login.html     |   2 +
+ .../dashboards/theme/templates/base.html           |  37 ++
+ .../theme/templates/horizon/_nav_list.html         |  11 +
+ .../theme/templates/horizon/_subnav_list.html      |  20 +
+ .../theme/templates/horizon/common/_sidebar.html   |  64 +++
+ .../dashboards/theme/templates/splash.html         |  24 ++
+ .../dashboards/theme/theme_index/__init__.py       |   0
+ .../dashboards/theme/theme_index/panel.py          |  28 ++
+ .../dashboards/theme/theme_index/urls.py           |   2 +
+ .../dashboards/theme/theme_index/views.py          |   0
+ openstack_dashboard/enabled/_99_customization.py   |   9 +
+ openstack_dashboard/settings.py                    |  15 +-
+ openstack_dashboard_theme/__init__.py              |   0
+ openstack_dashboard_theme/models.py                |   0
+ .../static/dashboard/less/rhtheme.less             |  55 ---
+ .../templates/_stylesheets.html                    |   7 -
+ .../templates/auth/_login.html                     |  29 --
+ .../templates/auth/login.html                      |  10 -
+ .../templates/horizon/common/_sidebar.html         |  35 --
+ openstack_dashboard_theme/templates/splash.html    |  17 -
+ tox.ini                                            |   1 +
+ 90 files changed, 3538 insertions(+), 164 deletions(-)
+ create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
+ create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
+ create mode 100644 openstack_dashboard/dashboards/theme/models.py
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/css/font-awesome.min.css
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/fonts/FontAwesome.otf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.woff
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.woff
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/fonts/font-awesome.min.css
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.eot
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.svg
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.ttf
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.woff
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/img/bg-login.jpg
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/img/rh-logo.png
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/img/rhfavicon.ico
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/fonts.less
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/icons.less
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less
+ create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/variables.less
+ create mode 100644 openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/_header.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/_stylesheets.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/auth/_login.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/auth/login.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/base.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/splash.html
+ create mode 100644 openstack_dashboard/dashboards/theme/theme_index/__init__.py
+ create mode 100644 openstack_dashboard/dashboards/theme/theme_index/panel.py
+ create mode 100644 openstack_dashboard/dashboards/theme/theme_index/urls.py
+ create mode 100644 openstack_dashboard/dashboards/theme/theme_index/views.py
+ create mode 100644 openstack_dashboard/enabled/_99_customization.py
+ delete mode 100644 openstack_dashboard_theme/__init__.py
+ delete mode 100644 openstack_dashboard_theme/models.py
+ delete mode 100644 openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+ delete mode 100644 openstack_dashboard_theme/templates/_stylesheets.html
+ delete mode 100644 openstack_dashboard_theme/templates/auth/_login.html
+ delete mode 100644 openstack_dashboard_theme/templates/auth/login.html
+ delete mode 100644 openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+ delete mode 100644 openstack_dashboard_theme/templates/splash.html
 
-diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 10b24f0..cad8f15 100644
---- a/openstack_dashboard/settings.py
-+++ b/openstack_dashboard/settings.py
-@@ -146,7 +146,7 @@ COMPRESS_ENABLED = True
- COMPRESS_OUTPUT_DIR = 'dashboard'
- COMPRESS_CSS_HASHING_METHOD = 'hash'
- COMPRESS_PARSER = 'compressor.parser.HtmlParser'
--COMPRESS_OFFLINE = True
-+COMPRESS_OFFLINE = False
- 
- INSTALLED_APPS = [
-     'openstack_dashboard',
-@@ -165,11 +165,7 @@ THEME_APP = 'openstack_dashboard_theme'
- 
- try:
-     __import__(THEME_APP)
--    TEMPLATE_DIRS = (os.path.join(ROOT_PATH, '..', THEME_APP,
--                        'templates'),) + TEMPLATE_DIRS
--    STATICFILES_DIRS = STATICFILES_DIRS + (
--        os.path.join(ROOT_PATH, '..', THEME_APP, 'templates'),)
--
-+    INSTALLED_APPS.insert(0, THEME_APP)
- except Exception:
-     pass
- 
-diff --git a/openstack_dashboard_theme/static/dashboard/css/font-awesome.min.css b/openstack_dashboard_theme/static/dashboard/css/font-awesome.min.css
+diff --git a/openstack_dashboard/dashboards/theme/__init__.py b/openstack_dashboard/dashboards/theme/__init__.py
+new file mode 100644
+index 0000000..94456ab
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/__init__.py
+@@ -0,0 +1 @@
++# intentionally left blank
+diff --git a/openstack_dashboard/dashboards/theme/dashboard.py b/openstack_dashboard/dashboards/theme/dashboard.py
+new file mode 100644
+index 0000000..11c52d8
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/dashboard.py
+@@ -0,0 +1,30 @@
++# vim: tabstop=4 shiftwidth=4 softtabstop=4
++
++# Copyright 2012 OpenStack Foundation
++# Copyright 2012 Nebula, Inc.
++#
++#    Licensed under the Apache License, Version 2.0 (the "License"); you may
++#    not use this file except in compliance with the License. You may obtain
++#    a copy of the License at
++#
++#         http://www.apache.org/licenses/LICENSE-2.0
++#
++#    Unless required by applicable law or agreed to in writing, software
++#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++#    License for the specific language governing permissions and limitations
++#    under the License.
++
++from django.utils.translation import ugettext_lazy as _
++
++import horizon
++
++
++class Theme(horizon.Dashboard):
++    name = _("theme")
++    slug = "theme"
++    panels = ('theme_index', )
++    default_panel = 'theme_index'
++    nav = False
++
++horizon.register(Theme)
+diff --git a/openstack_dashboard/dashboards/theme/models.py b/openstack_dashboard/dashboards/theme/models.py
+new file mode 100644
+index 0000000..94456ab
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/models.py
+@@ -0,0 +1 @@
++# intentionally left blank
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/css/font-awesome.min.css b/openstack_dashboard/dashboards/theme/static/dashboard/css/font-awesome.min.css
 new file mode 100644
 index 0000000..449d6ac
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/css/font-awesome.min.css
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/css/font-awesome.min.css
 @@ -0,0 +1,4 @@
 +/*!
 + *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
 + *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 + */@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.0.3');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.fa-lg{font-size:1.3333333333333333em;line-height:.75em;vertical-align:-15%}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-fw{width:1.2857142857142858em;text-align:center}.fa-ul{padding-left:0;margin-left:2.142857142857143em;list-style-type:none}.fa-ul>li{position:relative}.fa-li{position:absolute;left:-2.142857142857143em;width:2.142857142857143em;top:.14285714285714285em;text-align:center}.fa-li.fa-lg{left:-1.8571428571428572em}.fa-border{padding:.2em .25em .15em;border:solid .08em #eee;border-radius:.1em}.pull-right{float:right}.pull-left{float:left}.fa.pull-left{margin-right:.3em}.fa.pull-right{margin-left:.3em}.fa-spin{-webkit-animation:spin 2s infinite linear;-moz-animation:spin 2s infinite linear;-o-animation:spin 2s infinite linear;animation:spin 2s infinite linear}@-moz-keyframes spin{0%{-moz-transform:rotate(0deg)}100%{-moz-transform:rotate(359deg)}}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg)}}@-o-keyframes spin{0%{-o-transform:rotate(0deg)}100%{-o-transform:rotate(359deg)}}@-ms-keyframes spin{0%{-ms-transform:rotate(0deg)}100%{-ms-transform:rotate(359deg)}}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(359deg)}}.fa-rotate-90{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);-webkit-transform:rotate(90deg);-moz-transform:rotate(90deg);-ms-transform:rotate(90deg);-o-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);-webkit-transform:rotate(270deg);-moz-transform:rotate(270deg);-ms-transform:rotate(270deg);-o-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=0,mirror=1);-webkit-transform:scale(-1,1);-moz-transform:scale(-1,1);-ms-transform:scale(-1,1);-o-transform:scale(-1,1);transform:scale(-1,1)}.fa-flip-vertical{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2,mirror=1);-webkit-transform:scale(1,-1);-moz-transform:scale(1,-1);-ms-transform:scale(1,-1);-o-transform:scale(1,-1);transform:scale(1,-1)}.fa-stack{position:relative;display:inline-block;width:2em;height:2em;line-height:2em;vertical-align:middle}.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}.fa-stack-1x{line-height:inherit}.fa-stack-2x{font-size:2em}.fa-inverse{color:#fff}.fa-glass:before{content:"\f000"}.fa-music:before{content:"\f001"}.fa-search:before{content:"\f002"}.fa-envelope-o:before{content:"\f003"}.fa-heart:before{content:"\f004"}.fa-star:before{content:"\f005"}.fa-star-o:before{content:"\f006"}.fa-user:before{content:"\f007"}.fa-film:before{content:"\f008"}.fa-th-large:before{content:"\f009"}.fa-th:before{content:"\f00a"}.fa-th-list:before{content:"\f00b"}.fa-check:before{content:"\f00c"}.fa-times:before{content:"\f00d"}.fa-search-plus:before{content:"\f00e"}.fa-search-minus:before{content:"\f010"}.fa-power-off:before{content:"\f011"}.fa-signal:before{content:"\f012"}.fa-gear:before,.fa-cog:before{content:"\f013"}.fa-trash-o:before{content:"\f014"}.fa-home:before{content:"\f015"}.fa-file-o:before{content:"\f016"}.fa-clock-o:before{content:"\f017"}.fa-road:before{content:"\f018"}.fa-download:before{content:"\f019"}.fa-arrow-circle-o-down:before{content:"\f01a"}.fa-arrow-circle-o-up:before{content:"\f01b"}.fa-inbox:before{content:"\f01c"}.fa-play-circle-o:before{content:"\f01d"}.fa-rotate-right:before,.fa-repeat:before{content:"\f01e"}.fa-refresh:before{content:"\f021"}.fa-list-alt:before{content:"\f022"}.fa-lock:before{content:"\f023"}.fa-flag:before{content:"\f024"}.fa-headphones:before{content:"\f025"}.fa-volume-off:before{content:"\f026"}.fa-volume-down:before{content:"\f027"}.fa-volume-up:before{content:"\f028"}.fa-qrcode:before{content:"\f029"}.fa-barcode:before{content:"\f02a"}.fa-tag:before{content:"\f02b"}.fa-tags:before{content:"\f02c"}.fa-book:before{content:"\f02d"}.fa-bookmark:before{content:"\f02e"}.fa-print:before{content:"\f02f"}.fa-camera:before{content:"\f030"}.fa-font:before{content:"\f031"}.fa-bold:before{content:"\f032"}.fa-italic:before{content:"\f033"}.fa-text-height:before{content:"\f034"}.fa-text-width:before{content:"\f035"}.fa-align-left:before{content:"\f036"}.fa-align-center:before{content:"\f037"}.fa-align-right:before{content:"\f038"}.fa-align-justify:before{content:"\f039"}.fa-list:before{content:"\f03a"}.fa-dedent:before,.fa-outdent:before{content:"\f03b"}.fa-indent:before{content:"\f03c"}.fa-video-camera:before{content:"\f03d"}.fa-picture-o:before{content:"\f03e"}.fa-pencil:before{content:"\f040"}.fa-map-marker:before{content:"\f041"}.fa-adjust:before{content:"\f042"}.fa-tint:before{content:"\f043"}.fa-edit:before,.fa-pencil-square-o:before{content:"\f044"}.fa-share-square-o:before{content:"\f045"}.fa-check-square-o:before{content:"\f046"}.fa-arrows:before{content:"\f047"}.fa-step-backward:before{content:"\f048"}.fa-fast-backward:before{content:"\f049"}.fa-backward:before{content:"\f04a"}.fa-play:before{content:"\f04b"}.fa-pause:before{content:"\f04c"}.fa-stop:before{content:"\f04d"}.fa-forward:before{content:"\f04e"}.fa-fast-forward:before{content:"\f050"}.fa-step-forward:before{content:"\f051"}.fa-eject:before{content:"\f052"}.fa-chevron-left:before{content:"\f053"}.fa-chevron-right:before{content:"\f054"}.fa-plus-circle:before{content:"\f055"}.fa-minus-circle:before{content:"\f056"}.fa-times-circle:before{content:"\f057"}.fa-check-circle:before{content:"\f058"}.fa-question-circle:before{content:"\f059"}.fa-info-circle:before{content:"\f05a"}.fa-crosshairs:before{content:"\f05b"}.fa-times-circle-o:before{content:"\f05c"}.fa-check-circle-o:before{content:"\f05d"}.fa-ban:before{content:"\f05e"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-right:before{content:"\f061"}.fa-arrow-up:before{content:"\f062"}.fa-arrow-down:before{content:"\f063"}.fa-mail-forward:before,.fa-share:before{content:"\f064"}.fa-expand:before{content:"\f065"}.fa-compress:before{content:"\f066"}.fa-plus:before{content:"\f067"}.fa-minus:before{content:"\f068"}.fa-asterisk:before{content:"\f069"}.fa-exclamation-circle:before{content:"\f06a"}.fa-gift:before{content:"\f06b"}.fa-leaf:before{content:"\f06c"}.fa-fire:before{content:"\f06d"}.fa-eye:before{content:"\f06e"}.fa-eye-slash:before{content:"\f070"}.fa-warning:before,.fa-exclamation-triangle:before{content:"\f071"}.fa-plane:before{content:"\f072"}.fa-calendar:before{content:"\f073"}.fa-random:before{content:"\f074"}.fa-comment:before{content:"\f075"}.fa-magnet:before{content:"\f076"}.fa-chevron-up:before{content:"\f077"}.fa-chevron-down:before{content:"\f078"}.fa-retweet:before{content:"\f079"}.fa-shopping-cart:before{content:"\f07a"}.fa-folder:before{content:"\f07b"}.fa-folder-open:before{content:"\f07c"}.fa-arrows-v:before{content:"\f07d"}.fa-arrows-h:before{content:"\f07e"}.fa-bar-chart-o:before{content:"\f080"}.fa-twitter-square:before{content:"\f081"}.fa-facebook-square:before{content:"\f082"}.fa-camera-retro:before{content:"\f083"}.fa-key:before{content:"\f084"}.fa-gears:before,.fa-cogs:before{content:"\f085"}.fa-comments:before{content:"\f086"}.fa-thumbs-o-up:before{content:"\f087"}.fa-thumbs-o-down:before{content:"\f088"}.fa-star-half:before{content:"\f089"}.fa-heart-o:before{content:"\f08a"}.fa-sign-out:before{content:"\f08b"}.fa-linkedin-square:before{content:"\f08c"}.fa-thumb-tack:before{content:"\f08d"}.fa-external-link:before{content:"\f08e"}.fa-sign-in:before{content:"\f090"}.fa-trophy:before{content:"\f091"}.fa-github-square:before{content:"\f092"}.fa-upload:before{content:"\f093"}.fa-lemon-o:before{content:"\f094"}.fa-phone:before{content:"\f095"}.fa-square-o:before{content:"\f096"}.fa-bookmark-o:before{content:"\f097"}.fa-phone-square:before{content:"\f098"}.fa-twitter:before{content:"\f099"}.fa-facebook:before{content:"\f09a"}.fa-github:before{content:"\f09b"}.fa-unlock:before{content:"\f09c"}.fa-credit-card:before{content:"\f09d"}.fa-rss:before{content:"\f09e"}.fa-hdd-o:before{content:"\f0a0"}.fa-bullhorn:before{content:"\f0a1"}.fa-bell:before{content:"\f0f3"}.fa-certificate:before{content:"\f0a3"}.fa-hand-o-right:before{content:"\f0a4"}.fa-hand-o-left:before{content:"\f0a5"}.fa-hand-o-up:before{content:"\f0a6"}.fa-hand-o-down:before{content:"\f0a7"}.fa-arrow-circle-left:before{content:"\f0a8"}.fa-arrow-circle-right:before{content:"\f0a9"}.fa-arrow-circle-up:before{content:"\f0aa"}.fa-arrow-circle-down:before{content:"\f0ab"}.fa-globe:before{content:"\f0ac"}.fa-wrench:before{content:"\f0ad"}.fa-tasks:before{content:"\f0ae"}.fa-filter:before{content:"\f0b0"}.fa-briefcase:before{content:"\f0b1"}.fa-arrows-alt:before{content:"\f0b2"}.fa-group:before,.fa-users:before{content:"\f0c0"}.fa-chain:before,.fa-link:before{content:"\f0c1"}.fa-cloud:before{content:"\f0c2"}.fa-flask:before{content:"\f0c3"}.fa-cut:before,.fa-scissors:before{content:"\f0c4"}.fa-copy:before,.fa-files-o:before{content:"\f0c5"}.fa-paperclip:before{content:"\f0c6"}.fa-save:before,.fa-floppy-o:before{content:"\f0c7"}.fa-square:before{content:"\f0c8"}.fa-bars:before{content:"\f0c9"}.fa-list-ul:before{content:"\f0ca"}.fa-list-ol:before{content:"\f0cb"}.fa-strikethrough:before{content:"\f0cc"}.fa-underline:before{content:"\f0cd"}.fa-table:before{content:"\f0ce"}.fa-magic:before{content:"\f0d0"}.fa-truck:before{content:"\f0d1"}.fa-pinterest:before{content:"\f0d2"}.fa-pinterest-square:before{content:"\f0d3"}.fa-google-plus-square:before{content:"\f0d4"}.fa-google-plus:before{content:"\f0d5"}.fa-money:before{content:"\f0d6"}.fa-caret-down:before{content:"\f0d7"}.fa-caret-up:before{content:"\f0d8"}.fa-caret-left:before{content:"\f0d9"}.fa-caret-right:before{content:"\f0da"}.fa-columns:before{content:"\f0db"}.fa-unsorted:before,.fa-sort:before{content:"\f0dc"}.fa-sort-down:before,.fa-sort-asc:before{content:"\f0dd"}.fa-sort-up:before,.fa-sort-desc:before{content:"\f0de"}.fa-envelope:before{content:"\f0e0"}.fa-linkedin:before{content:"\f0e1"}.fa-rotate-left:before,.fa-undo:before{content:"\f0e2"}.fa-legal:before,.fa-gavel:before{content:"\f0e3"}.fa-dashboard:before,.fa-tachometer:before{content:"\f0e4"}.fa-comment-o:before{content:"\f0e5"}.fa-comments-o:before{content:"\f0e6"}.fa-flash:before,.fa-bolt:before{content:"\f0e7"}.fa-sitemap:before{content:"\f0e8"}.fa-umbrella:before{content:"\f0e9"}.fa-paste:before,.fa-clipboard:before{content:"\f0ea"}.fa-lightbulb-o:before{content:"\f0eb"}.fa-exchange:before{content:"\f0ec"}.fa-cloud-download:before{content:"\f0ed"}.fa-cloud-upload:before{content:"\f0ee"}.fa-user-md:before{content:"\f0f0"}.fa-stethoscope:before{content:"\f0f1"}.fa-suitcase:before{content:"\f0f2"}.fa-bell-o:before{content:"\f0a2"}.fa-coffee:before{content:"\f0f4"}.fa-cutlery:before{content:"\f0f5"}.fa-file-text-o:before{content:"\f0f6"}.fa-building-o:before{content:"\f0f7"}.fa-hospital-o:before{content:"\f0f8"}.fa-ambulance:before{content:"\f0f9"}.fa-medkit:before{content:"\f0fa"}.fa-fighter-jet:before{content:"\f0fb"}.fa-beer:before{content:"\f0fc"}.fa-h-square:before{content:"\f0fd"}.fa-plus-square:before{content:"\f0fe"}.fa-angle-double-left:before{content:"\f100"}.fa-angle-double-right:before{content:"\f101"}.fa-angle-double-up:before{content:"\f102"}.fa-angle-double-down:before{content:"\f103"}.fa-angle-left:before{content:"\f104"}.fa-angle-right:before{content:"\f105"}.fa-angle-up:before{content:"\f106"}.fa-angle-down:before{content:"\f107"}.fa-desktop:before{content:"\f108"}.fa-laptop:before{content:"\f109"}.fa-tablet:before{content:"\f10a"}.fa-mobile-phone:before,.fa-mobile:before{content:"\f10b"}.fa-circle-o:before{content:"\f10c"}.fa-quote-left:before{content:"\f10d"}.fa-quote-right:before{content:"\f10e"}.fa-spinner:before{content:"\f110"}.fa-circle:before{content:"\f111"}.fa-mail-reply:before,.fa-reply:before{content:"\f112"}.fa-github-alt:before{content:"\f113"}.fa-folder-o:before{content:"\f114"}.fa-folder-open-o:before{content:"\f115"}.fa-smile-o:before{content:"\f118"}.fa-frown-o:before{content:"\f119"}.fa-meh-o:before{content:"\f11a"}.fa-gamepad:before{content:"\f11b"}.fa-keyboard-o:before{content:"\f11c"}.fa-flag-o:before{content:"\f11d"}.fa-flag-checkered:before{content:"\f11e"}.fa-terminal:before{content:"\f120"}.fa-code:before{content:"\f121"}.fa-reply-all:before{content:"\f122"}.fa-mail-reply-all:before{content:"\f122"}.fa-star-half-empty:before,.fa-star-half-full:before,.fa-star-half-o:before{content:"\f123"}.fa-location-arrow:before{content:"\f124"}.fa-crop:before{content:"\f125"}.fa-code-fork:before{content:"\f126"}.fa-unlink:before,.fa-chain-broken:before{content:"\f127"}.fa-question:before{content:"\f128"}.fa-info:before{content:"\f129"}.fa-exclamation:before{content:"\f12a"}.fa-superscript:before{content:"\f12b"}.fa-subscript:before{content:"\f12c"}.fa-eraser:before{content:"\f12d"}.fa-puzzle-piece:before{content:"\f12e"}.fa-microphone:before{content:"\f130"}.fa-microphone-slash:before{content:"\f131"}.fa-shield:before{content:"\f132"}.fa-calendar-o:before{content:"\f133"}.fa-fire-extinguisher:before{content:"\f134"}.fa-rocket:before{content:"\f135"}.fa-maxcdn:before{content:"\f136"}.fa-chevron-circle-left:before{content:"\f137"}.fa-chevron-circle-right:before{content:"\f138"}.fa-chevron-circle-up:before{content:"\f139"}.fa-chevron-circle-down:before{content:"\f13a"}.fa-html5:before{content:"\f13b"}.fa-css3:before{content:"\f13c"}.fa-anchor:before{content:"\f13d"}.fa-unlock-alt:before{content:"\f13e"}.fa-bullseye:before{content:"\f140"}.fa-ellipsis-h:before{content:"\f141"}.fa-ellipsis-v:before{content:"\f142"}.fa-rss-square:before{content:"\f143"}.fa-play-circle:before{content:"\f144"}.fa-ticket:before{content:"\f145"}.fa-minus-square:before{content:"\f146"}.fa-minus-square-o:before{content:"\f147"}.fa-level-up:before{content:"\f148"}.fa-level-down:before{content:"\f149"}.fa-check-square:before{content:"\f14a"}.fa-pencil-square:before{content:"\f14b"}.fa-external-link-square:before{content:"\f14c"}.fa-share-square:before{content:"\f14d"}.fa-compass:before{content:"\f14e"}.fa-toggle-down:before,.fa-caret-square-o-down:before{content:"\f150"}.fa-toggle-up:before,.fa-caret-square-o-up:before{content:"\f151"}.fa-toggle-right:before,.fa-caret-square-o-right:before{content:"\f152"}.fa-euro:before,.fa-eur:before{content:"\f153"}.fa-gbp:before{content:"\f154"}.fa-dollar:before,.fa-usd:before{content:"\f155"}.fa-rupee:before,.fa-inr:before{content:"\f156"}.fa-cny:before,.fa-rmb:before,.fa-yen:before,.fa-jpy:before{content:"\f157"}.fa-ruble:before,.fa-rouble:before,.fa-rub:before{content:"\f158"}.fa-won:before,.fa-krw:before{content:"\f159"}.fa-bitcoin:before,.fa-btc:before{content:"\f15a"}.fa-file:before{content:"\f15b"}.fa-file-text:before{content:"\f15c"}.fa-sort-alpha-asc:before{content:"\f15d"}.fa-sort-alpha-desc:before{content:"\f15e"}.fa-sort-amount-asc:before{content:"\f160"}.fa-sort-amount-desc:before{content:"\f161"}.fa-sort-numeric-asc:before{content:"\f162"}.fa-sort-numeric-desc:before{content:"\f163"}.fa-thumbs-up:before{content:"\f164"}.fa-thumbs-down:before{content:"\f165"}.fa-youtube-square:before{content:"\f166"}.fa-youtube:before{content:"\f167"}.fa-xing:before{content:"\f168"}.fa-xing-square:before{content:"\f169"}.fa-youtube-play:before{content:"\f16a"}.fa-dropbox:before{content:"\f16b"}.fa-stack-overflow:before{content:"\f16c"}.fa-instagram:before{content:"\f16d"}.fa-flickr:before{content:"\f16e"}.fa-adn:before{content:"\f170"}.fa-bitbucket:before{content:"\f171"}.fa-bitbucket-square:before{content:"\f172"}.fa-tumblr:before{content:"\f173"}.fa-tumblr-square:before{content:"\f174"}.fa-long-arrow-down:before{content:"\f175"}.fa-long-arrow-up:before{content:"\f176"}.fa-long-arrow-left:before{content:"\f177"}.fa-long-arrow-right:before{content:"\f178"}.fa-apple:before{content:"\f179"}.fa-windows:before{content:"\f17a"}.fa-android:before{content:"\f17b"}.fa-linux:before{content:"\f17c"}.fa-dribbble:before{content:"\f17d"}.fa-skype:before{content:"\f17e"}.fa-foursquare:before{content:"\f180"}.fa-trello:before{content:"\f181"}.fa-female:before{content:"\f182"}.fa-male:before{content:"\f183"}.fa-gittip:before{content:"\f184"}.fa-sun-o:before{content:"\f185"}.fa-moon-o:before{content:"\f186"}.fa-archive:before{content:"\f187"}.fa-bug:before{content:"\f188"}.fa-vk:before{content:"\f189"}.fa-weibo:before{content:"\f18a"}.fa-renren:before{content:"\f18b"}.fa-pagelines:before{content:"\f18c"}.fa-stack-exchange:before{content:"\f18d"}.fa-arrow-circle-o-right:before{content:"\f18e"}.fa-arrow-circle-o-left:before{content:"\f190"}.fa-toggle-left:before,.fa-caret-square-o-left:before{content:"\f191"}.fa-dot-circle-o:before{content:"\f192"}.fa-wheelchair:before{content:"\f193"}.fa-vimeo-square:before{content:"\f194"}.fa-turkish-lira:before,.fa-try:before{content:"\f195"}.fa-plus-square-o:before{content:"\f196"}
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/FontAwesome.otf b/openstack_dashboard_theme/static/dashboard/fonts/FontAwesome.otf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/FontAwesome.otf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/FontAwesome.otf
 new file mode 100644
 index 0000000000000000000000000000000000000000..8b0f54e47e1d356dcf1496942a50e228e0f1ee14
 GIT binary patch
@@ -1173,7 +1238,7 @@ oMn#JeYGU{pbzL1U=O}QI<Cx4B=r}K`2S}bYAE*l4!^>p<2eKYy*8l(j
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..e1c7674430d0dc4eb95a461948412adcd3194385
 GIT binary patch
@@ -1458,11 +1523,11 @@ fTlnHV%zA4VlYqsIxB(B@ai8tKGKUjYf93xHMnk{w
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg
 new file mode 100755
 index 0000000..364b368
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -1611,7 +1676,7 @@ index 0000000..364b368
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..2d94f0629db751b8412a814df98fbe82f6fdd1df
 GIT binary patch
@@ -1895,7 +1960,7 @@ GmH!73$*E-k
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Bold-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Bold-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..cd86852d0a0c1930dab144b687318df762aa7ad3
 GIT binary patch
@@ -2174,7 +2239,7 @@ Q2CfeykgftECTOhxAITuKfB*mh
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..f44ac9a331e5965072b0ed4c797cfd3172559880
 GIT binary patch
@@ -2490,11 +2555,11 @@ tu8?sO)gZCfdFU$l?U+UfRIbm>Xrh;nczEi?BR<^eo!xf9NY!8Xe*oAsvHSo4
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg
 new file mode 100755
 index 0000000..8392240
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -2643,7 +2708,7 @@ index 0000000..8392240
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..f74e0e3ca7fc8276e5ad7adf934032d4f6f8f7b6
 GIT binary patch
@@ -2958,7 +3023,7 @@ Jqg8+5{{i(PmP-Ht
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-BoldItalic-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..f3248c1142bc295baf37546c887f63cb021bdf00
 GIT binary patch
@@ -3266,7 +3331,7 @@ o@d3nNbhaf0(!$D3ihn32*GNKd`7!5B9nVS`Rq?eY#Q6aK2UBpExBvhE
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..73653a1b8510f089cf06099ccc3bc983ca76a13e
 GIT binary patch
@@ -3554,11 +3619,11 @@ No?i`~wi%(a{||zsz6$^V
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg
 new file mode 100755
 index 0000000..a9aed6b
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -3707,7 +3772,7 @@ index 0000000..a9aed6b
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..707fae2440a11f1164bfd1c2285531af68d9181b
 GIT binary patch
@@ -3993,7 +4058,7 @@ a_rxaeXReI{?DQ2c9`O8X@U+bcmH!`5jH7)3
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBold-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..223715a5fbe3ba40485301ac3fd6e0e8ff3de4c6
 GIT binary patch
@@ -4275,7 +4340,7 @@ VL8x}N5ckDwkmeu(6dnxW{|BR~F-ZUb
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..68463e38817c8937aa8bb17a41e041dbd20edbdc
 GIT binary patch
@@ -4589,11 +4654,11 @@ eymXjIKeI1y$Is$7IO$9xPq}nvwCam6_J06HdiEp$
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg
 new file mode 100755
 index 0000000..0d69082
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -4742,7 +4807,7 @@ index 0000000..0d69082
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..da8f41f3c14765b1512a0683f09c38200f4b6d56
 GIT binary patch
@@ -5054,7 +5119,7 @@ tfxGOwgb(EOUyR2k;LwqI<uH+cW?#{UpT%!*(wRh_a^=hz)fZvx{{Sq1*319^
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-ExtraBoldItalic-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..ddd0573dd2c1c4eb0ad6f2f71030c7a90fc8b306
 GIT binary patch
@@ -5360,7 +5425,7 @@ q8q}#hPzO(wBOSdsw(64~R3`+1q<@?Oh#t94PzVQ@6JkFA0RA7~ELpGs
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..277c1899cda9fb8add6ed8f25d33b99fb95f4f99
 GIT binary patch
@@ -5682,11 +5747,11 @@ fzb$|V{BK=)AQi>H*h|GU6jM7ViepqC=92$E2pMcV
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg
 new file mode 100755
 index 0000000..29c7497
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -5835,7 +5900,7 @@ index 0000000..29c7497
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..63f187e984b225756e2030556c4465eeaf8724e5
 GIT binary patch
@@ -6155,7 +6220,7 @@ xi=waSV$p-5H}_&ORlKdf{nFclcp&wyiw~rs7#w@Cn2usv=R|Rg8o*rg{|BspRLlSX
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Italic-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Italic-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..469a29bbfbcbc17de50b2994241d2397f4d2f573
 GIT binary patch
@@ -6468,7 +6533,7 @@ lQ)}_OmaY4pWpToGYq#Df=|)&Lae-sfCD;mSz4-6r@IT{lM9BaE
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..837daab8df609d809a760dd11cd4bb0466374d6b
 GIT binary patch
@@ -6752,11 +6817,11 @@ D+7k5c
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.svg
 new file mode 100755
 index 0000000..bdb6726
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -6905,7 +6970,7 @@ index 0000000..bdb6726
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..b50ef9dcb5bc8984f50d4c770c6149661edc0f1d
 GIT binary patch
@@ -7187,7 +7252,7 @@ W0H^-jx=#~v8Yt;Houv8m+5ZFRYTXt9
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Light-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Light-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..99514d1a8ab477afc4b434c0f575318e04c2433a
 GIT binary patch
@@ -7464,7 +7529,7 @@ tANwgZC+dkdN<3FZ*8jL#_o8pyg4{(;O2#8SG-9z?2R_8F7Ovj%e*moT&T;?%
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..f0ebf2c0ef82cd8cc67a6473c455056ba0611066
 GIT binary patch
@@ -7789,11 +7854,11 @@ NWyB80sJ;Tm{tu1K%R~SG
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg
 new file mode 100755
 index 0000000..60765da
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -7942,7 +8007,7 @@ index 0000000..60765da
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..5898c8c7818efebdfec1733d531b1417764fe59f
 GIT binary patch
@@ -8265,7 +8330,7 @@ kt~i!;UcTbRPdrC1J>bKsx9HNTAE&;I*y$M6SHRf+0rn5DZvX%Q
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-LightItalic-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..9c978dc30cebf694a34c54e2cd2ca53539acff7a
 GIT binary patch
@@ -8580,7 +8645,7 @@ w=uX)Q(ZAw?^=Xd<GRlazK@PVs(qYL5Rq6O!K?aeZtKvZDFOZ;0WjVnA0R{46)&Kwi
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..dd6fd2cb3af3a5502a8287fb270c294608a5915d
 GIT binary patch
@@ -8864,11 +8929,11 @@ a^w-*N$V4+^c6&1m&CJei%~7hq`2PSb>^2nu
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg
 new file mode 100755
 index 0000000..01038bb
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -9017,7 +9082,7 @@ index 0000000..01038bb
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..05951e7b36b2352b1a69e2052d08fbffd77d5151
 GIT binary patch
@@ -9299,7 +9364,7 @@ rz3V|&^|p62#L$b*o*Oz74`jU7{y-MGnX}rv+303<ZtITL{3ZVf->Dn%
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Regular-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Regular-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..274664b28e8ed522cf1753f933ca085d8c8cc330
 GIT binary patch
@@ -9577,7 +9642,7 @@ OSf;o4f<*i_xc>(${g`$D
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..289aade3e229d405a8ba85c31018f08075e115dc
 GIT binary patch
@@ -9862,11 +9927,11 @@ nrWhy4`N!$<1pDk}?nNz30!G*O*C5VIS3Equ?aBz%U&#J1j~p8V
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg
 new file mode 100755
 index 0000000..cc2ca42
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -10015,7 +10080,7 @@ index 0000000..cc2ca42
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..6f15073125b8703bc52cbc0e06f30d16e7c2b512
 GIT binary patch
@@ -10299,7 +10364,7 @@ G*#8B1{{jR6
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-Semibold-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-Semibold-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..4e47cb1a69b2a7f0ca3336a5530008e6d5b423a9
 GIT binary patch
@@ -10578,7 +10643,7 @@ To$P%_2Tu721o2B~8}NSsFG&!4
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..50a8a6f7558e8dc27d16077ee37dd040bbec00e3
 GIT binary patch
@@ -10899,11 +10964,11 @@ Q9rxKDN}LW;y&?Ah00pQ#mH+?%
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg
 new file mode 100755
 index 0000000..65b50e2
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.svg
 @@ -0,0 +1,146 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -11052,7 +11117,7 @@ index 0000000..65b50e2
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..55ba3120f765578c27764752b8ea0c25bdb24f99
 GIT binary patch
@@ -11371,7 +11436,7 @@ n;lNyK93bU8{u3Mh#EMjX2@%Dbhw&pj?z26VI2@sRL+t+pV7VRj
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/OpenSans-SemiboldItalic-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..0adc6df1621cf92805c944d9c5b4908e29dfe938
 GIT binary patch
@@ -11682,7 +11747,7 @@ z>bMb@^QtQm?g$*NB3(8i9q!Y2kTyGWXDX0bTi`jTjN#^AIO27HD=sDW&m8?9c782b
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..c19c7e10adc368022129787f552ac81875ef0cd6
 GIT binary patch
@@ -11761,11 +11826,11 @@ DuDXT*
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.svg
 new file mode 100755
 index 0000000..ac24fd8
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.svg
 @@ -0,0 +1,34 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -11802,7 +11867,7 @@ index 0000000..ac24fd8
 +<glyph unicode="&#xe617;" d="M149.984 810.016c92.648 92.658 220.63 149.984 362.016 149.984 282.77 0 512-229.23 512-512s-229.23-512-512-512c-153.64 0-291.458 67.692-385.304 174.858l96.32 84.284c5.596-6.376 11.4-12.614 17.458-18.668 72.526-72.53 168.956-112.474 271.526-112.474s199 39.944 271.532 112.468c72.522 72.532 112.468 168.962 112.468 271.532s-39.946 199-112.468 271.53c-72.532 72.526-168.962 112.47-271.532 112.47s-199-39.944-271.53-112.47l-154.804-61.198 64.318 151.684zM480 320c-9.334 0-17 3-23 9s-9 13.666-9 23v320c0 9.334 3 17 9 23s13.666 9 23 9h64c9.334 0 17-3 23-9s9-13.666 9-23v-224h162c9.332 0 17-3 23-9s9-13.666 9-23v-64c0-9.334-3-17-9-23s-13.668-9-23-9h-258zM341.574 618.426c23.334-23.334 15.426-42.426-17.574-42.426h-264c-51.666 0-60 9-60 60v264c0 33 19.092 40.908 42.426 17.574l299.148-299.148z" />
 +</font></defs></svg>
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..86c5cb43181dfe44b47e2a5a22813c2682163859
 GIT binary patch
@@ -11879,7 +11944,7 @@ wmw@6JTVlV7MrRSPyzMJcK8`_T5^s^6!}BQXhv4UN54Q6FM5aw)$G`UaKZxgUQvd(}
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/RCUEIcons-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/RCUEIcons-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..d0ad614e0a32fee8e929d355332a34af9f9334c7
 GIT binary patch
@@ -11957,18 +12022,18 @@ O2f#9I3OoLt*Z%<_g>+8<
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/font-awesome.min.css b/openstack_dashboard_theme/static/dashboard/fonts/font-awesome.min.css
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/font-awesome.min.css b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/font-awesome.min.css
 new file mode 100644
 index 0000000..449d6ac
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/font-awesome.min.css
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/font-awesome.min.css
 @@ -0,0 +1,4 @@
 +/*!
 + *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
 + *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 + */@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.0.3');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.fa-lg{font-size:1.3333333333333333em;line-height:.75em;vertical-align:-15%}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-fw{width:1.2857142857142858em;text-align:center}.fa-ul{padding-left:0;margin-left:2.142857142857143em;list-style-type:none}.fa-ul>li{position:relative}.fa-li{position:absolute;left:-2.142857142857143em;width:2.142857142857143em;top:.14285714285714285em;text-align:center}.fa-li.fa-lg{left:-1.8571428571428572em}.fa-border{padding:.2em .25em .15em;border:solid .08em #eee;border-radius:.1em}.pull-right{float:right}.pull-left{float:left}.fa.pull-left{margin-right:.3em}.fa.pull-right{margin-left:.3em}.fa-spin{-webkit-animation:spin 2s infinite linear;-moz-animation:spin 2s infinite linear;-o-animation:spin 2s infinite linear;animation:spin 2s infinite linear}@-moz-keyframes spin{0%{-moz-transform:rotate(0deg)}100%{-moz-transform:rotate(359deg)}}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg)}}@-o-keyframes spin{0%{-o-transform:rotate(0deg)}100%{-o-transform:rotate(359deg)}}@-ms-keyframes spin{0%{-ms-transform:rotate(0deg)}100%{-ms-transform:rotate(359deg)}}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(359deg)}}.fa-rotate-90{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);-webkit-transform:rotate(90deg);-moz-transform:rotate(90deg);-ms-transform:rotate(90deg);-o-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);-webkit-transform:rotate(270deg);-moz-transform:rotate(270deg);-ms-transform:rotate(270deg);-o-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=0,mirror=1);-webkit-transform:scale(-1,1);-moz-transform:scale(-1,1);-ms-transform:scale(-1,1);-o-transform:scale(-1,1);transform:scale(-1,1)}.fa-flip-vertical{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2,mirror=1);-webkit-transform:scale(1,-1);-moz-transform:scale(1,-1);-ms-transform:scale(1,-1);-o-transform:scale(1,-1);transform:scale(1,-1)}.fa-stack{position:relative;display:inline-block;width:2em;height:2em;line-height:2em;vertical-align:middle}.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}.fa-stack-1x{line-height:inherit}.fa-stack-2x{font-size:2em}.fa-inverse{color:#fff}.fa-glass:before{content:"\f000"}.fa-music:before{content:"\f001"}.fa-search:before{content:"\f002"}.fa-envelope-o:before{content:"\f003"}.fa-heart:before{content:"\f004"}.fa-star:before{content:"\f005"}.fa-star-o:before{content:"\f006"}.fa-user:before{content:"\f007"}.fa-film:before{content:"\f008"}.fa-th-large:before{content:"\f009"}.fa-th:before{content:"\f00a"}.fa-th-list:before{content:"\f00b"}.fa-check:before{content:"\f00c"}.fa-times:before{content:"\f00d"}.fa-search-plus:before{content:"\f00e"}.fa-search-minus:before{content:"\f010"}.fa-power-off:before{content:"\f011"}.fa-signal:before{content:"\f012"}.fa-gear:before,.fa-cog:before{content:"\f013"}.fa-trash-o:before{content:"\f014"}.fa-home:before{content:"\f015"}.fa-file-o:before{content:"\f016"}.fa-clock-o:before{content:"\f017"}.fa-road:before{content:"\f018"}.fa-download:before{content:"\f019"}.fa-arrow-circle-o-down:before{content:"\f01a"}.fa-arrow-circle-o-up:before{content:"\f01b"}.fa-inbox:before{content:"\f01c"}.fa-play-circle-o:before{content:"\f01d"}.fa-rotate-right:before,.fa-repeat:before{content:"\f01e"}.fa-refresh:before{content:"\f021"}.fa-list-alt:before{content:"\f022"}.fa-lock:before{content:"\f023"}.fa-flag:before{content:"\f024"}.fa-headphones:before{content:"\f025"}.fa-volume-off:before{content:"\f026"}.fa-volume-down:before{content:"\f027"}.fa-volume-up:before{content:"\f028"}.fa-qrcode:before{content:"\f029"}.fa-barcode:before{content:"\f02a"}.fa-tag:before{content:"\f02b"}.fa-tags:before{content:"\f02c"}.fa-book:before{content:"\f02d"}.fa-bookmark:before{content:"\f02e"}.fa-print:before{content:"\f02f"}.fa-camera:before{content:"\f030"}.fa-font:before{content:"\f031"}.fa-bold:before{content:"\f032"}.fa-italic:before{content:"\f033"}.fa-text-height:before{content:"\f034"}.fa-text-width:before{content:"\f035"}.fa-align-left:before{content:"\f036"}.fa-align-center:before{content:"\f037"}.fa-align-right:before{content:"\f038"}.fa-align-justify:before{content:"\f039"}.fa-list:before{content:"\f03a"}.fa-dedent:before,.fa-outdent:before{content:"\f03b"}.fa-indent:before{content:"\f03c"}.fa-video-camera:before{content:"\f03d"}.fa-picture-o:before{content:"\f03e"}.fa-pencil:before{content:"\f040"}.fa-map-marker:before{content:"\f041"}.fa-adjust:before{content:"\f042"}.fa-tint:before{content:"\f043"}.fa-edit:before,.fa-pencil-square-o:before{content:"\f044"}.fa-share-square-o:before{content:"\f045"}.fa-check-square-o:before{content:"\f046"}.fa-arrows:before{content:"\f047"}.fa-step-backward:before{content:"\f048"}.fa-fast-backward:before{content:"\f049"}.fa-backward:before{content:"\f04a"}.fa-play:before{content:"\f04b"}.fa-pause:before{content:"\f04c"}.fa-stop:before{content:"\f04d"}.fa-forward:before{content:"\f04e"}.fa-fast-forward:before{content:"\f050"}.fa-step-forward:before{content:"\f051"}.fa-eject:before{content:"\f052"}.fa-chevron-left:before{content:"\f053"}.fa-chevron-right:before{content:"\f054"}.fa-plus-circle:before{content:"\f055"}.fa-minus-circle:before{content:"\f056"}.fa-times-circle:before{content:"\f057"}.fa-check-circle:before{content:"\f058"}.fa-question-circle:before{content:"\f059"}.fa-info-circle:before{content:"\f05a"}.fa-crosshairs:before{content:"\f05b"}.fa-times-circle-o:before{content:"\f05c"}.fa-check-circle-o:before{content:"\f05d"}.fa-ban:before{content:"\f05e"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-right:before{content:"\f061"}.fa-arrow-up:before{content:"\f062"}.fa-arrow-down:before{content:"\f063"}.fa-mail-forward:before,.fa-share:before{content:"\f064"}.fa-expand:before{content:"\f065"}.fa-compress:before{content:"\f066"}.fa-plus:before{content:"\f067"}.fa-minus:before{content:"\f068"}.fa-asterisk:before{content:"\f069"}.fa-exclamation-circle:before{content:"\f06a"}.fa-gift:before{content:"\f06b"}.fa-leaf:before{content:"\f06c"}.fa-fire:before{content:"\f06d"}.fa-eye:before{content:"\f06e"}.fa-eye-slash:before{content:"\f070"}.fa-warning:before,.fa-exclamation-triangle:before{content:"\f071"}.fa-plane:before{content:"\f072"}.fa-calendar:before{content:"\f073"}.fa-random:before{content:"\f074"}.fa-comment:before{content:"\f075"}.fa-magnet:before{content:"\f076"}.fa-chevron-up:before{content:"\f077"}.fa-chevron-down:before{content:"\f078"}.fa-retweet:before{content:"\f079"}.fa-shopping-cart:before{content:"\f07a"}.fa-folder:before{content:"\f07b"}.fa-folder-open:before{content:"\f07c"}.fa-arrows-v:before{content:"\f07d"}.fa-arrows-h:before{content:"\f07e"}.fa-bar-chart-o:before{content:"\f080"}.fa-twitter-square:before{content:"\f081"}.fa-facebook-square:before{content:"\f082"}.fa-camera-retro:before{content:"\f083"}.fa-key:before{content:"\f084"}.fa-gears:before,.fa-cogs:before{content:"\f085"}.fa-comments:before{content:"\f086"}.fa-thumbs-o-up:before{content:"\f087"}.fa-thumbs-o-down:before{content:"\f088"}.fa-star-half:before{content:"\f089"}.fa-heart-o:before{content:"\f08a"}.fa-sign-out:before{content:"\f08b"}.fa-linkedin-square:before{content:"\f08c"}.fa-thumb-tack:before{content:"\f08d"}.fa-external-link:before{content:"\f08e"}.fa-sign-in:before{content:"\f090"}.fa-trophy:before{content:"\f091"}.fa-github-square:before{content:"\f092"}.fa-upload:before{content:"\f093"}.fa-lemon-o:before{content:"\f094"}.fa-phone:before{content:"\f095"}.fa-square-o:before{content:"\f096"}.fa-bookmark-o:before{content:"\f097"}.fa-phone-square:before{content:"\f098"}.fa-twitter:before{content:"\f099"}.fa-facebook:before{content:"\f09a"}.fa-github:before{content:"\f09b"}.fa-unlock:before{content:"\f09c"}.fa-credit-card:before{content:"\f09d"}.fa-rss:before{content:"\f09e"}.fa-hdd-o:before{content:"\f0a0"}.fa-bullhorn:before{content:"\f0a1"}.fa-bell:before{content:"\f0f3"}.fa-certificate:before{content:"\f0a3"}.fa-hand-o-right:before{content:"\f0a4"}.fa-hand-o-left:before{content:"\f0a5"}.fa-hand-o-up:before{content:"\f0a6"}.fa-hand-o-down:before{content:"\f0a7"}.fa-arrow-circle-left:before{content:"\f0a8"}.fa-arrow-circle-right:before{content:"\f0a9"}.fa-arrow-circle-up:before{content:"\f0aa"}.fa-arrow-circle-down:before{content:"\f0ab"}.fa-globe:before{content:"\f0ac"}.fa-wrench:before{content:"\f0ad"}.fa-tasks:before{content:"\f0ae"}.fa-filter:before{content:"\f0b0"}.fa-briefcase:before{content:"\f0b1"}.fa-arrows-alt:before{content:"\f0b2"}.fa-group:before,.fa-users:before{content:"\f0c0"}.fa-chain:before,.fa-link:before{content:"\f0c1"}.fa-cloud:before{content:"\f0c2"}.fa-flask:before{content:"\f0c3"}.fa-cut:before,.fa-scissors:before{content:"\f0c4"}.fa-copy:before,.fa-files-o:before{content:"\f0c5"}.fa-paperclip:before{content:"\f0c6"}.fa-save:before,.fa-floppy-o:before{content:"\f0c7"}.fa-square:before{content:"\f0c8"}.fa-bars:before{content:"\f0c9"}.fa-list-ul:before{content:"\f0ca"}.fa-list-ol:before{content:"\f0cb"}.fa-strikethrough:before{content:"\f0cc"}.fa-underline:before{content:"\f0cd"}.fa-table:before{content:"\f0ce"}.fa-magic:before{content:"\f0d0"}.fa-truck:before{content:"\f0d1"}.fa-pinterest:before{content:"\f0d2"}.fa-pinterest-square:before{content:"\f0d3"}.fa-google-plus-square:before{content:"\f0d4"}.fa-google-plus:before{content:"\f0d5"}.fa-money:before{content:"\f0d6"}.fa-caret-down:before{content:"\f0d7"}.fa-caret-up:before{content:"\f0d8"}.fa-caret-left:before{content:"\f0d9"}.fa-caret-right:before{content:"\f0da"}.fa-columns:before{content:"\f0db"}.fa-unsorted:before,.fa-sort:before{content:"\f0dc"}.fa-sort-down:before,.fa-sort-asc:before{content:"\f0dd"}.fa-sort-up:before,.fa-sort-desc:before{content:"\f0de"}.fa-envelope:before{content:"\f0e0"}.fa-linkedin:before{content:"\f0e1"}.fa-rotate-left:before,.fa-undo:before{content:"\f0e2"}.fa-legal:before,.fa-gavel:before{content:"\f0e3"}.fa-dashboard:before,.fa-tachometer:before{content:"\f0e4"}.fa-comment-o:before{content:"\f0e5"}.fa-comments-o:before{content:"\f0e6"}.fa-flash:before,.fa-bolt:before{content:"\f0e7"}.fa-sitemap:before{content:"\f0e8"}.fa-umbrella:before{content:"\f0e9"}.fa-paste:before,.fa-clipboard:before{content:"\f0ea"}.fa-lightbulb-o:before{content:"\f0eb"}.fa-exchange:before{content:"\f0ec"}.fa-cloud-download:before{content:"\f0ed"}.fa-cloud-upload:before{content:"\f0ee"}.fa-user-md:before{content:"\f0f0"}.fa-stethoscope:before{content:"\f0f1"}.fa-suitcase:before{content:"\f0f2"}.fa-bell-o:before{content:"\f0a2"}.fa-coffee:before{content:"\f0f4"}.fa-cutlery:before{content:"\f0f5"}.fa-file-text-o:before{content:"\f0f6"}.fa-building-o:before{content:"\f0f7"}.fa-hospital-o:before{content:"\f0f8"}.fa-ambulance:before{content:"\f0f9"}.fa-medkit:before{content:"\f0fa"}.fa-fighter-jet:before{content:"\f0fb"}.fa-beer:before{content:"\f0fc"}.fa-h-square:before{content:"\f0fd"}.fa-plus-square:before{content:"\f0fe"}.fa-angle-double-left:before{content:"\f100"}.fa-angle-double-right:before{content:"\f101"}.fa-angle-double-up:before{content:"\f102"}.fa-angle-double-down:before{content:"\f103"}.fa-angle-left:before{content:"\f104"}.fa-angle-right:before{content:"\f105"}.fa-angle-up:before{content:"\f106"}.fa-angle-down:before{content:"\f107"}.fa-desktop:before{content:"\f108"}.fa-laptop:before{content:"\f109"}.fa-tablet:before{content:"\f10a"}.fa-mobile-phone:before,.fa-mobile:before{content:"\f10b"}.fa-circle-o:before{content:"\f10c"}.fa-quote-left:before{content:"\f10d"}.fa-quote-right:before{content:"\f10e"}.fa-spinner:before{content:"\f110"}.fa-circle:before{content:"\f111"}.fa-mail-reply:before,.fa-reply:before{content:"\f112"}.fa-github-alt:before{content:"\f113"}.fa-folder-o:before{content:"\f114"}.fa-folder-open-o:before{content:"\f115"}.fa-smile-o:before{content:"\f118"}.fa-frown-o:before{content:"\f119"}.fa-meh-o:before{content:"\f11a"}.fa-gamepad:before{content:"\f11b"}.fa-keyboard-o:before{content:"\f11c"}.fa-flag-o:before{content:"\f11d"}.fa-flag-checkered:before{content:"\f11e"}.fa-terminal:before{content:"\f120"}.fa-code:before{content:"\f121"}.fa-reply-all:before{content:"\f122"}.fa-mail-reply-all:before{content:"\f122"}.fa-star-half-empty:before,.fa-star-half-full:before,.fa-star-half-o:before{content:"\f123"}.fa-location-arrow:before{content:"\f124"}.fa-crop:before{content:"\f125"}.fa-code-fork:before{content:"\f126"}.fa-unlink:before,.fa-chain-broken:before{content:"\f127"}.fa-question:before{content:"\f128"}.fa-info:before{content:"\f129"}.fa-exclamation:before{content:"\f12a"}.fa-superscript:before{content:"\f12b"}.fa-subscript:before{content:"\f12c"}.fa-eraser:before{content:"\f12d"}.fa-puzzle-piece:before{content:"\f12e"}.fa-microphone:before{content:"\f130"}.fa-microphone-slash:before{content:"\f131"}.fa-shield:before{content:"\f132"}.fa-calendar-o:before{content:"\f133"}.fa-fire-extinguisher:before{content:"\f134"}.fa-rocket:before{content:"\f135"}.fa-maxcdn:before{content:"\f136"}.fa-chevron-circle-left:before{content:"\f137"}.fa-chevron-circle-right:before{content:"\f138"}.fa-chevron-circle-up:before{content:"\f139"}.fa-chevron-circle-down:before{content:"\f13a"}.fa-html5:before{content:"\f13b"}.fa-css3:before{content:"\f13c"}.fa-anchor:before{content:"\f13d"}.fa-unlock-alt:before{content:"\f13e"}.fa-bullseye:before{content:"\f140"}.fa-ellipsis-h:before{content:"\f141"}.fa-ellipsis-v:before{content:"\f142"}.fa-rss-square:before{content:"\f143"}.fa-play-circle:before{content:"\f144"}.fa-ticket:before{content:"\f145"}.fa-minus-square:before{content:"\f146"}.fa-minus-square-o:before{content:"\f147"}.fa-level-up:before{content:"\f148"}.fa-level-down:before{content:"\f149"}.fa-check-square:before{content:"\f14a"}.fa-pencil-square:before{content:"\f14b"}.fa-external-link-square:before{content:"\f14c"}.fa-share-square:before{content:"\f14d"}.fa-compass:before{content:"\f14e"}.fa-toggle-down:before,.fa-caret-square-o-down:before{content:"\f150"}.fa-toggle-up:before,.fa-caret-square-o-up:before{content:"\f151"}.fa-toggle-right:before,.fa-caret-square-o-right:before{content:"\f152"}.fa-euro:before,.fa-eur:before{content:"\f153"}.fa-gbp:before{content:"\f154"}.fa-dollar:before,.fa-usd:before{content:"\f155"}.fa-rupee:before,.fa-inr:before{content:"\f156"}.fa-cny:before,.fa-rmb:before,.fa-yen:before,.fa-jpy:before{content:"\f157"}.fa-ruble:before,.fa-rouble:before,.fa-rub:before{content:"\f158"}.fa-won:before,.fa-krw:before{content:"\f159"}.fa-bitcoin:before,.fa-btc:before{content:"\f15a"}.fa-file:before{content:"\f15b"}.fa-file-text:before{content:"\f15c"}.fa-sort-alpha-asc:before{content:"\f15d"}.fa-sort-alpha-desc:before{content:"\f15e"}.fa-sort-amount-asc:before{content:"\f160"}.fa-sort-amount-desc:before{content:"\f161"}.fa-sort-numeric-asc:before{content:"\f162"}.fa-sort-numeric-desc:before{content:"\f163"}.fa-thumbs-up:before{content:"\f164"}.fa-thumbs-down:before{content:"\f165"}.fa-youtube-square:before{content:"\f166"}.fa-youtube:before{content:"\f167"}.fa-xing:before{content:"\f168"}.fa-xing-square:before{content:"\f169"}.fa-youtube-play:before{content:"\f16a"}.fa-dropbox:before{content:"\f16b"}.fa-stack-overflow:before{content:"\f16c"}.fa-instagram:before{content:"\f16d"}.fa-flickr:before{content:"\f16e"}.fa-adn:before{content:"\f170"}.fa-bitbucket:before{content:"\f171"}.fa-bitbucket-square:before{content:"\f172"}.fa-tumblr:before{content:"\f173"}.fa-tumblr-square:before{content:"\f174"}.fa-long-arrow-down:before{content:"\f175"}.fa-long-arrow-up:before{content:"\f176"}.fa-long-arrow-left:before{content:"\f177"}.fa-long-arrow-right:before{content:"\f178"}.fa-apple:before{content:"\f179"}.fa-windows:before{content:"\f17a"}.fa-android:before{content:"\f17b"}.fa-linux:before{content:"\f17c"}.fa-dribbble:before{content:"\f17d"}.fa-skype:before{content:"\f17e"}.fa-foursquare:before{content:"\f180"}.fa-trello:before{content:"\f181"}.fa-female:before{content:"\f182"}.fa-male:before{content:"\f183"}.fa-gittip:before{content:"\f184"}.fa-sun-o:before{content:"\f185"}.fa-moon-o:before{content:"\f186"}.fa-archive:before{content:"\f187"}.fa-bug:before{content:"\f188"}.fa-vk:before{content:"\f189"}.fa-weibo:before{content:"\f18a"}.fa-renren:before{content:"\f18b"}.fa-pagelines:before{content:"\f18c"}.fa-stack-exchange:before{content:"\f18d"}.fa-arrow-circle-o-right:before{content:"\f18e"}.fa-arrow-circle-o-left:before{content:"\f190"}.fa-toggle-left:before,.fa-caret-square-o-left:before{content:"\f191"}.fa-dot-circle-o:before{content:"\f192"}.fa-wheelchair:before{content:"\f193"}.fa-vimeo-square:before{content:"\f194"}.fa-turkish-lira:before,.fa-try:before{content:"\f195"}.fa-plus-square-o:before{content:"\f196"}
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.eot b/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.eot
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.eot b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.eot
 new file mode 100755
 index 0000000000000000000000000000000000000000..7c79c6a6bc9a128a2a8eaffbe49a4338625fdbc2
 GIT binary patch
@@ -12712,11 +12777,11 @@ E0QL`y%>V!Z
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.svg b/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.svg
 new file mode 100755
 index 0000000..45fdf33
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.svg
 @@ -0,0 +1,414 @@
 +<?xml version="1.0" standalone="no"?>
 +<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
@@ -13133,7 +13198,7 @@ index 0000000..45fdf33
 +</font>
 +</defs></svg> 
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.ttf b/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.ttf
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.ttf b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.ttf
 new file mode 100755
 index 0000000000000000000000000000000000000000..e89738de5eaf8fca33a2f2cdc5cb4929caa62b71
 GIT binary patch
@@ -14055,7 +14120,7 @@ qx{Kk=rVu5YQ9XR<<pcNCsug_b<HJfmtl|T2KhS9V(3iihY5xO1YPRzL
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.woff b/openstack_dashboard_theme/static/dashboard/fonts/fontawesome-webfont.woff
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.woff b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/fontawesome-webfont.woff
 new file mode 100755
 index 0000000000000000000000000000000000000000..8c1748aab7a790d510fb3f42a8a8971d96efa79d
 GIT binary patch
@@ -14919,11 +14984,11 @@ VoBs<Y3))5i00001Qg^x6008Up2bBN-
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/fonts/logo.svg b/openstack_dashboard_theme/static/dashboard/fonts/logo.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg
 new file mode 100644
 index 0000000..0d22e55
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/fonts/logo.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg
 @@ -0,0 +1,94 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -15019,7 +15084,7 @@ index 0000000..0d22e55
 +		c9.195,2.785,18.651,0.842,19.703-4.937C40.404,18.943,38.192,17,34.464,16.16z"/>
 +</g>
 +</svg>
-diff --git a/openstack_dashboard_theme/static/dashboard/img/bg-login.jpg b/openstack_dashboard_theme/static/dashboard/img/bg-login.jpg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/bg-login.jpg b/openstack_dashboard/dashboards/theme/static/dashboard/img/bg-login.jpg
 new file mode 100644
 index 0000000000000000000000000000000000000000..cd254db3d5a1a879cefd3dd0e5516a4c9fba4b4d
 GIT binary patch
@@ -17182,11 +17247,11 @@ jj}OIO{S5WiGnGCy@uE^>MJf_{NwoLQ4u^S{{X6x4_tl?}
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/img/brand.svg b/openstack_dashboard_theme/static/dashboard/img/brand.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg b/openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 new file mode 100644
 index 0000000..d9a17e8
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/img/brand.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 @@ -0,0 +1,240 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -17428,11 +17493,11 @@ index 0000000..d9a17e8
 +	</g>
 +</g>
 +</svg>
-diff --git a/openstack_dashboard_theme/static/dashboard/img/logo.svg b/openstack_dashboard_theme/static/dashboard/img/logo.svg
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg b/openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
 new file mode 100644
 index 0000000..0d22e55
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/img/logo.svg
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
 @@ -0,0 +1,94 @@
 +<?xml version="1.0" encoding="utf-8"?>
 +<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -17528,7 +17593,7 @@ index 0000000..0d22e55
 +		c9.195,2.785,18.651,0.842,19.703-4.937C40.404,18.943,38.192,17,34.464,16.16z"/>
 +</g>
 +</svg>
-diff --git a/openstack_dashboard_theme/static/dashboard/img/rh-logo.png b/openstack_dashboard_theme/static/dashboard/img/rh-logo.png
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/rh-logo.png b/openstack_dashboard/dashboards/theme/static/dashboard/img/rh-logo.png
 new file mode 100644
 index 0000000000000000000000000000000000000000..80cb1ef9939d72e94bfb2126e7d4405c88add98d
 GIT binary patch
@@ -17727,7 +17792,7 @@ RtF66>=T8~`_IWov^gmamxVr!V
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico b/openstack_dashboard_theme/static/dashboard/img/rhfavicon.ico
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/rhfavicon.ico b/openstack_dashboard/dashboards/theme/static/dashboard/img/rhfavicon.ico
 new file mode 100644
 index 0000000000000000000000000000000000000000..0930145e5b050832691170143f8698e50a15341d
 GIT binary patch
@@ -17745,11 +17810,11 @@ o=M+dUL_PboAFq!6JAVr>07v{lKv;t7DgXcg07*qoM6N<$f_Z+tB>(^b
 literal 0
 HcmV?d00001
 
-diff --git a/openstack_dashboard_theme/static/dashboard/less/rcue/fonts.less b/openstack_dashboard_theme/static/dashboard/less/rcue/fonts.less
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/fonts.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/fonts.less
 new file mode 100644
 index 0000000..4f16fde
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/less/rcue/fonts.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/fonts.less
 @@ -0,0 +1,52 @@
 +/* Open Sans */
 +
@@ -17804,11 +17869,11 @@ index 0000000..4f16fde
 +       url('@{font-path}/OpenSans-ExtraBold-webfont.svg#OpenSansExtrabold') format('svg');
 +}
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/less/rcue/icons.less b/openstack_dashboard_theme/static/dashboard/less/rcue/icons.less
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/icons.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/icons.less
 new file mode 100644
 index 0000000..6a5c848
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/less/rcue/icons.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/icons.less
 @@ -0,0 +1,114 @@
 +/* Custom icons and selections from IcoMoon - Free (http://icomoon.io/#icons) for use in RCUE */
 +
@@ -17925,11 +17990,11 @@ index 0000000..6a5c848
 +  content: "\e617";
 +}
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/less/rcue/login.less b/openstack_dashboard_theme/static/dashboard/less/rcue/login.less
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less
 new file mode 100755
 index 0000000..31daff6
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/less/rcue/login.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less
 @@ -0,0 +1,139 @@
 +//
 +// RCUE - Login
@@ -18070,11 +18135,11 @@ index 0000000..31daff6
 +    text-align: center;
 +  }
 +}
-diff --git a/openstack_dashboard_theme/static/dashboard/less/rcue/navbar.less b/openstack_dashboard_theme/static/dashboard/less/rcue/navbar.less
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less
 new file mode 100644
 index 0000000..2c67e71
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/less/rcue/navbar.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less
 @@ -0,0 +1,458 @@
 +.header.rcue {
 +  border-top: 3px solid #cc0000;
@@ -18535,11 +18600,11 @@ index 0000000..2c67e71
 +  }
 +}
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/static/dashboard/less/rcue/variables.less b/openstack_dashboard_theme/static/dashboard/less/rcue/variables.less
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/variables.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/variables.less
 new file mode 100755
 index 0000000..973ea0b
 --- /dev/null
-+++ b/openstack_dashboard_theme/static/dashboard/less/rcue/variables.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/variables.less
 @@ -0,0 +1,92 @@
 +/* Red Hat Common User Experience (RCUE) */
 +/* Bootstrap overrides and RCUE-specific variables */
@@ -18633,46 +18698,12 @@ index 0000000..973ea0b
 +@nav-tabs-color:                             @gray-rcue;
 +@navbar-rcue-border-color:                   #cc0000;
 +@tooltip-font-size:                          @font-size-base;
-diff --git a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
-index 2d8b2d0..10aae13 100644
---- a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
-+++ b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
-@@ -1,55 +1,50 @@
--@import "horizon.less";
--
--/* Login Splash Page */
--
--#splash .rhlogin {
--  background: #fff url(/static/dashboard/img/rh-logo.png) no-repeat center 35px;
--  position: absolute;
--  top: 80px;
--  left: 50%;
--  margin: 0 0 0 -195px;
--  padding-top: 170px;
--  width: 390px;
--  border: 1px solid #e1e1e1;
--  max-height: none;
--  -webkit-border-radius: 6px;
--  -moz-border-radius: 6px;
--  border-radius: 6px;
--  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
--  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
--  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
--  -webkit-background-clip: padding-box;
--  -moz-background-clip: padding-box;
--  background-clip: padding-box;
--
--  form {
--    .error {
--      width: 100%;
--    }
--    input {
--      width: 350px;
--    }
--    select {
--      width: 360px;
--    }
--  }
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less
+new file mode 100644
+index 0000000..10aae13
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less
+@@ -0,0 +1,50 @@
 +@import "rcue/variables.less";
 +@import "rcue/icons.less";
 +@import "rcue/fonts.less";
@@ -18699,31 +18730,16 @@ index 2d8b2d0..10aae13 100644
 +
 +#monitoring {
 +  font-family: @font-family-base;
- }
- 
--h1.rhos {
--    width: 100%;
--    margin: 0;
--    background-color: #f5f5f5;
--    padding-bottom: 40px;
++}
++
 +.page-header {
 +  font-family: @font-family-base;
 +  font-weight: 300;
- }
- 
--h1.rhos a {
--    background: url(/static/dashboard/img/rh-logo.png) top left no-repeat;
--    display: block;
--    float: left;
--    width: 116px;
--    height: 123px;
--    text-indent: -9999px;
--    margin-left: 56px;
--    margin-top: 15px;
--    margin-bottom: 25px;
++}
++
 +p {
 +  font-family: @font-family-base;
- }
++}
 +
 +.table_title, .table_header {
 +  h3 {
@@ -18739,11 +18755,11 @@ index 2d8b2d0..10aae13 100644
 +  min-width: 0;
 +}
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/templates/_header.html b/openstack_dashboard_theme/templates/_header.html
+diff --git a/openstack_dashboard/dashboards/theme/templates/_header.html b/openstack_dashboard/dashboards/theme/templates/_header.html
 new file mode 100644
 index 0000000..c8fdbee
 --- /dev/null
-+++ b/openstack_dashboard_theme/templates/_header.html
++++ b/openstack_dashboard/dashboards/theme/templates/_header.html
 @@ -0,0 +1,16 @@
 +{% load i18n %}
 +{% load url from future %}
@@ -18761,63 +18777,70 @@ index 0000000..c8fdbee
 +  </li>
 +  {% include "horizon/common/_region_selector.html" %}
 +</ul>
-diff --git a/openstack_dashboard_theme/templates/_stylesheets.html b/openstack_dashboard_theme/templates/_stylesheets.html
-index 88463e1..c3899cf 100644
---- a/openstack_dashboard_theme/templates/_stylesheets.html
-+++ b/openstack_dashboard_theme/templates/_stylesheets.html
-@@ -1,7 +1,10 @@
- {% load compress %}
- 
- {% compress css %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/_stylesheets.html b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
+new file mode 100644
+index 0000000..c3899cf
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
+@@ -0,0 +1,10 @@
++{% load compress %}
++
++{% compress css %}
 +<link href='{{ STATIC_URL }}dashboard/less/horizon.less' type='text/less' media='screen' rel='stylesheet' />
- <link href='{{ STATIC_URL }}dashboard/less/rhtheme.less' type='text/less' media='screen' rel='stylesheet' />
- {% endcompress %}
- 
++<link href='{{ STATIC_URL }}dashboard/less/rhtheme.less' type='text/less' media='screen' rel='stylesheet' />
++{% endcompress %}
++
 +<link href='{{ STATIC_URL }}dashboard/css/font-awesome.min.css' type='text/css' media='screen' rel='stylesheet' />
 +
- <link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>
-diff --git a/openstack_dashboard_theme/templates/auth/_login.html b/openstack_dashboard_theme/templates/auth/_login.html
-index 1cb6036..a0845a8 100644
---- a/openstack_dashboard_theme/templates/auth/_login.html
-+++ b/openstack_dashboard_theme/templates/auth/_login.html
-@@ -5,8 +5,8 @@
- {% block modal-header %}{% trans "Log In" %}{% endblock %}
- {% block modal_class %}rhlogin{% if hide %}modal hide{% endif %}{% endblock %}
- 
--{% block form_action %}{% url 'login' %}{% endblock %}
- {% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
++<link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>
+diff --git a/openstack_dashboard/dashboards/theme/templates/auth/_login.html b/openstack_dashboard/dashboards/theme/templates/auth/_login.html
+new file mode 100644
+index 0000000..a0845a8
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/auth/_login.html
+@@ -0,0 +1,29 @@
++{% extends "horizon/common/_modal_form.html" %}
++{% load i18n %}
++{% load url from future %}
++
++{% block modal-header %}{% trans "Log In" %}{% endblock %}
++{% block modal_class %}rhlogin{% if hide %}modal hide{% endif %}{% endblock %}
++
++{% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
 +{% block form_action %}{% url 'login' %}{% endblock %}
- 
- {% block modal-body %}
-   <fieldset>
-@@ -25,5 +25,5 @@
- {% endblock %}
- 
- {% block modal-footer %}
--  <button type="submit" class="btn btn-primary pull-right">{% trans "Sign In" %}</button>
++
++{% block modal-body %}
++  <fieldset>
++    {% if request.user.is_authenticated and 'next' in request.GET %}
++    <div class="control-group clearfix error">
++      <span class="help-inline"><p>{% trans "You don't have permissions to access:" %}</p>
++        <p><b>{{ request.GET.next }}</b></p>
++        <p>{% trans "Login as different user or go back to" %}
++        <a href="{% url 'horizon:user_home' %}">{% trans "home page" %}</a></p>
++      </span>
++    </div>
++    {% endif %}
++    {% if next %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />{% endif %}
++    {% include "horizon/common/_form_fields.html" %}
++  </fieldset>
++{% endblock %}
++
++{% block modal-footer %}
 +  <button type="submit" class="btn btn-primary btn-large">{% trans "Sign In" %}</button>
- {% endblock %}
-diff --git a/openstack_dashboard_theme/templates/auth/login.html b/openstack_dashboard_theme/templates/auth/login.html
-index 6fa7746..ccfc71e 100644
---- a/openstack_dashboard_theme/templates/auth/login.html
-+++ b/openstack_dashboard_theme/templates/auth/login.html
-@@ -1,10 +1,2 @@
--{% extends "base.html" %}
++{% endblock %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/auth/login.html b/openstack_dashboard/dashboards/theme/templates/auth/login.html
+new file mode 100644
+index 0000000..ccfc71e
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/auth/login.html
+@@ -0,0 +1,2 @@
 +{% extends "splash.html" %}
- {% load i18n %}
--
--{% block title %}{% trans "Login" %}{% endblock %}
--
--{% block body_id %}splash{% endblock %}
--
--{% block content %}
--  {% include 'auth/_login.html' %}
--{% endblock %}
-diff --git a/openstack_dashboard_theme/templates/base.html b/openstack_dashboard_theme/templates/base.html
++{% load i18n %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/base.html b/openstack_dashboard/dashboards/theme/templates/base.html
 new file mode 100644
 index 0000000..e64f916
 --- /dev/null
-+++ b/openstack_dashboard_theme/templates/base.html
++++ b/openstack_dashboard/dashboards/theme/templates/base.html
 @@ -0,0 +1,37 @@
 +{% load branding i18n %}
 +<!DOCTYPE html>
@@ -18856,11 +18879,11 @@ index 0000000..e64f916
 +    <div id="modal_wrapper" />
 +  </body>
 +</html>
-diff --git a/openstack_dashboard_theme/templates/horizon/_nav_list.html b/openstack_dashboard_theme/templates/horizon/_nav_list.html
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html b/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
 new file mode 100644
 index 0000000..6648421
 --- /dev/null
-+++ b/openstack_dashboard_theme/templates/horizon/_nav_list.html
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
 @@ -0,0 +1,11 @@
 +{% load horizon i18n %}
 +
@@ -18874,11 +18897,11 @@ index 0000000..6648421
 +  {% endfor %}
 +</ul>
 \ No newline at end of file
-diff --git a/openstack_dashboard_theme/templates/horizon/_subnav_list.html b/openstack_dashboard_theme/templates/horizon/_subnav_list.html
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html b/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
 new file mode 100644
 index 0000000..1c1d70c
 --- /dev/null
-+++ b/openstack_dashboard_theme/templates/horizon/_subnav_list.html
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
 @@ -0,0 +1,20 @@
 +{% load horizon %}
 +
@@ -18900,30 +18923,15 @@ index 0000000..1c1d70c
 +    {% endif %}
 +  {% endwith %}
 +{% endfor %}
-diff --git a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
-index df66c62..e5e7480 100644
---- a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
-+++ b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
-@@ -1,54 +1,64 @@
- {% load branding horizon i18n %}
- {% load url from future %}
- 
--<div class='sidebar'>
--  <h1 class="rhos clearfix"><a href="{% url 'horizon:user_home' %}">{% site_branding %}</a></h1>
--
--  {% horizon_main_nav %}
--
--  {% if request.horizon.dashboard.supports_tenants %}
--  <div id="tenant_switcher" class="dropdown switcher_bar" tabindex="1">
--    {% with num_of_tenants=authorized_tenants|length %}
--      {% if num_of_tenants > 1 %}
--        <a class="dropdown-toggle" data-toggle="dropdown" href="#tenant_switcher">
--      {% endif %}
--        <h4>{% trans "Current Project" %}</h4>
--        <h3>{{ request.user.tenant_name }}</h3>
--      {% if num_of_tenants > 1 %}
--      </a>
--      {% endif %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html b/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+new file mode 100644
+index 0000000..e5e7480
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+@@ -0,0 +1,64 @@
++{% load branding horizon i18n %}
++{% load url from future %}
++
 +<div class="header rcue clearfix">
 +  <div class="navbar utility">
 +    <div class="navbar-inner">
@@ -18942,13 +18950,7 @@ index df66c62..e5e7480 100644
 +            {% if num_of_tenants > 1 %}
 +            </a>
 +            {% endif %}
- 
--      {% if num_of_tenants > 1 %}
--        <ul id="tenant_list" class="dropdown-menu">
--          <li class='divider'></li>
--          {% for tenant in authorized_tenants %}
--            {% if tenant.enabled and tenant.id != request.user.tenant_id %}
--              <li><a href="{% url 'switch_tenants' tenant.id %}?next={{ request.horizon.dashboard.get_absolute_url }}">{{ tenant.name }}</a></li>
++
 +            {% if num_of_tenants > 1 %}
 +              <ul id="tenant_list" class="dropdown-menu">
 +                {% for tenant in authorized_tenants %}
@@ -18957,24 +18959,12 @@ index df66c62..e5e7480 100644
 +                  {% endif %}
 +                {% endfor %}
 +              </ul>
-             {% endif %}
--          {% endfor %}
--        </ul>
++            {% endif %}
 +          {% endwith %}
 +        </li>
 +      </ul>
-       {% endif %}
--    {% endwith %}
--  </div>
--  {% endif %}
- 
--  {% with num_of_regions=request.user.available_services_regions|length %}
--  {% if num_of_regions > 1 %}
--  <div id="services_region_switcher" class="dropdown switcher_bar" tabindex="1">
--    <a class="dropdown-toggle" data-toggle="dropdown" href="#services_region_switcher">
--        <h4>{% trans "Managing Region" %}</h4>
--        <h3>{{ request.user.services_region }}</h3>
--    </a>
++      {% endif %}
++
 +      {% with num_of_regions=request.user.available_services_regions|length %}
 +      {% if num_of_regions > 1 %}
 +      <ul class="nav pull-right">
@@ -18983,13 +18973,7 @@ index df66c62..e5e7480 100644
 +            <span class="label">{% trans "Managing Region" %}</span>
 +            {{ request.user.services_region }}
 +          </a>
- 
--    <ul id="services_regions_list" class="dropdown-menu">
--        <li class='divider'></li>
--        {% for region in request.user.available_services_regions %}
--        <li><a href="{% url 'switch_services_region' region %}?next={{ request.horizon.panel.get_absolute_url }}">{{ region }}</a></li>
--        {% endfor %}
--    </ul>
++
 +          <ul id="services_regions_list" class="dropdown-menu">
 +              {% for region in request.user.available_services_regions %}
 +              <li><a href="{% url 'switch_services_region' region %}?next={{ request.horizon.panel.get_absolute_url }}">{{ region }}</a></li>
@@ -19007,44 +18991,351 @@ index df66c62..e5e7480 100644
 +        {% horizon_dashboard_nav %}
 +      </ul>
 +    </div>
-   </div>
--  {% endif %}
--  {% endwith %}
--
--  {% horizon_dashboard_nav %}
- </div>
-diff --git a/openstack_dashboard_theme/templates/splash.html b/openstack_dashboard_theme/templates/splash.html
-index 4a5cfe1..830fd8c 100644
---- a/openstack_dashboard_theme/templates/splash.html
-+++ b/openstack_dashboard_theme/templates/splash.html
-@@ -1,17 +1,24 @@
- {% load i18n branding %}
--
- <!DOCTYPE html>
--<html lang="en" xml:lang="en">
++  </div>
++</div>
+diff --git a/openstack_dashboard/dashboards/theme/templates/splash.html b/openstack_dashboard/dashboards/theme/templates/splash.html
+new file mode 100644
+index 0000000..830fd8c
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/splash.html
+@@ -0,0 +1,24 @@
++{% load i18n branding %}
++<!DOCTYPE html>
 +<html lang="en" xml:lang="en" class="login-rcue">
-   <head>
--    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
++  <head>
 +    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
-     <title>{% trans "Login" %} - {% site_branding %}</title>
-     {% include "_stylesheets.html" %}
-   </head>
-   <body id="splash">
++    <title>{% trans "Login" %} - {% site_branding %}</title>
++    {% include "_stylesheets.html" %}
++  </head>
++  <body id="splash">
 +    <a href="http://www.redhat.com/" id="redhat">
 +      <img src="/static/dashboard/img/logo.svg" alt="Red Hat" />
 +    </a>
-     <div class="container">
--      <div class="row large-rounded">
++    <div class="container">
 +      <div class="row-fluid">
 +        <div class="span12">
 +          <div id="brand">
 +            <img src="/static/dashboard/img/brand.svg">
 +          </div><!--/#brand-->
 +        </div><!--/.span*-->
-         {% include 'auth/_login.html' %}
--      </div>
--    </div>
++        {% include 'auth/_login.html' %}
 +      </div><!--/.row-fluid-->
 +    </div><!--/.container-->
-   </body>
- </html>
++  </body>
++</html>
+diff --git a/openstack_dashboard/dashboards/theme/theme_index/__init__.py b/openstack_dashboard/dashboards/theme/theme_index/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/openstack_dashboard/dashboards/theme/theme_index/panel.py b/openstack_dashboard/dashboards/theme/theme_index/panel.py
+new file mode 100644
+index 0000000..9c42a79
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/theme_index/panel.py
+@@ -0,0 +1,28 @@
++# vim: tabstop=4 shiftwidth=4 softtabstop=4
++
++# Copyright 2013 Centrin Data Systems Ltd.
++#
++#    Licensed under the Apache License, Version 2.0 (the "License"); you may
++#    not use this file except in compliance with the License. You may obtain
++#    a copy of the License at
++#
++#         http://www.apache.org/licenses/LICENSE-2.0
++#
++#    Unless required by applicable law or agreed to in writing, software
++#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++#    License for the specific language governing permissions and limitations
++#    under the License.
++
++from django.utils.translation import ugettext_lazy as _
++
++import horizon
++
++from openstack_dashboard.dashboards.theme import dashboard
++
++class ThemePanel(horizon.Panel):
++    name = _("Panel providing a theme")
++    slug = 'theme_index'
++    nav = True
++
++dashboard.Theme.register(ThemePanel)
+diff --git a/openstack_dashboard/dashboards/theme/theme_index/urls.py b/openstack_dashboard/dashboards/theme/theme_index/urls.py
+new file mode 100644
+index 0000000..41a2be0
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/theme_index/urls.py
+@@ -0,0 +1,2 @@
++
++urlpatterns = ()
+diff --git a/openstack_dashboard/dashboards/theme/theme_index/views.py b/openstack_dashboard/dashboards/theme/theme_index/views.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/openstack_dashboard/enabled/_99_customization.py b/openstack_dashboard/enabled/_99_customization.py
+new file mode 100644
+index 0000000..f37f848
+--- /dev/null
++++ b/openstack_dashboard/enabled/_99_customization.py
+@@ -0,0 +1,9 @@
++# The name of the dashboard to be added to HORIZON['dashboards']. Required.
++DASHBOARD = 'theme'
++# If set to True, this dashboard will be set as the default dashboard.
++DEFAULT = False
++# A dictionary of exception classes to be added to HORIZON['exceptions'].
++ADD_EXCEPTIONS = {}
++# A list of applications to be added to INSTALLED_APPS.
++ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
++
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 7860646..632b173 100644
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -125,13 +125,15 @@ TEMPLATE_LOADERS = (
+ 
+ TEMPLATE_DIRS = (
+     os.path.join(ROOT_PATH, 'templates'),
+-) 
++)
+ 
+ STATICFILES_FINDERS = (
+     'compressor.finders.CompressorFinder',
+     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+ )
+ 
++STATICFILES_DIRS = (os.path.join(ROOT_PATH, 'static'),)
++
+ COMPRESS_PRECOMPILERS = (
+     ('text/less', ('lesscpy {infile}')),
+ )
+@@ -144,7 +146,7 @@ COMPRESS_ENABLED = True
+ COMPRESS_OUTPUT_DIR = 'dashboard'
+ COMPRESS_CSS_HASHING_METHOD = 'hash'
+ COMPRESS_PARSER = 'compressor.parser.HtmlParser'
+-COMPRESS_OFFLINE = True
++COMPRESS_OFFLINE = False
+ 
+ INSTALLED_APPS = [
+     'openstack_dashboard',
+@@ -159,15 +161,6 @@ INSTALLED_APPS = [
+     'openstack_auth',
+ ]
+ 
+-THEME_APP = 'openstack_dashboard_theme'
+-
+-try:
+-    __import__(THEME_APP)
+-    INSTALLED_APPS = (THEME_APP,) + INSTALLED_APPS
+-except:
+-    pass
+-
+-
+ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+ AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
+ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+diff --git a/openstack_dashboard_theme/__init__.py b/openstack_dashboard_theme/__init__.py
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/openstack_dashboard_theme/models.py b/openstack_dashboard_theme/models.py
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less b/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
+deleted file mode 100644
+index 5350db3..0000000
+--- a/openstack_dashboard_theme/static/dashboard/less/rhtheme.less
++++ /dev/null
+@@ -1,55 +0,0 @@
+-@import "/static/dashboard/less/horizon.less";
+-
+-/* Login Splash Page */
+-
+-#splash .rhlogin {
+-  background: #fff url(/static/dashboard/img/rh-logo.png) no-repeat center 35px;
+-  position: absolute;
+-  top: 80px;
+-  left: 50%;
+-  margin: 0 0 0 -195px;
+-  padding-top: 170px;
+-  width: 390px;
+-  border: 1px solid #e1e1e1;
+-  max-height: none;
+-  -webkit-border-radius: 6px;
+-  -moz-border-radius: 6px;
+-  border-radius: 6px;
+-  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+-  -webkit-background-clip: padding-box;
+-  -moz-background-clip: padding-box;
+-  background-clip: padding-box;
+-
+-  form {
+-    .error {
+-      width: 100%;
+-    }
+-    input {
+-      width: 350px;
+-    }
+-    select {
+-      width: 360px;
+-    }
+-  }
+-}
+-
+-h1.rhos {
+-    width: 100%;
+-    margin: 0;
+-    background-color: #f5f5f5;
+-    padding-bottom: 40px;
+-}
+-
+-h1.rhos a {
+-    background: url(/static/dashboard/img/rh-logo.png) top left no-repeat;
+-    display: block;
+-    float: left;
+-    width: 116px;
+-    height: 123px;
+-    text-indent: -9999px;
+-    margin-left: 56px;
+-    margin-top: 15px;
+-    margin-bottom: 25px;
+-}
+diff --git a/openstack_dashboard_theme/templates/_stylesheets.html b/openstack_dashboard_theme/templates/_stylesheets.html
+deleted file mode 100644
+index 88463e1..0000000
+--- a/openstack_dashboard_theme/templates/_stylesheets.html
++++ /dev/null
+@@ -1,7 +0,0 @@
+-{% load compress %}
+-
+-{% compress css %}
+-<link href='{{ STATIC_URL }}dashboard/less/rhtheme.less' type='text/less' media='screen' rel='stylesheet' />
+-{% endcompress %}
+-
+-<link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>
+diff --git a/openstack_dashboard_theme/templates/auth/_login.html b/openstack_dashboard_theme/templates/auth/_login.html
+deleted file mode 100644
+index 1cb6036..0000000
+--- a/openstack_dashboard_theme/templates/auth/_login.html
++++ /dev/null
+@@ -1,29 +0,0 @@
+-{% extends "horizon/common/_modal_form.html" %}
+-{% load i18n %}
+-{% load url from future %}
+-
+-{% block modal-header %}{% trans "Log In" %}{% endblock %}
+-{% block modal_class %}rhlogin{% if hide %}modal hide{% endif %}{% endblock %}
+-
+-{% block form_action %}{% url 'login' %}{% endblock %}
+-{% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
+-
+-{% block modal-body %}
+-  <fieldset>
+-    {% if request.user.is_authenticated and 'next' in request.GET %}
+-    <div class="control-group clearfix error">
+-      <span class="help-inline"><p>{% trans "You don't have permissions to access:" %}</p>
+-        <p><b>{{ request.GET.next }}</b></p>
+-        <p>{% trans "Login as different user or go back to" %}
+-        <a href="{% url 'horizon:user_home' %}">{% trans "home page" %}</a></p>
+-      </span>
+-    </div>
+-    {% endif %}
+-    {% if next %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />{% endif %}
+-    {% include "horizon/common/_form_fields.html" %}
+-  </fieldset>
+-{% endblock %}
+-
+-{% block modal-footer %}
+-  <button type="submit" class="btn btn-primary pull-right">{% trans "Sign In" %}</button>
+-{% endblock %}
+diff --git a/openstack_dashboard_theme/templates/auth/login.html b/openstack_dashboard_theme/templates/auth/login.html
+deleted file mode 100644
+index 6fa7746..0000000
+--- a/openstack_dashboard_theme/templates/auth/login.html
++++ /dev/null
+@@ -1,10 +0,0 @@
+-{% extends "base.html" %}
+-{% load i18n %}
+-
+-{% block title %}{% trans "Login" %}{% endblock %}
+-
+-{% block body_id %}splash{% endblock %}
+-
+-{% block content %}
+-  {% include 'auth/_login.html' %}
+-{% endblock %}
+diff --git a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html b/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
+deleted file mode 100644
+index 5672846..0000000
+--- a/openstack_dashboard_theme/templates/horizon/common/_sidebar.html
++++ /dev/null
+@@ -1,35 +0,0 @@
+-{% load branding horizon i18n %}
+-
+-<div class='sidebar'>
+-  <h1 class="rhos clearfix"><a href="{% url horizon:user_home %}">{% site_branding %}</a></h1>
+-
+-  {% horizon_main_nav %}
+-
+-  {% if request.horizon.dashboard.supports_tenants %}
+-  <div id="tenant_switcher" class="dropdown switcher_bar" tabindex="1">
+-    {% with num_of_tenants=authorized_tenants|length %}
+-      {% if num_of_tenants > 1 %}
+-        <a class="dropdown-toggle" data-toggle="dropdown" href="#tenant_switcher">
+-      {% endif %}
+-        <h4>{% trans "Current Project" %}</h4>
+-        <h3>{{ request.user.tenant_name }}</h3>
+-      {% if num_of_tenants > 1 %}
+-      </a>
+-      {% endif %}
+-
+-      {% if num_of_tenants > 1 %}
+-        <ul id="tenant_list" class="dropdown-menu">
+-          <li class='divider'></li>
+-          {% for tenant in authorized_tenants %}
+-            {% if tenant.enabled and tenant.id != request.user.tenant_id %}
+-              <li><a href="{% url switch_tenants tenant.id %}">{{ tenant.name }}</a></li>
+-            {% endif %}
+-          {% endfor %}
+-        </ul>
+-      {% endif %}
+-    {% endwith %}
+-  </div>
+-  {% endif %}
+-
+-  {% horizon_dashboard_nav %}
+-</div>
+diff --git a/openstack_dashboard_theme/templates/splash.html b/openstack_dashboard_theme/templates/splash.html
+deleted file mode 100644
+index 4a5cfe1..0000000
+--- a/openstack_dashboard_theme/templates/splash.html
++++ /dev/null
+@@ -1,17 +0,0 @@
+-{% load i18n branding %}
+-
+-<!DOCTYPE html>
+-<html lang="en" xml:lang="en">
+-  <head>
+-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+-    <title>{% trans "Login" %} - {% site_branding %}</title>
+-    {% include "_stylesheets.html" %}
+-  </head>
+-  <body id="splash">
+-    <div class="container">
+-      <div class="row large-rounded">
+-        {% include 'auth/_login.html' %}
+-      </div>
+-    </div>
+-  </body>
+-</html>
+diff --git a/tox.ini b/tox.ini
+index e9ff11d..7e2d523 100644
+--- a/tox.ini
++++ b/tox.ini
+@@ -45,6 +45,7 @@ downloadcache = ~/cache/pip
+ [flake8]
+ builtins = _
+ exclude = .venv,.git,.tox,dist,doc,*openstack/common*,*lib/python*,*egg,build,panel_template,dash_template,local_settings.py,*/local/*
++# E126 continuation line over-indented for hanging indent
+ # E127 continuation line over-indented for visual indent
+ # E128 continuation line under-indented for visual indent
+ # H701 empty localization string

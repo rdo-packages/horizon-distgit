@@ -24,8 +24,9 @@ Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
 Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
 Patch0005: 0005-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
 Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0007: 0007-Settings-cleanup-use-newer-customization.patch
-Patch0008: 0008-RCUE-navbar-and-login-screen.patch
+Patch0007: 0007-RCUE-navbar-and-login-screen.patch
+Patch0008: 0008-Fix-selenium-imports-on-tests.patch
+Patch0009: 0009-override-base-templates.patch
 
 
 #
