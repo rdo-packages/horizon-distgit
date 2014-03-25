@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.4.b3%{?dist}
+Release:    0.5.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -50,6 +50,7 @@ Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-pbr
 Requires:   python-six >= 1.4.1
+Requires:   python-mox
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -350,6 +351,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard_theme
 
 %changelog
+* Tue Mar 25 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-0.5.b3
+- add dependency on python-mox
+
 * Thu Mar 13 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.4.b3
 - remove hard selenium requirement for tests
 
