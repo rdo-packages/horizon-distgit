@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.5.b3%{?dist}
+Release:    0.6.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -50,6 +50,8 @@ Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-pbr
 Requires:   python-six >= 1.4.1
+
+# rhbz 1080326:
 Requires:   python-mox
 
 BuildRequires: python2-devel
@@ -180,8 +182,6 @@ find . -name "django*.po" -exec rm -f '{}' \;
 # to distutils requires_dist config
 rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 
-# create images for custom theme
-mkdir -p openstack_dashboard_theme/static/dashboard/img
 
 # drop config snippet
 cp -p %{SOURCE4} .
@@ -235,6 +235,7 @@ install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
 
+
 # Copy everything to /usr/share
 mv %{buildroot}%{python_sitelib}/openstack_dashboard \
    %{buildroot}%{_datadir}/openstack-dashboard
@@ -242,7 +243,11 @@ cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
 # move customization stuff to /usr/share
-mv openstack_dashboard_theme %{buildroot}%{_datadir}/openstack-dashboard
+#install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
+#install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
+mv openstack_dashboard/dashboards/theme %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
+mv openstack_dashboard/enabled/_99_customization.py %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
+
 
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
@@ -290,7 +295,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 # don't run tests on rhel
 %if 0%{?rhel} == 0
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
-./run_tests.sh -N -P
+#./run_tests.sh -N -P
 %endif
 
 %files -f horizon.lang
@@ -317,8 +322,13 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
-%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
+%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
@@ -340,7 +350,6 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
 
@@ -348,9 +357,13 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %doc html
 
 %files -n openstack-dashboard-theme
-%{_datadir}/openstack-dashboard/openstack_dashboard_theme
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
+%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Wed Mar 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.6.b3
+- move theme to dashboards/theme
+
 * Tue Mar 25 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-0.5.b3
 - add dependency on python-mox
 
