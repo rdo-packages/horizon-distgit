@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.7.b3%{?dist}
+Release:    0.8.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -294,7 +294,9 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 # don't run tests on rhel
 %if 0%{?rhel} == 0
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
-./run_tests.sh -N -P
+
+# until django-1.6 support for tests is enabled, disable tests
+# ./run_tests.sh -N -P
 %endif
 
 %files -f horizon.lang
@@ -360,6 +362,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Thu Mar 27 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.8.b3
+- disable tests until lp bug 1298332 is resolved
+
 * Thu Mar 27 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.7.b3
 - cleanup and re-enable tests
 
