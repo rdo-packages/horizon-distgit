@@ -27,6 +27,7 @@ Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
 Patch0007: 0007-RCUE-navbar-and-login-screen.patch
 Patch0008: 0008-Fix-selenium-imports-on-tests.patch
 Patch0009: 0009-override-base-templates.patch
+Patch0010: 0010-Fix-theme-to-work-with-icehouse-3-snapshot.patch
 
 
 #
