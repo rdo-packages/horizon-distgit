@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.6.b3%{?dist}
+Release:    0.7.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -244,8 +244,6 @@ cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
 # move customization stuff to /usr/share
-#install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards
-#install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 mv openstack_dashboard/dashboards/theme %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
 mv openstack_dashboard/enabled/_99_customization.py %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 
@@ -296,7 +294,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 # don't run tests on rhel
 %if 0%{?rhel} == 0
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
-#./run_tests.sh -N -P
+./run_tests.sh -N -P
 %endif
 
 %files -f horizon.lang
@@ -362,6 +360,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Thu Mar 27 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.7.b3
+- cleanup and re-enable tests
+
 * Wed Mar 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.6.b3
 - move theme to dashboards/theme
 
