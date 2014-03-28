@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.8.b3%{?dist}
+Release:    0.9.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -58,7 +58,7 @@ Requires:   python-mox
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
 BuildRequires: python-d2to1
-BuildRequires: python-pbr >= 0.5.21
+BuildRequires: python-pbr >= 0.7.0
 BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
@@ -66,7 +66,7 @@ BuildRequires: python-six >= 1.4.1
 
 # for checks:
 %if 0%{?rhel} == 0
-BuildRequires:   python-django-nose
+BuildRequires:   python-django-nose >= 1.2
 BuildRequires:   python-coverage
 BuildRequires:   python-mox
 BuildRequires:   python-nose-exclude
@@ -96,7 +96,7 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
-Requires:   python-django-openstack-auth >= 1.1.3
+Requires:   python-django-openstack-auth >= 1.1.4
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
 %if %{?with_compression} > 0
@@ -116,7 +116,7 @@ Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
 
-BuildRequires: python-django-openstack-auth >= 1.1.3
+BuildRequires: python-django-openstack-auth >= 1.1.4
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
@@ -296,7 +296,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 
 # until django-1.6 support for tests is enabled, disable tests
-# ./run_tests.sh -N -P
+./run_tests.sh -N -P
 %endif
 
 %files -f horizon.lang
@@ -362,6 +362,10 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Fri Mar 28 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.9.b3
+- re-enable tests
+- increase requirements versions
+
 * Thu Mar 27 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.8.b3
 - disable tests until lp bug 1298332 is resolved
 
