@@ -104,7 +104,7 @@ Requires:   python-lesscpy
 %endif
 
 Requires:   python-glanceclient
-Requires:   python-keystoneclient >= 0.3.2
+Requires:   python-keystoneclient >= 0.7.0
 Requires:   python-novaclient >= 2.15.0
 Requires:   python-neutronclient
 Requires:   python-cinderclient >= 1.0.6
@@ -145,7 +145,7 @@ BuildRequires: python-sphinx >= 1.1.3
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
-BuildRequires: python-keystoneclient >= 0.3.2
+BuildRequires: python-keystoneclient >= 0.7.0
 BuildRequires: python-novaclient >= 2.15.0
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
