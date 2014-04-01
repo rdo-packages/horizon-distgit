@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.9.b3%{?dist}
+Release:    0.10.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -28,6 +28,8 @@ Patch0007: 0007-RCUE-navbar-and-login-screen.patch
 Patch0008: 0008-Fix-selenium-imports-on-tests.patch
 Patch0009: 0009-override-base-templates.patch
 Patch0010: 0010-Fix-theme-to-work-with-icehouse-3-snapshot.patch
+Patch0011: 0011-Added-a-hook-for-redhat-openstack-access-plugin.patch
+Patch0012: 0012-allow-to-create-a-project.patch
 
 
 #
@@ -104,7 +106,8 @@ Requires:   python-lesscpy
 %endif
 
 Requires:   python-glanceclient
-Requires:   python-keystoneclient >= 0.7.0
+#Requires:   python-keystoneclient >= 0.7.0
+Requires:   python-keystoneclient
 Requires:   python-novaclient >= 2.15.0
 Requires:   python-neutronclient
 Requires:   python-cinderclient >= 1.0.6
@@ -145,7 +148,7 @@ BuildRequires: python-sphinx >= 1.1.3
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
-BuildRequires: python-keystoneclient >= 0.7.0
+BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2.15.0
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
@@ -362,6 +365,11 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Tue Apr 01 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.10.b3
+- Failed to create a tenant (rhbz#1082646)
+- add Red Hat Access to the upper right corner based on RCUE (rhbz#1069316)
+- lower keystoneclient requirement until rc-1 build
+
 * Fri Mar 28 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.9.b3
 - re-enable tests
 - increase requirements versions

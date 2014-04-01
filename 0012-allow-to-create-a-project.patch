@@ -1,0 +1,22 @@
+From b74fdde0bdb75de2267fc9f6101609a51f7ffda3 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Tue, 1 Apr 2014 08:44:40 +0200
+Subject: [PATCH] allow to create a project
+
+---
+ openstack_dashboard/settings.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 632b173..fefb57b 100644
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -199,7 +199,7 @@ USE_I18N = True
+ USE_L10N = True
+ USE_TZ = True
+ 
+-OPENSTACK_KEYSTONE_DEFAULT_ROLE = 'Member'
++OPENSTACK_KEYSTONE_DEFAULT_ROLE = '_member_'
+ 
+ DEFAULT_EXCEPTION_REPORTER_FILTER = 'horizon.exceptions.HorizonReporterFilter'
+ 

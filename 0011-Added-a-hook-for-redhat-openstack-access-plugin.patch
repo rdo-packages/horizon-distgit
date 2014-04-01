@@ -1,0 +1,33 @@
+From 3bc6f54fe51e62d267aed4c8528be586666ae167 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Mon, 31 Mar 2014 09:22:28 +0200
+Subject: [PATCH] Added a hook for redhat openstack access plugin
+
+---
+ openstack_dashboard/dashboards/theme/templates/_header.html | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/openstack_dashboard/dashboards/theme/templates/_header.html b/openstack_dashboard/dashboards/theme/templates/_header.html
+index c8fdbee..8ce279e 100644
+--- a/openstack_dashboard/dashboards/theme/templates/_header.html
++++ b/openstack_dashboard/dashboards/theme/templates/_header.html
+@@ -1,6 +1,19 @@
+ {% load i18n %}
+ {% load url from future %}
+ <ul class="nav pull-right" id="user_info">
++  {% url 'horizon:redhat_access_plugin_openstack:search:index' as plugin_url %}
++  {% if plugin_url %}
++    <li class="dropdown {% if request.horizon.dashboard.slug == "redhat_access_plugin_openstack" %}active{% endif %}">
++    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 10px">Red Hat Access<b class="caret"></b></a>
++    <ul class="dropdown-menu">
++        <li{% if request.horizon.panel.slug == "search" %} class="active"{% endif %}><a href="{% url 'horizon:redhat_access_plugin_openstack:search:index' %}">{% trans "Search" %}</a></li>
++        <li class="divider"></li>
++        <li{% if request.horizon.panel.slug == "log" %} class="active"{% endif %}><a href="{% url 'horizon:redhat_access_plugin_openstack:log:index' %}">{% trans "Log" %}</a></li>
++        <li class="divider"></li>
++        <li{% if request.horizon.panel.slug == "support" %} class="active"{% endif %}><a href="{% url 'horizon:redhat_access_plugin_openstack:support:index' %}">{% trans "Support" %}</a></li>
++    </ul>
++    </li>
++  {% endif %}
+   {% if HORIZON_CONFIG.help_url %}
+   <li><a href="{{ HORIZON_CONFIG.help_url }}" target="_new">{% trans "Help" %}</a></li>
+   {% endif %}
