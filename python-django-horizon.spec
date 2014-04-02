@@ -190,6 +190,14 @@ rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 # drop config snippet
 cp -p %{SOURCE4} .
 
+%if 0%{?with_compression} > 0
+# set COMPRESS_OFFLINE=True
+sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
+%else
+# set COMPRESS_OFFLINE=False
+sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
+%endif
+
 %build
 %{__python} setup.py build
 
@@ -199,14 +207,10 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
 
-%if %{?with_compression} > 0
-# set COMPRESS_OFFLINE=True
-sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
+# offline compression
+%if 0%{?with_compression} > 0
 %{__python} manage.py compress 
 cp -a static/dashboard %{_buildir}
-%else
-# set COMPRESS_OFFLINE=False
-sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
 %endif
 
 cp -a static/dashboard %{_buildir}
@@ -346,6 +350,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??/LC_MESSAGES
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
