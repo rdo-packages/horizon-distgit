@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.10.b3%{?dist}
+Release:    0.11.b3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -370,6 +370,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Wed Apr 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.11.b3
+- No images/javascript in horizon dashboard (rhbz#1081612)
+
 * Tue Apr 01 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.10.b3
 - Failed to create a tenant (rhbz#1082646)
 - add Red Hat Access to the upper right corner based on RCUE (rhbz#1069316)
