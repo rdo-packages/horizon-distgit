@@ -30,6 +30,7 @@ Patch0009: 0009-override-base-templates.patch
 Patch0010: 0010-Fix-theme-to-work-with-icehouse-3-snapshot.patch
 Patch0011: 0011-Added-a-hook-for-redhat-openstack-access-plugin.patch
 Patch0012: 0012-allow-to-create-a-project.patch
+Patch0013: 0001-skip-selenium-tests-when-WITH_SELENIUM-is-not-set.patch
 
 
 #
@@ -372,6 +373,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %changelog
 * Wed Apr 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.11.b3
 - No images/javascript in horizon dashboard (rhbz#1081612)
+- skip selenium tests during build
 
 * Tue Apr 01 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.10.b3
 - Failed to create a tenant (rhbz#1082646)
