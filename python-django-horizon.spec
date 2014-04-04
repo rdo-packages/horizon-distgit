@@ -1,14 +1,14 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.11.b3%{?dist}
+Release:    0.11.rc1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    https://launchpad.net/horizon/icehouse/icehouse-3/+download/horizon-%{version}.b3.tar.gz
+Source0:    https://launchpad.net/horizon/icehouse/icehouse-rc1/+download/horizon-%{version}.rc1.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -16,7 +16,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=2014.1.b3
+# patches_base=2014.1.rc1
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -54,9 +54,6 @@ Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-pbr
 Requires:   python-six >= 1.4.1
-
-# rhbz 1080326:
-Requires:   python-mox
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -371,6 +368,10 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
 
 %changelog
+* Fri Apr 04 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.12.rc1
+- rebase to horizon-2014.1.rc1
+- remove runtime requirement to mox (rhbz#1080326)
+
 * Wed Apr 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.11.b3
 - No images/javascript in horizon dashboard (rhbz#1081612)
 - skip selenium tests during build
