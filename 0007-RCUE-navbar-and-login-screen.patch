@@ -1,10 +1,8 @@
-From ee9965e6c5c42f5d33426f92783c3da2d329956a Mon Sep 17 00:00:00 2001
+From a98c1160985c92c48cd830ecdec082beebea750c Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 7 Mar 2014 09:48:30 +0100
 Subject: [PATCH] RCUE navbar and login screen
 
-Conflicts:
-	tox.ini
 ---
  openstack_dashboard/dashboards/theme/__init__.py   |   1 +
  openstack_dashboard/dashboards/theme/dashboard.py  |  30 ++
@@ -76,7 +74,7 @@ Conflicts:
  .../dashboards/theme/templates/_stylesheets.html   |  10 +
  .../dashboards/theme/templates/auth/_login.html    |  29 ++
  .../dashboards/theme/templates/auth/login.html     |   2 +
- .../dashboards/theme/templates/base.html           |  37 ++
+ .../dashboards/theme/templates/base.html           |  39 ++
  .../theme/templates/horizon/_nav_list.html         |  11 +
  .../theme/templates/horizon/_subnav_list.html      |  20 +
  .../theme/templates/horizon/common/_sidebar.html   |  64 +++
@@ -96,7 +94,7 @@ Conflicts:
  .../templates/horizon/common/_sidebar.html         |  35 --
  openstack_dashboard_theme/templates/splash.html    |  17 -
  tox.ini                                            |   1 +
- 90 files changed, 3538 insertions(+), 164 deletions(-)
+ 90 files changed, 3540 insertions(+), 164 deletions(-)
  create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
  create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
  create mode 100644 openstack_dashboard/dashboards/theme/models.py
@@ -18838,15 +18836,16 @@ index 0000000..ccfc71e
 +{% load i18n %}
 diff --git a/openstack_dashboard/dashboards/theme/templates/base.html b/openstack_dashboard/dashboards/theme/templates/base.html
 new file mode 100644
-index 0000000..e64f916
+index 0000000..f16e443
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/base.html
-@@ -0,0 +1,37 @@
+@@ -0,0 +1,39 @@
 +{% load branding i18n %}
 +<!DOCTYPE html>
 +<html>
 +  <head>
 +    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
++    {% include "horizon/_custom_meta.html" %}
 +    <title>{% block title %}{% endblock %} - {% site_branding %}</title>
 +    {% comment %} Load CSS sheets before Javascript  {% endcomment %}
 +    {% block css %}
@@ -18854,8 +18853,9 @@ index 0000000..e64f916
 +    {% endblock %}
 +    {% include "horizon/_conf.html" %}
 +    {% include "horizon/client_side/_script_loader.html" %}
++    {% include "horizon/_custom_head_js.html" %}
 +  </head>
-+  <body id="{% block body_id %}{% endblock %}" ng-app='horizonApp'>
++  <body id="{% block body_id %}{% endblock %}" ng-app='hz'>
 +    {% block content %}
 +      <div id="container">
 +        {% block sidebar %}
@@ -19087,7 +19087,7 @@ index 0000000..f37f848
 +ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 7860646..632b173 100644
+index d8f0219..58c525e 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -125,13 +125,15 @@ TEMPLATE_LOADERS = (
@@ -19328,10 +19328,10 @@ index 4a5cfe1..0000000
 -  </body>
 -</html>
 diff --git a/tox.ini b/tox.ini
-index e9ff11d..7e2d523 100644
+index 8876c2e..3df8c8c 100644
 --- a/tox.ini
 +++ b/tox.ini
-@@ -45,6 +45,7 @@ downloadcache = ~/cache/pip
+@@ -50,6 +50,7 @@ downloadcache = ~/cache/pip
  [flake8]
  builtins = _
  exclude = .venv,.git,.tox,dist,doc,*openstack/common*,*lib/python*,*egg,build,panel_template,dash_template,local_settings.py,*/local/*

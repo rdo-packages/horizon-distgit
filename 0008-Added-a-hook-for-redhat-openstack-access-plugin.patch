@@ -1,4 +1,4 @@
-From 3bc6f54fe51e62d267aed4c8528be586666ae167 Mon Sep 17 00:00:00 2001
+From 25ec4a6a0350cc4729babfbb879be8f20b5c99f2 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 31 Mar 2014 09:22:28 +0200
 Subject: [PATCH] Added a hook for redhat openstack access plugin

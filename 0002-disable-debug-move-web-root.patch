@@ -1,15 +1,15 @@
-From dbd305e4f4f9e0673f5e9c022ca8ae3bc8210465 Mon Sep 17 00:00:00 2001
+From d5a0d055ffeea44429ec2eb19c1038d091b89683 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
 
 ---
- openstack_dashboard/local/local_settings.py.example |  6 +++++-
+ openstack_dashboard/local/local_settings.py.example |  2 +-
  openstack_dashboard/settings.py                     | 10 ++++++----
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index ea14588..a276940 100644
+index 74f7bf8..169fd93 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -21,19 +21,8 @@ index ea14588..a276940 100644
  TEMPLATE_DEBUG = DEBUG
  
  # Required for Django 1.5.
-@@ -157,6 +157,10 @@ OPENSTACK_KEYSTONE_BACKEND = {
- OPENSTACK_HYPERVISOR_FEATURES = {
-     'can_set_mount_point': False,
-     'can_set_password': True,
-+
-+    # NOTE: as of Grizzly this is not yet supported in Nova so enabling this
-+    # setting will not do anything useful
-+    'can_encrypt_volumes': False
- }
- 
- # The OPENSTACK_NEUTRON_NETWORK settings can be used to enable optional
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 7950e80..2d9f16c 100644
+index 6392edf..a0091b2 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -31,7 +31,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \

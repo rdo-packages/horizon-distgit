@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.11.rc1%{?dist}
+Release:    0.12.rc1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -25,12 +25,7 @@ Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
 Patch0005: 0005-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
 Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
 Patch0007: 0007-RCUE-navbar-and-login-screen.patch
-Patch0008: 0008-Fix-selenium-imports-on-tests.patch
-Patch0009: 0009-override-base-templates.patch
-Patch0010: 0010-Fix-theme-to-work-with-icehouse-3-snapshot.patch
-Patch0011: 0011-Added-a-hook-for-redhat-openstack-access-plugin.patch
-Patch0012: 0012-allow-to-create-a-project.patch
-Patch0013: 0001-skip-selenium-tests-when-WITH_SELENIUM-is-not-set.patch
+Patch0008: 0008-Added-a-hook-for-redhat-openstack-access-plugin.patch
 
 
 #
@@ -53,7 +48,7 @@ Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-pbr
-Requires:   python-six >= 1.4.1
+Requires:   python-six >= 1.5.2
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -104,8 +99,7 @@ Requires:   python-lesscpy
 %endif
 
 Requires:   python-glanceclient
-#Requires:   python-keystoneclient >= 0.7.0
-Requires:   python-keystoneclient
+Requires:   python-keystoneclient >= 0.7.0
 Requires:   python-novaclient >= 2.15.0
 Requires:   python-neutronclient
 Requires:   python-cinderclient >= 1.0.6
@@ -167,7 +161,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.b3
+%setup -q -n horizon-%{version}.rc1
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -184,6 +178,8 @@ find . -name "django*.po" -exec rm -f '{}' \;
 # to distutils requires_dist config
 rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 
+# make doc build compatible with python-oslo-sphinx RPM
+sed -i 's/oslosphinx/oslo.sphinx/' doc/source/conf.py
 
 # drop config snippet
 cp -p %{SOURCE4} .
@@ -195,6 +191,8 @@ sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard
 # set COMPRESS_OFFLINE=False
 sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
 %endif
+
+
 
 %build
 %{__python} setup.py build
