@@ -8,7 +8,7 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    https://launchpad.net/horizon/icehouse/icehouse-rc1/+download/horizon-%{version}.rc1.tar.gz
+Source0:    https://launchpad.net/horizon/icehouse/icehouse-rc2/+download/horizon-%{version}.rc2.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
