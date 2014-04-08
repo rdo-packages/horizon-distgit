@@ -1,4 +1,4 @@
-From d5a0d055ffeea44429ec2eb19c1038d091b89683 Mon Sep 17 00:00:00 2001
+From 44397a61fe6a377c397c7c213893d0ca513f6989 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -22,7 +22,7 @@ index 74f7bf8..169fd93 100644
  
  # Required for Django 1.5.
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 6392edf..a0091b2 100644
+index f253e0f..2fee751 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -31,7 +31,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \

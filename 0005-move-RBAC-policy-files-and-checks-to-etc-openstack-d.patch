@@ -1,4 +1,4 @@
-From d9cbadf18ace9875baab015066b89d60cf6d68c4 Mon Sep 17 00:00:00 2001
+From 7676c2e8ffeeb2495d0fc6908d509aba5dc3dccb Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 9 Sep 2013 14:13:07 +0200
 Subject: [PATCH] move RBAC policy files and checks to /etc/openstack-dashboard
