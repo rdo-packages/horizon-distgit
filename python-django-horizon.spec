@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    0.12.rc1%{?dist}
+Release:    0.13.rc1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -332,7 +332,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
-%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
+%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
@@ -363,9 +363,13 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 
 %files -n openstack-dashboard-theme
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
-%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py
+%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Apr 08 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.13.rc1
+- own openstack_dashboard/enabled/_99_customization.py? in the right
+  package (rhbz#1085344)
+
 * Fri Apr 04 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.12.rc1
 - rebase to horizon-2014.1.rc1
 - remove runtime requirement to mox (rhbz#1080326)
