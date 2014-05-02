@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -50,7 +50,6 @@ Requires:   Django
 Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
-Requires:   python-pbr
 Requires:   python-six >= 1.5.2
 
 BuildRequires: python2-devel
@@ -372,7 +371,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
-* Fri May 02 2014 Alan Pevec <apevec@redhat.com> - 2014.1-2
+* Fri May 02 2014 Alan Pevec <apevec@redhat.com> - 2014.1-3
 - remove requirement to python-pbr
 
 * Fri Apr 18 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-1
