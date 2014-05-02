@@ -1,0 +1,36 @@
+From baac5ad38aab070602dcb02b6d3154783ac8b5bc Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Fri, 15 Nov 2013 09:42:08 +0100
+Subject: [PATCH] remove runtime dep to python-pbr
+
+Change-Id: I0b8f7fb6138feb2ba23f11065e53f1ded5091ed0
+Resolves: rhbz 1029775
+---
+ horizon/version.py | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/horizon/version.py b/horizon/version.py
+index 972f6ce..a129ea2 100644
+--- a/horizon/version.py
++++ b/horizon/version.py
+@@ -14,6 +14,15 @@
+ #    License for the specific language governing permissions and limitations
+ #    under the License.
+ 
+-import pbr.version
+ 
+-version_info = pbr.version.VersionInfo('horizon')
++class VersionInfo(object):
++    release = "REDHATRELEASE"
++    version = "REDHATVERSION"
++
++    def version_string(self):
++        return self.version
++
++    def release_string(self):
++        return self.release
++
++version_info = VersionInfo()
+-- 
+1.9.0
+

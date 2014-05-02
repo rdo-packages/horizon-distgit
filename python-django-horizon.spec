@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -27,6 +27,8 @@ Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
 Patch0007: 0007-RCUE-navbar-and-login-screen.patch
 Patch0008: 0008-Added-a-hook-for-redhat-openstack-access-plugin.patch
 Patch0009: 0009-fix-flake8-issues.patch
+
+Patch9999: 9999-remove-runtime-dep-to-python-pbr.patch
 
 
 #
@@ -174,6 +176,9 @@ git am %{patches}
 
 # remove unnecessary .po files
 find . -name "django*.po" -exec rm -f '{}' \;
+
+sed -i s/REDHATVERSION/%{version}/ horizon/version.py
+sed -i s/REDHATRELEASE/%{release}/ horizon/version.py
 
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
@@ -367,6 +372,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri May 02 2014 Alan Pevec <apevec@redhat.com> - 2014.1-2
+- remove requirement to python-pbr
+
 * Fri Apr 18 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-1
 - rebase to 2014.1
 
