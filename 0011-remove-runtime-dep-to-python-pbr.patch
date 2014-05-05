@@ -31,6 +31,3 @@ index 972f6ce..a129ea2 100644
 +        return self.release
 +
 +version_info = VersionInfo()
--- 
-1.9.0
-

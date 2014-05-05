@@ -27,8 +27,9 @@ Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
 Patch0007: 0007-RCUE-navbar-and-login-screen.patch
 Patch0008: 0008-Added-a-hook-for-redhat-openstack-access-plugin.patch
 Patch0009: 0009-fix-flake8-issues.patch
+Patch0010: 0010-Add-missing-comma-in-Volume-ResourceWrapper-class.patch
+Patch0011: 0011-remove-runtime-dep-to-python-pbr.patch
 
-Patch9999: 9999-remove-runtime-dep-to-python-pbr.patch
 
 
 #

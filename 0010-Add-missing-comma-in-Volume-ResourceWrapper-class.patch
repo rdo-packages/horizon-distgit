@@ -1,0 +1,26 @@
+From 8fdd40b6f51c56d7c04d9d1a41c85bbce40925c4 Mon Sep 17 00:00:00 2001
+From: Lin Hua Cheng <lin-hua.cheng@hp.com>
+Date: Wed, 16 Apr 2014 09:36:27 -0700
+Subject: [PATCH] Add missing comma in Volume ResourceWrapper class
+
+Change-Id: Ie0b0f40966f6bf98f693a971fdb498537842b21e
+Closes-Bug: #1308642
+(cherry picked from commit c45449c3a979c15ae414934fe162fbb4f0502ba0)
+(cherry picked from commit fbd5b2e3668989a78f55e1a16a5ab0455d1acb83)
+---
+ openstack_dashboard/api/cinder.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/openstack_dashboard/api/cinder.py b/openstack_dashboard/api/cinder.py
+index 1860a6d..71ba1a2 100644
+--- a/openstack_dashboard/api/cinder.py
++++ b/openstack_dashboard/api/cinder.py
+@@ -78,7 +78,7 @@ class BaseCinderAPIResourceWrapper(base.APIResourceWrapper):
+ class Volume(BaseCinderAPIResourceWrapper):
+ 
+     _attrs = ['id', 'name', 'description', 'size', 'status', 'created_at',
+-              'volume_type', 'availability_zone', 'imageRef', 'bootable'
++              'volume_type', 'availability_zone', 'imageRef', 'bootable',
+               'snapshot_id', 'source_volid', 'attachments', 'tenant_name',
+               'os-vol-host-attr:host', 'os-vol-tenant-attr:tenant_id',
+               'metadata']
