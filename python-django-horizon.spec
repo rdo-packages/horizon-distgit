@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -212,10 +212,10 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 # offline compression
 %if 0%{?with_compression} > 0
 %{__python} manage.py compress 
-cp -a static/dashboard %{_buildir}
+cp -a static/dashboard %{_builddir}
 %endif
 
-cp -a static/dashboard %{_buildir}
+cp -a static/dashboard %{_builiddir}
 
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
@@ -372,6 +372,10 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon May 05 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-4
+- fix typo
+- Add missing comma in Volume ResourceWrapper class
+
 * Fri May 02 2014 Alan Pevec <apevec@redhat.com> - 2014.1-3
 - remove requirement to python-pbr
 
