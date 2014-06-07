@@ -1,7 +1,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.1
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -372,6 +372,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2014.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Mon May 05 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-4
 - fix typo
 - Add missing comma in Volume ResourceWrapper class
