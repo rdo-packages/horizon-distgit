@@ -25,10 +25,9 @@ Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
 Patch0005: 0005-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
 Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
 Patch0007: 0007-RCUE-navbar-and-login-screen.patch
-Patch0008: 0008-Added-a-hook-for-redhat-openstack-access-plugin.patch
-Patch0009: 0009-fix-flake8-issues.patch
-Patch0010: 0010-Add-missing-comma-in-Volume-ResourceWrapper-class.patch
-Patch0011: 0011-remove-runtime-dep-to-python-pbr.patch
+Patch0008: 0008-fix-flake8-issues.patch
+Patch0009: 0009-remove-runtime-dep-to-python-pbr.patch
+Patch0010: 0010-Add-Change-password-link-to-the-RCUE-theme.patch
 
 
 

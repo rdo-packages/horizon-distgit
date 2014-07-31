@@ -1,17 +1,19 @@
-From 7676c2e8ffeeb2495d0fc6908d509aba5dc3dccb Mon Sep 17 00:00:00 2001
+From 4a49e47434695da66fbe068951611b43fca39324 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Mon, 9 Sep 2013 14:13:07 +0200
+Date: Thu, 31 Jul 2014 10:13:12 +0200
 Subject: [PATCH] move RBAC policy files and checks to /etc/openstack-dashboard
 
+Conflicts:
+	openstack_dashboard/local/local_settings.py.example
 ---
- openstack_dashboard/local/local_settings.py.example | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ openstack_dashboard/local/local_settings.py.example | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 61cf4b1..8306143 100644
+index 84a6ac2..6b79cf9 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
-@@ -248,12 +248,13 @@ TIME_ZONE = "UTC"
+@@ -264,7 +264,8 @@ TIME_ZONE = "UTC"
  # target installation.
  
  # Path to directory containing policy.json files
@@ -19,14 +21,5 @@ index 61cf4b1..8306143 100644
 +# POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
 +POLICY_FILES_PATH = '/etc/openstack-dashboard'
  # Map of local copy of service policy files
--#POLICY_FILES = {
--#    'identity': 'keystone_policy.json',
--#    'compute': 'nova_policy.json'
--#}
-+POLICY_FILES = {
-+    'identity': 'keystone_policy.json',
-+    'compute': 'nova_policy.json'
-+}
- 
- # Trove user and database extension support. By default support for
- # creating users and databases on database instances is turned on.
+ #POLICY_FILES = {
+ #    'identity': 'keystone_policy.json',

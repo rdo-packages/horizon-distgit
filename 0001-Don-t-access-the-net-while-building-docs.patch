@@ -1,4 +1,4 @@
-From e39662d2f83241cd932564c1b98050719e5aec42 Mon Sep 17 00:00:00 2001
+From 57e90a3ffea6ec7442b7b45c41f6d3c558a497da Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:16:19 +0200
 Subject: [PATCH] Don't access the net while building docs (Note this hasn't
@@ -9,10 +9,10 @@ Subject: [PATCH] Don't access the net while building docs (Note this hasn't
  1 file changed, 1 deletion(-)
 
 diff --git a/doc/source/conf.py b/doc/source/conf.py
-index 2e00cc0..06a1ff3 100644
+index 2961a7d..b1f7592 100644
 --- a/doc/source/conf.py
 +++ b/doc/source/conf.py
-@@ -139,7 +139,6 @@ write_autodoc_index()
+@@ -153,7 +153,6 @@ write_autodoc_index()
  # They can be extensions coming with Sphinx (named 'sphinx.ext.*')
  # or your custom ones.
  extensions = ['sphinx.ext.autodoc',

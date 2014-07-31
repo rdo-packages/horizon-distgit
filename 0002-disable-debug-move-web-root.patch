@@ -1,4 +1,4 @@
-From 44397a61fe6a377c397c7c213893d0ca513f6989 Mon Sep 17 00:00:00 2001
+From c56e21932ce33a1e709ea6b4cfa730f44edc3341 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -9,7 +9,7 @@ Subject: [PATCH] disable debug, move web root
  2 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 74f7bf8..169fd93 100644
+index 5a4efc6..0c72ccb 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -22,7 +22,7 @@ index 74f7bf8..169fd93 100644
  
  # Required for Django 1.5.
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index f253e0f..2fee751 100644
+index cba10ab..aaf1c99 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -31,7 +31,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
@@ -51,7 +51,7 @@ index f253e0f..2fee751 100644
  
  MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
  MEDIA_URL = '/media/'
-@@ -144,6 +145,7 @@ COMPRESS_ENABLED = True
+@@ -152,6 +153,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'

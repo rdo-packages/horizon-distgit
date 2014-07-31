@@ -1,8 +1,11 @@
-From 6cb0e324b2e4d6ebacd7f1c02a8123f959aedc7b Mon Sep 17 00:00:00 2001
+From df3fe55fa18f8993f245c0fb16c680459a4129a4 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Fri, 7 Mar 2014 09:48:30 +0100
+Date: Thu, 31 Jul 2014 10:20:10 +0200
 Subject: [PATCH] RCUE navbar and login screen
 
+Conflicts:
+	openstack_dashboard/settings.py
+	tox.ini
 ---
  openstack_dashboard/dashboards/theme/__init__.py   |   1 +
  openstack_dashboard/dashboards/theme/dashboard.py  |  30 ++
@@ -84,7 +87,7 @@ Subject: [PATCH] RCUE navbar and login screen
  .../dashboards/theme/theme_index/urls.py           |   2 +
  .../dashboards/theme/theme_index/views.py          |   0
  openstack_dashboard/enabled/_99_customization.py   |   9 +
- openstack_dashboard/settings.py                    |  15 +-
+ openstack_dashboard/settings.py                    |  13 +-
  openstack_dashboard_theme/__init__.py              |   0
  openstack_dashboard_theme/models.py                |   0
  .../static/dashboard/less/rhtheme.less             |  55 ---
@@ -93,8 +96,7 @@ Subject: [PATCH] RCUE navbar and login screen
  .../templates/auth/login.html                      |  10 -
  .../templates/horizon/common/_sidebar.html         |  35 --
  openstack_dashboard_theme/templates/splash.html    |  17 -
- tox.ini                                            |   1 +
- 90 files changed, 3540 insertions(+), 164 deletions(-)
+ 89 files changed, 3537 insertions(+), 164 deletions(-)
  create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
  create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
  create mode 100644 openstack_dashboard/dashboards/theme/models.py
@@ -19087,10 +19089,10 @@ index 0000000..f37f848
 +ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 92d1e7d..01e3308 100644
+index e99a9af..0ff44df 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -125,13 +125,15 @@ TEMPLATE_LOADERS = (
+@@ -127,7 +127,7 @@ TEMPLATE_LOADERS = (
  
  TEMPLATE_DIRS = (
      os.path.join(ROOT_PATH, 'templates'),
@@ -19099,15 +19101,7 @@ index 92d1e7d..01e3308 100644
  
  STATICFILES_FINDERS = (
      'compressor.finders.CompressorFinder',
-     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
- )
- 
-+STATICFILES_DIRS = (os.path.join(ROOT_PATH, 'static'),)
-+
- COMPRESS_PRECOMPILERS = (
-     ('text/less', ('lesscpy {infile}')),
- )
-@@ -144,7 +146,7 @@ COMPRESS_ENABLED = True
+@@ -152,7 +152,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'
@@ -19116,7 +19110,7 @@ index 92d1e7d..01e3308 100644
  
  INSTALLED_APPS = [
      'openstack_dashboard',
-@@ -159,15 +161,6 @@ INSTALLED_APPS = [
+@@ -168,15 +168,6 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  
@@ -19327,15 +19321,3 @@ index 4a5cfe1..0000000
 -    </div>
 -  </body>
 -</html>
-diff --git a/tox.ini b/tox.ini
-index 8876c2e..3df8c8c 100644
---- a/tox.ini
-+++ b/tox.ini
-@@ -50,6 +50,7 @@ downloadcache = ~/cache/pip
- [flake8]
- builtins = _
- exclude = .venv,.git,.tox,dist,doc,*openstack/common*,*lib/python*,*egg,build,panel_template,dash_template,local_settings.py,*/local/*
-+# E126 continuation line over-indented for hanging indent
- # E127 continuation line over-indented for visual indent
- # E128 continuation line under-indented for visual indent
- # H701 empty localization string
