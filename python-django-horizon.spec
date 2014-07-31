@@ -28,6 +28,7 @@ Patch0007: 0007-RCUE-navbar-and-login-screen.patch
 Patch0008: 0008-fix-flake8-issues.patch
 Patch0009: 0009-remove-runtime-dep-to-python-pbr.patch
 Patch0010: 0010-Add-Change-password-link-to-the-RCUE-theme.patch
+Patch0011: 0011-.less-replaced-in-rcue.patch
 
 
 
