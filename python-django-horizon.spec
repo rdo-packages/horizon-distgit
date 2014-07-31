@@ -1,14 +1,14 @@
 %global with_compression 1
 Name:       python-django-horizon
-Version:    2014.1
-Release:    5%{?dist}
+Version:    2014.2
+Release:    0.2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    https://launchpad.net/horizon/icehouse/icehouse/+download/horizon-%{version}.tar.gz
+Source0:    https://launchpad.net/horizon/juno/juno-2/+download/horizon-%{version}.b2.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -16,7 +16,7 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 Source4:    openstack-dashboard-httpd-logging.conf
 
 #
-# patches_base=2014.1
+# patches_base=2014.2.b2
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -164,7 +164,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}
+%setup -q -n horizon-%{version}.b2
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -215,7 +215,7 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 cp -a static/dashboard %{_builddir}
 %endif
 
-cp -a static/dashboard %{_builiddir}
+cp -a static/dashboard %{_builddir}
 
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
@@ -372,6 +372,9 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Jul 31 2014 Matthias Runge <mrunge@redhat.com> 2014.2-0.2
+- rebase to Juno-2
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2014.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
