@@ -69,6 +69,7 @@ BuildRequires:   python-coverage
 BuildRequires:   python-mox
 BuildRequires:   python-nose-exclude
 BuildRequires:   python-nose
+BuildRequires:   python-selenium
 %endif
 BuildRequires:   python-netaddr
 BuildRequires:   python-kombu
@@ -110,15 +111,22 @@ Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
 Requires:   python-troveclient >= 1.0.0
+Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
+Requires:   python-django-pyscss
+Requires:   python-XStatic
+Requires:   python-XStatic-jQuery
 
 BuildRequires: python-django-openstack-auth >= 1.1.4
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
+BuildRequires: python-django-pyscss
+BuildRequires: python-XStatic
+BuildRequires: python-XStatic-jQuery
 
 BuildRequires: pytz
 
@@ -151,6 +159,7 @@ BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
 BuildRequires: python-troveclient >= 1.0.0
+BuildRequires: python-saharaclient
 BuildRequires: python-oslo-sphinx
 
 %description doc
@@ -206,7 +215,7 @@ sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # dirty hack to make SECRET_KEY work:
-sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 %{__python} manage.py collectstatic --noinput 
 
 # offline compression
@@ -302,7 +311,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %check
 # don't run tests on rhel
 %if 0%{?rhel} == 0
-sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 
 # until django-1.6 support for tests is enabled, disable tests
 ./run_tests.sh -N -P
@@ -363,6 +372,8 @@ sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/loc
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
 
 %files doc
 %doc html
