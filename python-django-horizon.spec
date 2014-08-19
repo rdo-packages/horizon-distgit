@@ -333,6 +333,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
+%{_datadir}/openstack-dashboard/openstack_dashboard/management
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
@@ -363,6 +364,9 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %doc html
 
 %changelog
+* Tue Aug 19 2014 Derek Higgins <derekh@redhat.com> - XXX
+- Include the openstack_dashboard/management dir in the package
+
 * Thu Jul 31 2014 Matthias Runge <mrunge@redhat.com> 2014.2-0.2
 - rebase to Juno-2
 
