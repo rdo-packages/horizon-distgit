@@ -326,6 +326,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
@@ -364,6 +365,9 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %doc html
 
 %changelog
+* Wed Aug 20 2014 Derek Higgins <derekh@redhat.com> - XXX
+- Include the dashboards/identity dir in the package
+
 * Tue Aug 19 2014 Derek Higgins <derekh@redhat.com> - XXX
 - Include the openstack_dashboard/management dir in the package
 
