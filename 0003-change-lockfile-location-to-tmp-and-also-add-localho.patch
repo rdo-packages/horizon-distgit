@@ -1,15 +1,15 @@
-From 657f4db5038d361e998219b1569fede4a0634cd6 Mon Sep 17 00:00:00 2001
+From 68d74c83b6a0013b564872d4cd2ecb61b58abf14 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 25 Jul 2013 11:32:38 +0200
-Subject: [PATCH] change lockfile location to '/tmp' and also add localhost to
- ALLOWED_HOSTS
+Subject: [PATCH] change lockfile location to '/tmp' and also add localhost
+ to ALLOWED_HOSTS
 
 ---
  openstack_dashboard/local/local_settings.py.example | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 0c72ccb..84a6ac2 100644
+index 4f4ef4d..f5858a5 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -12,7 +12,7 @@ TEMPLATE_DEBUG = DEBUG
@@ -29,4 +29,7 @@ index 0c72ccb..84a6ac2 100644
 +LOCAL_PATH = '/tmp'
  
  # Set custom secret key:
- # You can either set it to a specific value or you can let horizion generate a
+ # You can either set it to a specific value or you can let horizon generate a
+-- 
+1.9.3
+
