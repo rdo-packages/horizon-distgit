@@ -113,6 +113,19 @@ Requires:   python-eventlet
 Requires:   python-django-pyscss
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
+Requires:   python-XStatic-Angular
+Requires:   python-XStatic-Angular-Cookies
+Requires:   python-XStatic-Angular-Mock
+Requires:   python-XStatic-D3
+Requires:   python-XStatic-Hogan
+Requires:   python-XStatic-Jasmine
+Requires:   python-XStatic-JQuery-Migrate
+Requires:   python-XStatic-JQuery.quicksearch
+Requires:   python-XStatic-JQuery.TableSorter
+Requires:   python-XStatic-JSEncrypt
+Requires:   python-XStatic-QUnit
+Requires:   python-XStatic-Rickshaw
+Requires:   python-XStatic-Spin
 
 BuildRequires: python-django-openstack-auth >= 1.1.4
 BuildRequires: python-django-compressor >= 1.3
@@ -122,6 +135,20 @@ BuildRequires: python-oslo-config
 BuildRequires: python-django-pyscss
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
+BuildRequires: python-XStatic-Angular
+BuildRequires: python-XStatic-Angular-Cookies
+BuildRequires: python-XStatic-Angular-Mock
+BuildRequires: python-XStatic-D3
+BuildRequires: python-XStatic-Hogan
+BuildRequires: python-XStatic-Jasmine
+BuildRequires: python-XStatic-JQuery-Migrate
+BuildRequires: python-XStatic-JQuery.quicksearch
+BuildRequires: python-XStatic-JQuery.TableSorter
+BuildRequires: python-XStatic-JSEncrypt
+BuildRequires: python-XStatic-QUnit
+BuildRequires: python-XStatic-Rickshaw
+BuildRequires: python-XStatic-Spin
+
 
 BuildRequires: pytz
 
@@ -365,6 +392,9 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %doc html
 
 %changelog
+* Mon Aug 25 2014 Derek Higgins <derekh@redhat.com> - XXX
+- Add dependency on new XStatic packages
+
 * Wed Aug 20 2014 Derek Higgins <derekh@redhat.com> - XXX
 - Include the dashboards/identity dir in the package
 
