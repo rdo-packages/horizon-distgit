@@ -1,14 +1,17 @@
+%global release_name juno
+%global milestone 2
+
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.2%{?dist}
+Release:    0.2.b%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    https://launchpad.net/horizon/juno/juno-2/+download/horizon-%{version}.b2.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.b%{milestone}.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -173,7 +176,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.b2
+%setup -q -n horizon-%{version}.b%{milestone}
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
