@@ -4,7 +4,7 @@
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.2.b%{milestone}%{?dist}
+Release:    0.3.b%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -17,6 +17,9 @@ Source2:    openstack-dashboard-httpd-2.4.conf
 
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
+
+# logrotate config
+Source5:    python-django-horizon-logrotate.conf
 
 #
 # patches_base=2014.2.b2
@@ -41,14 +44,8 @@ Patch0011: 0011-.less-replaced-in-rcue.patch
 
 BuildArch:  noarch
 
-# epel6 has a separate Django14 package
-%if 0%{?rhel}==6
-Requires:   Django14
-BuildRequires:   Django14
-%else
 BuildRequires:   Django
 Requires:   Django
-%endif
 
 
 Requires:   python-dateutil
@@ -63,7 +60,7 @@ BuildRequires: python-pbr >= 0.7.0
 BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
-BuildRequires: python-six >= 1.4.1
+BuildRequires: python-six >= 1.7.0
 
 # for checks:
 %if 0%{?rhel} == 0
@@ -98,7 +95,7 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
-Requires:   python-django-openstack-auth >= 1.1.4
+Requires:   python-django-openstack-auth >= 1.1.6
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
 %if %{?with_compression} > 0
@@ -122,7 +119,9 @@ Requires:   python-django-pyscss
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 
-BuildRequires: python-django-openstack-auth >= 1.1.4
+Requires:   logrotate
+
+BuildRequires: python-django-openstack-auth >= 1.1.6
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
@@ -310,6 +309,10 @@ mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
 # create /var/log/horizon and own it
 mkdir -p %{buildroot}%{_var}/log/horizon
 
+# place logrotate config:
+mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
+cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
+
 
 %check
 # don't run tests on rhel
@@ -377,6 +380,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
+%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %files doc
 %doc html
@@ -386,6 +390,9 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Sep 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.3.b2
+- add logrotate script
+
 * Thu Jul 31 2014 Matthias Runge <mrunge@redhat.com> 2014.2-0.2
 - rebase to Juno-2
 
