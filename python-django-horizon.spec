@@ -1,10 +1,10 @@
 %global release_name juno
-%global milestone 2
+%global milestone 3
 
 %global with_compression 1
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.3.b%{milestone}%{?dist}
+Release:    0.4.b%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -22,7 +22,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2.b2
+# patches_base=2014.2.b3
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -51,7 +51,7 @@ Requires:   Django
 Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
-Requires:   python-six >= 1.5.2
+Requires:   python-six >= 1.7.0
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
