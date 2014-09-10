@@ -36,8 +36,6 @@ Patch0009: 0009-remove-runtime-dep-to-python-pbr.patch
 Patch0010: 0010-Add-Change-password-link-to-the-RCUE-theme.patch
 Patch0011: 0011-.less-replaced-in-rcue.patch
 
-
-
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
 #

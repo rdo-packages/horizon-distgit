@@ -1,4 +1,4 @@
-From c56e21932ce33a1e709ea6b4cfa730f44edc3341 Mon Sep 17 00:00:00 2001
+From b09cb359679ea4614e707c70dc6d904855054c0b Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -9,7 +9,7 @@ Subject: [PATCH] disable debug, move web root
  2 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 5a4efc6..0c72ccb 100644
+index 6031f3e..d2d100f 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
 @@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
@@ -22,10 +22,10 @@ index 5a4efc6..0c72ccb 100644
  
  # Required for Django 1.5.
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index cba10ab..aaf1c99 100644
+index a6a21ca..f8a33a6 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -31,7 +31,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
+@@ -45,7 +45,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
      '%s: %s' % (category.__name__, message)
  
  ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +34,7 @@ index cba10ab..aaf1c99 100644
  
  if ROOT_PATH not in sys.path:
      sys.path.append(ROOT_PATH)
-@@ -41,12 +41,13 @@ TEMPLATE_DEBUG = DEBUG
+@@ -55,12 +55,13 @@ TEMPLATE_DEBUG = DEBUG
  
  SITE_BRANDING = 'OpenStack Dashboard'
  
@@ -51,7 +51,7 @@ index cba10ab..aaf1c99 100644
  
  MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH, '..', 'media'))
  MEDIA_URL = '/media/'
-@@ -152,6 +153,7 @@ COMPRESS_ENABLED = True
+@@ -195,6 +196,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'
