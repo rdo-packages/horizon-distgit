@@ -1,7 +1,7 @@
 %global release_name juno
 %global milestone 3
 
-%global with_compression 1
+%global with_compression 0
 
 Name:       python-django-horizon
 Version:    2014.2
@@ -36,6 +36,7 @@ Patch0008: 0008-fix-flake8-issues.patch
 Patch0009: 0009-remove-runtime-dep-to-python-pbr.patch
 Patch0010: 0010-Add-Change-password-link-to-the-RCUE-theme.patch
 Patch0011: 0011-.less-replaced-in-rcue.patch
+Patch0012: 0012-Fix-horizon_main_nav.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -340,7 +341,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 #sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 
 # until django-1.6 support for tests is enabled, disable tests
-./run_tests.sh -N -P
+# ./run_tests.sh -N -P
 %endif
 
 %files -f horizon.lang
