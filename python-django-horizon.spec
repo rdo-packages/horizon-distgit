@@ -126,6 +126,7 @@ Requires:   python-XStatic-JSEncrypt
 Requires:   python-XStatic-QUnit
 Requires:   python-XStatic-Rickshaw
 Requires:   python-XStatic-Spin
+Requires:   python-XStatic-Font-Awesome
 
 BuildRequires: python-django-openstack-auth >= 1.1.4
 BuildRequires: python-django-compressor >= 1.3
@@ -148,6 +149,7 @@ BuildRequires: python-XStatic-JSEncrypt
 BuildRequires: python-XStatic-QUnit
 BuildRequires: python-XStatic-Rickshaw
 BuildRequires: python-XStatic-Spin
+BuildRequires: python-XStatic-Font-Awesome
 
 
 BuildRequires: pytz
@@ -392,6 +394,9 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %doc html
 
 %changelog
+* Thu Sep 11 2014 Derek Higgins <derekh@redhat.com> - XXX
+- Add dependency on python-XStatic-Font-Awesome
+
 * Mon Aug 25 2014 Derek Higgins <derekh@redhat.com> - XXX
 - Add dependency on new XStatic packages
 
