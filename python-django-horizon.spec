@@ -2,6 +2,7 @@
 %global milestone 3
 
 %global with_compression 1
+
 Name:       python-django-horizon
 Version:    2014.2
 Release:    0.4.b%{milestone}%{?dist}
@@ -42,8 +43,8 @@ Patch0011: 0011-.less-replaced-in-rcue.patch
 
 BuildArch:  noarch
 
-BuildRequires:   Django
-Requires:   Django
+BuildRequires:   python-django
+Requires:   python-django
 
 
 Requires:   python-dateutil
@@ -116,6 +117,20 @@ Requires:   python-eventlet
 Requires:   python-django-pyscss
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
+Requires:   python-XStatic-Angular
+Requires:   python-XStatic-Angular-Cookies
+Requires:   python-XStatic-Angular-Mock
+Requires:   python-XStatic-D3
+Requires:   python-XStatic-Font-Awesome
+Requires:   python-XStatic-Hogan
+Requires:   python-XStatic-JQuery-Migrate
+Requires:   python-XStatic-JQuery-TableSorter
+Requires:   python-XStatic-JQuery-quicksearch
+Requires:   python-XStatic-JSEncrypt
+Requires:   python-XStatic-Jasmine
+Requires:   python-XStatic-QUnit
+Requires:   python-XStatic-Rickshaw
+Requires:   python-XStatic-Spin
 
 Requires:   logrotate
 
@@ -127,6 +142,21 @@ BuildRequires: python-oslo-config
 BuildRequires: python-django-pyscss
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
+BuildRequires: python-XStatic-Angular
+BuildRequires: python-XStatic-Angular-Cookies
+BuildRequires: python-XStatic-Angular-Mock
+BuildRequires: python-XStatic-D3
+BuildRequires: python-XStatic-Font-Awesome
+BuildRequires: python-XStatic-Hogan
+BuildRequires: python-XStatic-JQuery-Migrate
+BuildRequires: python-XStatic-JQuery-TableSorter
+BuildRequires: python-XStatic-JQuery-quicksearch
+BuildRequires: python-XStatic-JSEncrypt
+BuildRequires: python-XStatic-Jasmine
+BuildRequires: python-XStatic-QUnit
+BuildRequires: python-XStatic-Rickshaw
+BuildRequires: python-XStatic-Spin
+
 
 BuildRequires: pytz
 
@@ -142,11 +172,7 @@ Summary:    Documentation for Django Horizon
 Group:      Documentation
 
 Requires:   %{name} = %{version}-%{release}
-%if 0%{?rhel}==6
-BuildRequires: python-sphinx10
-%else
 BuildRequires: python-sphinx >= 1.1.3
-%endif
 
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-dateutil
@@ -228,11 +254,7 @@ cp -a static/dashboard %{_builddir}
 
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
-%if 0%{?rhel}==6
-sphinx-1.0-build -b html doc/source html
-%else
 sphinx-build -b html doc/source html
-%endif
 
 # undo hack
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
@@ -346,6 +368,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
@@ -353,9 +376,11 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
+%{_datadir}/openstack-dashboard/openstack_dashboard/management
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
+%{_datadir}/openstack-dashboard/openstack_dashboard/templatetags
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/utils
@@ -388,6 +413,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Sep 11 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.4.b3
+- rebase to Juno-3
+- spec cleanups
+
 * Tue Sep 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.3.b2
 - add logrotate script
 
