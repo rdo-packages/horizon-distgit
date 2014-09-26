@@ -61,6 +61,7 @@ BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
 BuildRequires: python-six >= 1.7.0
+BuildRequires: gettext
 
 # for checks:
 %if 0%{?rhel} == 0
