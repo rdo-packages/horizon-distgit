@@ -5,7 +5,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.4.b%{milestone}%{?dist}
+Release:    0.5.b%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -210,11 +210,12 @@ git add .
 git commit -a -q -m "%{version} baseline"
 git am %{patches}
 
-# remove unnecessary .po files
-find . -name "django*.po" -exec rm -f '{}' \;
-
 sed -i s/REDHATVERSION/%{version}/ horizon/version.py
 sed -i s/REDHATRELEASE/%{release}/ horizon/version.py
+
+# remove unnecessary .mo files
+# they will be generated later during package build
+find . -name "django*.mo" -exec rm -f '{}' \;
 
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
@@ -237,12 +238,19 @@ sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard
 
 
 %build
+# compile message strings
+cd horizon && django-admin compilemessages && cd ..
+cd openstack_dashboard && django-admin compilemessages && cd ..
+# remove unnecessary .po files
+find . -name "django*.po" -exec rm -f '{}' \;
 %{__python} setup.py build
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # dirty hack to make SECRET_KEY work:
 #sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+
+
 %{__python} manage.py collectstatic --noinput 
 
 # offline compression
@@ -414,6 +422,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
+- regenerate locale files during package build
+
 * Thu Sep 11 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.4.b3
 - rebase to Juno-3
 - spec cleanups
