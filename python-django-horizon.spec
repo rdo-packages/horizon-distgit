@@ -1,7 +1,7 @@
 %global release_name juno
 %global milestone 3
 
-%global with_compression 0
+%global with_compression 1
 
 Name:       python-django-horizon
 Version:    2014.2
@@ -96,7 +96,7 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
-Requires:   python-django-openstack-auth >= 1.1.6
+Requires:   python-django-openstack-auth >= 1.1.7
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
 %if %{?with_compression} > 0
@@ -116,7 +116,7 @@ Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
-Requires:   python-django-pyscss
+Requires:   python-django-pyscss >= 1.0.3
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular
@@ -136,12 +136,12 @@ Requires:   python-XStatic-Spin
 
 Requires:   logrotate
 
-BuildRequires: python-django-openstack-auth >= 1.1.6
+BuildRequires: python-django-openstack-auth >= 1.1.7
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
-BuildRequires: python-django-pyscss
+BuildRequires: python-django-pyscss >= 1.0.3
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
 BuildRequires: python-XStatic-Angular
@@ -425,6 +425,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %changelog
 * Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
 - regenerate locale files during package build
+- re-enable compression
+- require python-django-openstack-auth >= 1.1.7 (rhbz#1141840)
+- logrotation fails on duplicate log entry (rhbz#1148451)
+- explicitly require python-django-pyscss >= 1.0.3
 
 * Thu Sep 11 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.4.b3
 - rebase to Juno-3
