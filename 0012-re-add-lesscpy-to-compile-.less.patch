@@ -1,0 +1,21 @@
+From 0376a0f2a36ca807a5ec0edcd2476fac20075730 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Mon, 6 Oct 2014 12:54:03 +0200
+Subject: [PATCH] re-add lesscpy to compile .less
+
+---
+ openstack_dashboard/settings.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 9d353d1..9ae18af 100644
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -200,6 +200,7 @@ else:
+         xstatic.main.XStatic(xstatic.pkg.jquery_ui).base_dir))
+ 
+ COMPRESS_PRECOMPILERS = (
++    ('text/less', 'lesscpy {infile}'),
+     ('text/scss', 'django_pyscss.compressor.DjangoScssFilter'),
+ )
+ 

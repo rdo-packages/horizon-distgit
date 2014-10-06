@@ -1,4 +1,4 @@
-From a635695a7c751dbfee492a532ce519cfe3b3c737 Mon Sep 17 00:00:00 2001
+From 101bb0da4100a09ce803f683214a51abb9e9e8d9 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 31 Jul 2014 10:20:10 +0200
 Subject: [PATCH] RCUE navbar and login screen
@@ -19089,10 +19089,10 @@ index 0000000..f37f848
 +ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 9a9b9b8..eefe08e 100644
+index 12e38af..9d353d1 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -141,7 +141,7 @@ TEMPLATE_LOADERS = (
+@@ -144,7 +144,7 @@ TEMPLATE_LOADERS = (
  
  TEMPLATE_DIRS = (
      os.path.join(ROOT_PATH, 'templates'),
@@ -19100,8 +19100,8 @@ index 9a9b9b8..eefe08e 100644
 +)
  
  STATICFILES_FINDERS = (
-     'compressor.finders.CompressorFinder',
-@@ -195,7 +195,7 @@ COMPRESS_ENABLED = True
+     'django.contrib.staticfiles.finders.FileSystemFinder',
+@@ -211,7 +211,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'
@@ -19110,7 +19110,7 @@ index 9a9b9b8..eefe08e 100644
  
  INSTALLED_APPS = [
      'openstack_dashboard',
-@@ -211,15 +211,6 @@ INSTALLED_APPS = [
+@@ -228,15 +228,6 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  

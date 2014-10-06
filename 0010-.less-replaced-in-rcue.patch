@@ -1,4 +1,4 @@
-From af9be4d0714083d61f09579221898ea54dca87f6 Mon Sep 17 00:00:00 2001
+From 9ccf9e3a317254119b333d932d9b35d004e8ef9a Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 31 Jul 2014 11:17:29 +0200
 Subject: [PATCH] .less replaced in rcue

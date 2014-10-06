@@ -25,18 +25,18 @@ Source5:    python-django-horizon-logrotate.conf
 #
 # patches_base=2014.2.rc1
 #
-Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
-Patch0002: 0002-disable-debug-move-web-root.patch
-Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
-Patch0004: 0004-Add-a-customization-module-based-on-RHOS.patch
-Patch0005: 0005-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
-Patch0006: 0006-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0007: 0007-RCUE-navbar-and-login-screen.patch
-Patch0008: 0008-fix-flake8-issues.patch
-Patch0009: 0009-remove-runtime-dep-to-python-pbr.patch
-Patch0010: 0010-Add-Change-password-link-to-the-RCUE-theme.patch
-Patch0011: 0011-.less-replaced-in-rcue.patch
-Patch0012: 0012-Fix-horizon_main_nav.patch
+Patch0001: 0001-disable-debug-move-web-root.patch
+Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
+Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
+Patch0004: 0004-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
+Patch0005: 0005-move-SECRET_KEY-secret_key_store-to-tmp.patch
+Patch0006: 0006-RCUE-navbar-and-login-screen.patch
+Patch0007: 0007-fix-flake8-issues.patch
+Patch0008: 0008-remove-runtime-dep-to-python-pbr.patch
+Patch0009: 0009-Add-Change-password-link-to-the-RCUE-theme.patch
+Patch0010: 0010-.less-replaced-in-rcue.patch
+Patch0011: 0011-Theme-fixes.patch
+Patch0012: 0012-re-add-lesscpy-to-compile-.less.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -370,6 +370,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{python_sitelib}/horizon/*.py*
 %{python_sitelib}/horizon/browsers
 %{python_sitelib}/horizon/conf
+%{python_sitelib}/horizon/contrib
 %{python_sitelib}/horizon/forms
 %{python_sitelib}/horizon/management
 %{python_sitelib}/horizon/static
@@ -394,6 +395,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
+%{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 %{_datadir}/openstack-dashboard/openstack_dashboard/local

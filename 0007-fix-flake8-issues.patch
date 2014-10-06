@@ -1,4 +1,4 @@
-From 296ce06b04f8ca606d73503b3e55ae39b45a1330 Mon Sep 17 00:00:00 2001
+From 29d8416fbdcb0300f056a6e6ac6855ed07c5ef64 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 10 Apr 2014 09:27:21 +0200
 Subject: [PATCH] fix flake8 issues
