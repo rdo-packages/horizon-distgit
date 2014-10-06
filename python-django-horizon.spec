@@ -1,18 +1,18 @@
 %global release_name juno
-%global milestone 3
+%global milestone 1
 
 %global with_compression 1
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.5.b%{milestone}%{?dist}
+Release:    0.6.rc%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.b%{milestone}.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{rc}/+download/horizon-%{version}.rc%{milestone}.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -23,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2.b3
+# patches_base=2014.2.rc1
 #
 Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
 Patch0002: 0002-disable-debug-move-web-root.patch
@@ -133,6 +133,12 @@ Requires:   python-XStatic-Jasmine
 Requires:   python-XStatic-QUnit
 Requires:   python-XStatic-Rickshaw
 Requires:   python-XStatic-Spin
+Requires:   python-XStatic-jquery-ui
+Requires:   python-XStatic-Bootstrap-Datepicker
+Requires:   python-XStatic-Bootstrap-SCSS
+Requires:   python-scss >= 1.2.1
+Requires:   fontawesome-fonts-web >= 4.1.0
+
 
 Requires:   logrotate
 
@@ -158,7 +164,12 @@ BuildRequires: python-XStatic-Jasmine
 BuildRequires: python-XStatic-QUnit
 BuildRequires: python-XStatic-Rickshaw
 BuildRequires: python-XStatic-Spin
-
+BuildRequires: python-XStatic-jquery-ui
+BuildRequires: python-XStatic-Bootstrap-Datepicker
+BuildRequires: python-XStatic-Bootstrap-SCSS
+# bootstrap-scss requires at least python-scss >= 1.2.1
+BuildRequires: python-scss >= 1.2.1
+BuildRequires: fontawesome-fonts-web >= 4.1.0
 
 BuildRequires: pytz
 
@@ -201,7 +212,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.b%{milestone}
+%setup -q -n horizon-%{version}.rc%{milestone}
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -429,6 +440,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 - require python-django-openstack-auth >= 1.1.7 (rhbz#1141840)
 - logrotation fails on duplicate log entry (rhbz#1148451)
 - explicitly require python-django-pyscss >= 1.0.3
+- require python-scss >= 1.2.1
 
 * Thu Sep 11 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.4.b3
 - rebase to Juno-3
