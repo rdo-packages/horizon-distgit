@@ -37,6 +37,7 @@ Patch0009: 0009-Add-Change-password-link-to-the-RCUE-theme.patch
 Patch0010: 0010-.less-replaced-in-rcue.patch
 Patch0011: 0011-Theme-fixes.patch
 Patch0012: 0012-re-add-lesscpy-to-compile-.less.patch
+Patch0013: 0013-Migration-of-LESS-to-SCSS-and-various-fixes.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
