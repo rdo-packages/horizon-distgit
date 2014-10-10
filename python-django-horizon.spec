@@ -5,7 +5,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.6.rc%{milestone}%{?dist}
+Release:    0.7.rc%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -437,6 +437,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Oct 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.7.rc1
+- rebase to 2014.2.rc.1
+- custom theme fixes
+
 * Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
 - regenerate locale files during package build
 - re-enable compression
