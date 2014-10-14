@@ -361,7 +361,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %check
 # don't run tests on rhel
 %if 0%{?rhel} == 0
-sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 
 # until django-1.6 support for tests is enabled, disable tests
 ./run_tests.sh -N -P
