@@ -1,4 +1,4 @@
-From 3bfe7940bc6ca34f4e1f7418252752fda2da07cf Mon Sep 17 00:00:00 2001
+From 882123ae68de71f80dd98c850b1fd25408e0551c Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
@@ -28,10 +28,10 @@ Conflicts:
  create mode 100644 openstack_dashboard_theme/templates/splash.html
 
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index ef24047..12e38af 100644
+index ad9e691..8f4a32a 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -138,14 +138,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
+@@ -137,14 +137,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
  )
  
  TEMPLATE_LOADERS = (
@@ -47,7 +47,7 @@ index ef24047..12e38af 100644
  
  STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.FileSystemFinder',
-@@ -229,6 +228,15 @@ INSTALLED_APPS = [
+@@ -227,6 +226,15 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  
