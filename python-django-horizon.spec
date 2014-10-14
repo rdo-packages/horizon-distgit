@@ -1,5 +1,5 @@
 %global release_name juno
-%global milestone 1
+%global milestone 2
 
 %global with_compression 1
 
@@ -23,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2.rc1
+# patches_base=2014.2.rc2
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
@@ -437,8 +437,11 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Oct 14 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.8.rc2
+- rebase to 2014.2.rc2
+
 * Thu Oct 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.7.rc1
-- rebase to 2014.2.rc.1
+- rebase to 2014.2.rc1
 - custom theme fixes
 
 * Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
