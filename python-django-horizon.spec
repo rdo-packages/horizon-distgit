@@ -1,5 +1,5 @@
 %global release_name juno
-%global milestone 1
+%global milestone 2
 
 %global with_compression 1
 
@@ -23,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2.rc1
+# patches_base=2014.2.rc2
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
@@ -242,7 +242,7 @@ cp -p %{SOURCE4} .
 
 %if 0%{?with_compression} > 0
 # set COMPRESS_OFFLINE=True
-sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
+sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
 %else
 # set COMPRESS_OFFLINE=False
 sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
@@ -309,6 +309,9 @@ rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 mv openstack_dashboard/dashboards/theme %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
 mv openstack_dashboard/enabled/_99_customization.py %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 
+# install language files
+mv openstack_dashboard/locale %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard
+mv horizon/locale %{buildroot}%{python_sitelib}/horizon
 
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
@@ -359,10 +362,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %check
 # don't run tests on rhel
 %if 0%{?rhel} == 0
-#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 
 # until django-1.6 support for tests is enabled, disable tests
-# ./run_tests.sh -N -P
+./run_tests.sh -N -P
 %endif
 
 %files -f horizon.lang
@@ -437,8 +440,11 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Oct 14 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.8.rc2
+- rebase to 2014.2.rc2
+
 * Thu Oct 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.7.rc1
-- rebase to 2014.2.rc.1
+- rebase to 2014.2.rc1
 - custom theme fixes
 
 * Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
