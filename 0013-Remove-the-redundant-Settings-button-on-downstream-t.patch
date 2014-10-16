@@ -1,0 +1,35 @@
+From 93fc96f4ba91d5be0c382c13c6b00f051b44a576 Mon Sep 17 00:00:00 2001
+From: Julie Pichon <jpichon@redhat.com>
+Date: Wed, 15 Oct 2014 11:06:59 +0100
+Subject: [PATCH] Remove the redundant 'Settings' button on downstream theme
+
+Resolves rhbz: 1114292
+
+Change-Id: I725094a9c803c7d82bdfb3b6888e944d008e8d6f
+---
+ .../dashboards/theme/templates/horizon/_nav_list.html        | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html b/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
+index 6648421..ab97b79 100644
+--- a/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
+@@ -2,10 +2,12 @@
+ 
+ <ul class="nav nav-tabs">
+   {% for component in components %}
+-    {% if user|has_permissions:component %}
+-      <li{% if current.slug == component.slug %} class="active"{% endif %}>
+-        <a href="{{ component.get_absolute_url }}" tabindex='1'>{{ component.name }}</a>
+-      </li>
++    {% if component.slug != 'settings' %}
++      {% if user|has_permissions:component %}
++        <li{% if current.slug == component.slug %} class="active"{% endif %}>
++          <a href="{{ component.get_absolute_url }}" tabindex='1'>{{ component.name }}</a>
++        </li>
++      {% endif %}
+     {% endif %}
+   {% endfor %}
+-</ul>
+\ No newline at end of file
++</ul>

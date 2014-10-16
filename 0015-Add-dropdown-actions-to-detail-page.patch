@@ -1,0 +1,203 @@
+From 4beb6924bc7530f0a8c52c87070e0ab91d8235e7 Mon Sep 17 00:00:00 2001
+From: Ana Krivokapic <akrivoka@redhat.com>
+Date: Tue, 26 Aug 2014 13:19:12 +0200
+Subject: [PATCH] Add dropdown actions to detail page
+
+Add support for performing actions on an object from the object's
+detail page. Actions are displayed in the page header, in a
+dropdown menu. As a POC, this patch enables dropdown actions on a
+detail page of a volume (/project/volumes/volume-id/).
+
+Partially implements: blueprint detail-pages-ia
+
+Change-Id: Ie21c63d86c2806d9689ae7f1a67b67c83710c108
+---
+ horizon/tables/base.py                             |  7 ++--
+ .../horizon/common/_data_table_row_actions.html    |  2 +-
+ horizon/templates/horizon/common/_page_header.html |  6 +++
+ .../dashboards/project/volumes/volumes/views.py    |  6 ++-
+ .../static/dashboard/scss/horizon.scss             | 47 ++++++++++++----------
+ 5 files changed, 42 insertions(+), 26 deletions(-)
+
+diff --git a/horizon/tables/base.py b/horizon/tables/base.py
+index 16e3fd9..2f76b79 100644
+--- a/horizon/tables/base.py
++++ b/horizon/tables/base.py
+@@ -676,7 +676,7 @@ class Cell(html.HTMLElement):
+                                  form_field_attributes)
+             table._data_cache[column][table.get_object_id(datum)] = data
+         elif column.auto == "actions":
+-            data = table.render_row_actions(datum)
++            data = table.render_row_actions(datum, pull_right=False)
+             table._data_cache[column][table.get_object_id(datum)] = data
+         else:
+             data = column.get_data(datum)
+@@ -1388,7 +1388,7 @@ class DataTable(object):
+         self.set_multiselect_column_visibility(len(bound_actions) > 0)
+         return table_actions_template.render(context)
+ 
+-    def render_row_actions(self, datum):
++    def render_row_actions(self, datum, pull_right=True):
+         """Renders the actions specified in ``Meta.row_actions`` using the
+         current row data.
+         """
+@@ -1396,7 +1396,8 @@ class DataTable(object):
+         row_actions_template = template.loader.get_template(template_path)
+         bound_actions = self.get_row_actions(datum)
+         extra_context = {"row_actions": bound_actions,
+-                         "row_id": self.get_object_id(datum)}
++                         "row_id": self.get_object_id(datum),
++                         "pull_right": pull_right}
+         context = template.RequestContext(self.request, extra_context)
+         return row_actions_template.render(context)
+ 
+diff --git a/horizon/templates/horizon/common/_data_table_row_actions.html b/horizon/templates/horizon/common/_data_table_row_actions.html
+index 9508152..3f3368b 100644
+--- a/horizon/templates/horizon/common/_data_table_row_actions.html
++++ b/horizon/templates/horizon/common/_data_table_row_actions.html
+@@ -2,7 +2,7 @@
+ 
+ {% spaceless %} {# This makes sure whitespace doesn't affect positioning for dropdown. #}
+ {% if row_actions|length > 1 %}
+-<div class="btn-group">
++<div class="btn-group {% if pull_right %}pull-right{% endif %}">
+     {% for action in row_actions %}
+         {% if forloop.first %}
+           {% include "horizon/common/_data_table_row_action.html" %}
+diff --git a/horizon/templates/horizon/common/_page_header.html b/horizon/templates/horizon/common/_page_header.html
+index 01a9210..9491a55 100644
+--- a/horizon/templates/horizon/common/_page_header.html
++++ b/horizon/templates/horizon/common/_page_header.html
+@@ -2,5 +2,11 @@
+ {% block page_header %}
+   <div class='page-header'>
+     <h1>{{ title }}</h1>
++    {% if actions %}
++      <form class='actions_column pull-right' action='{{ url }}' method="POST">
++        {% csrf_token %}
++        {{ actions }}
++      </form>
++    {% endif %}
+   </div>
+ {% endblock %}
+diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
+index f068e9e..c78cd09 100644
+--- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
++++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
+@@ -44,8 +44,12 @@ class DetailView(tabs.TabView):
+     template_name = 'project/volumes/volumes/detail.html'
+ 
+     def get_context_data(self, **kwargs):
++        datum = self.get_data()
++        table = project_tables.VolumesTable(self.request)
+         context = super(DetailView, self).get_context_data(**kwargs)
+-        context["volume"] = self.get_data()
++        context["volume"] = datum
++        context["url"] = self.get_redirect_url()
++        context["actions"] = table.render_row_actions(datum)
+         return context
+ 
+     @memoized.memoized_method
+diff --git a/openstack_dashboard/static/dashboard/scss/horizon.scss b/openstack_dashboard/static/dashboard/scss/horizon.scss
+index 496e58d..961850a 100755
+--- a/openstack_dashboard/static/dashboard/scss/horizon.scss
++++ b/openstack_dashboard/static/dashboard/scss/horizon.scss
+@@ -1090,20 +1090,25 @@ td.select {
+ 
+ /* Actions dropdown */
+ 
+-td.actions_column {
++.actions_column {
+   white-space: nowrap;
+   padding: 10px;
+   position: relative;
+   width: 200px;
+ }
+ 
+-td.actions_column .btn-group {
++form.actions_column {
++  width: auto;
++  font-family: $font-family-base;
++}
++
++.actions_column .btn-group {
+   display: inline-block;
+ }
+ 
+-td.actions_column .row_actions a,
+-td.actions_column .row_actions input,
+-td.actions_column .row_actions button,
++.actions_column .row_actions a,
++.actions_column .row_actions input,
++.actions_column .row_actions button,
+ div.table_actions_menu .dropdown-menu a,
+ div.table_actions_menu .dropdown-menu input,
+ div.table_actions_menu .dropdown-menu button {
+@@ -1118,11 +1123,11 @@ div.table_actions_menu .dropdown-menu button {
+   @include box-shadow(none);
+ }
+ 
+-td.actions_column .row_actions .hide {
++.actions_column .row_actions .hide {
+   display: none;
+ }
+ 
+-td.actions_column .btn-action-required {
++.actions_column .btn-action-required {
+   font-weight: bold;
+ }
+ 
+@@ -1156,8 +1161,8 @@ td.actions_column .btn-action-required {
+   background: none;
+ }
+ 
+-td.actions_column .dropdown-menu a:hover,
+-td.actions_column .dropdown-menu button:hover,
++.actions_column .dropdown-menu a:hover,
++.actions_column .dropdown-menu button:hover,
+ div.table_actions_menu .dropdown-menu a:hover,
+ div.table_actions_menu .dropdown-menu button:hover {
+   background-color: $gray-lighter;
+@@ -1172,30 +1177,30 @@ div.table_actions_menu .dropdown-menu button:hover {
+ 
+ /* Overrides for single-action rows (no dropdown) */
+ 
+-tr td.actions_column ul.row_actions.single,
+-tr:hover td.actions_column ul.row_actions.single,
+-td.actions_column ul.row_actions.single,
+-td.actions_column ul.row_actions.single:hover {
++tr .actions_column ul.row_actions.single,
++tr:hover .actions_column ul.row_actions.single,
++.actions_column ul.row_actions.single,
++.actions_column ul.row_actions.single:hover {
+   border: none;
+ }
+ 
+-td.actions_column ul.row_actions.single li.action {
++.actions_column ul.row_actions.single li.action {
+   display: block;
+ }
+ 
+-td.actions_column ul.row_actions.single li.action:hover {
++.actions_column ul.row_actions.single li.action:hover {
+   background-color: transparent;
+ }
+ 
+-td.actions_column ul.row_actions.single a,
+-td.actions_column ul.row_actions.single input,
+-td.actions_column ul.row_actions.single button {
++.actions_column ul.row_actions.single a,
++.actions_column ul.row_actions.single input,
++.actions_column ul.row_actions.single button {
+   color: $brand-info;
+ }
+ 
+-td.actions_column ul.row_actions.single a:hover,
+-td.actions_column ul.row_actions.single input:hover,
+-td.actions_column ul.row_actions.single button:hover {
++.actions_column ul.row_actions.single a:hover,
++.actions_column ul.row_actions.single input:hover,
++.actions_column ul.row_actions.single button:hover {
+   color: $text-color;
+ }
+ 

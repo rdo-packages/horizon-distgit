@@ -1,4 +1,4 @@
-From 0b1f097a679bf26e4c7bf51ecfc61845b0905499 Mon Sep 17 00:00:00 2001
+From 313c2529670282ffa9f8d59de97c0bccf966f8dc Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Tue, 14 Oct 2014 11:33:00 +0200
 Subject: [PATCH] RCUE navbar and login screen
@@ -19092,10 +19092,10 @@ index 0000000..f37f848
 +ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 8f4a32a..4406706 100644
+index 1fad2e9..0e5084a 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -143,7 +143,7 @@ TEMPLATE_LOADERS = (
+@@ -144,7 +144,7 @@ TEMPLATE_LOADERS = (
  
  TEMPLATE_DIRS = (
      os.path.join(ROOT_PATH, 'templates'),
@@ -19104,7 +19104,7 @@ index 8f4a32a..4406706 100644
  
  STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.FileSystemFinder',
-@@ -226,15 +226,6 @@ INSTALLED_APPS = [
+@@ -228,15 +228,6 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  

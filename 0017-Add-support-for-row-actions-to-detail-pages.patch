@@ -1,0 +1,205 @@
+From 726e5915295251bc7a3180efa753c5d6abb6f677 Mon Sep 17 00:00:00 2001
+From: Ana Krivokapic <akrivoka@redhat.com>
+Date: Thu, 11 Sep 2014 13:31:45 +0200
+Subject: [PATCH] Add support for row actions to detail pages
+
+Add support for performing actions on an object from the object's
+detail page. Actions are displayed in the page header, in a
+row of buttons. To use this newly added capability, `row=True`
+must be passed as a parameter to the render_row_actions method,
+when called from a DetailView.
+
+Change-Id: I4fd96433f9514242c21d6c47f79bf83f3a5e4fc0
+Implements: blueprint detail-pages-ia
+---
+ horizon/static/horizon/js/horizon.tables.js        |  6 +++--
+ horizon/tables/base.py                             | 17 +++++++++----
+ .../horizon/common/_data_table_row_action.html     |  5 ----
+ .../common/_data_table_row_action_dropdown.html    |  5 ++++
+ .../horizon/common/_data_table_row_action_row.html | 11 ++++++++
+ .../horizon/common/_data_table_row_actions.html    | 29 ----------------------
+ .../common/_data_table_row_actions_dropdown.html   | 27 ++++++++++++++++++++
+ .../common/_data_table_row_actions_row.html        |  8 ++++++
+ 8 files changed, 67 insertions(+), 41 deletions(-)
+ delete mode 100644 horizon/templates/horizon/common/_data_table_row_action.html
+ create mode 100644 horizon/templates/horizon/common/_data_table_row_action_dropdown.html
+ create mode 100644 horizon/templates/horizon/common/_data_table_row_action_row.html
+ delete mode 100644 horizon/templates/horizon/common/_data_table_row_actions.html
+ create mode 100644 horizon/templates/horizon/common/_data_table_row_actions_dropdown.html
+ create mode 100644 horizon/templates/horizon/common/_data_table_row_actions_row.html
+
+diff --git a/horizon/static/horizon/js/horizon.tables.js b/horizon/static/horizon/js/horizon.tables.js
+index 861f915..70c3d0a 100644
+--- a/horizon/static/horizon/js/horizon.tables.js
++++ b/horizon/static/horizon/js/horizon.tables.js
+@@ -138,8 +138,10 @@ horizon.datatables = {
+       var action_buttons = $(this).find(".table_actions button.btn-danger");
+ 
+       // Buttons should be enabled only if there are checked checkboxes
+-      action_buttons.toggleClass("disabled",
+-                                 !checkboxes.filter(":checked").length);
++      if (checkboxes.length) {
++        action_buttons.toggleClass("disabled",
++          !checkboxes.filter(":checked").length);
++        }
+     });
+   },
+ 
+diff --git a/horizon/tables/base.py b/horizon/tables/base.py
+index 2f76b79..7e5d1b4 100644
+--- a/horizon/tables/base.py
++++ b/horizon/tables/base.py
+@@ -982,8 +982,10 @@ class DataTableOptions(object):
+         self.template = getattr(options,
+                                 'template',
+                                 'horizon/common/_data_table.html')
+-        self.row_actions_template = \
+-            'horizon/common/_data_table_row_actions.html'
++        self.row_actions_dropdown_template = ('horizon/common/_data_table_'
++                                              'row_actions_dropdown.html')
++        self.row_actions_row_template = ('horizon/common/_data_table_'
++                                         'row_actions_row.html')
+         self.table_actions_template = \
+             'horizon/common/_data_table_table_actions.html'
+         self.context_var_name = unicode(getattr(options,
+@@ -1388,11 +1390,16 @@ class DataTable(object):
+         self.set_multiselect_column_visibility(len(bound_actions) > 0)
+         return table_actions_template.render(context)
+ 
+-    def render_row_actions(self, datum, pull_right=True):
++    def render_row_actions(self, datum, pull_right=True, row=False):
+         """Renders the actions specified in ``Meta.row_actions`` using the
+-        current row data.
++        current row data. If `row` is True, the actions are rendered in a row
++        of buttons. Otherwise they are rendered in a dropdown box.
+         """
+-        template_path = self._meta.row_actions_template
++        if row:
++            template_path = self._meta.row_actions_row_template
++        else:
++            template_path = self._meta.row_actions_dropdown_template
++
+         row_actions_template = template.loader.get_template(template_path)
+         bound_actions = self.get_row_actions(datum)
+         extra_context = {"row_actions": bound_actions,
+diff --git a/horizon/templates/horizon/common/_data_table_row_action.html b/horizon/templates/horizon/common/_data_table_row_action.html
+deleted file mode 100644
+index d766fb3..0000000
+--- a/horizon/templates/horizon/common/_data_table_row_action.html
++++ /dev/null
+@@ -1,5 +0,0 @@
+-{% if action.method != "GET" %}
+-  <button {{ action.attr_string|safe }} name="action" value="{{ action.table.name }}__{{ action.name }}__{{ row_id }}" type="submit">{{ action.verbose_name }}</button>
+-{% else %}
+-  <a href='{{ action.bound_url }}' {{ action.attr_string|safe }}>{{ action.verbose_name }}</a>
+-{% endif %}
+diff --git a/horizon/templates/horizon/common/_data_table_row_action_dropdown.html b/horizon/templates/horizon/common/_data_table_row_action_dropdown.html
+new file mode 100644
+index 0000000..d766fb3
+--- /dev/null
++++ b/horizon/templates/horizon/common/_data_table_row_action_dropdown.html
+@@ -0,0 +1,5 @@
++{% if action.method != "GET" %}
++  <button {{ action.attr_string|safe }} name="action" value="{{ action.table.name }}__{{ action.name }}__{{ row_id }}" type="submit">{{ action.verbose_name }}</button>
++{% else %}
++  <a href='{{ action.bound_url }}' {{ action.attr_string|safe }}>{{ action.verbose_name }}</a>
++{% endif %}
+diff --git a/horizon/templates/horizon/common/_data_table_row_action_row.html b/horizon/templates/horizon/common/_data_table_row_action_row.html
+new file mode 100644
+index 0000000..8602439
+--- /dev/null
++++ b/horizon/templates/horizon/common/_data_table_row_action_row.html
+@@ -0,0 +1,11 @@
++{% if action.method != "GET" %}
++  <button {{ action.attr_string|safe }} name="action" value="{{ action.table.name }}__{{ action.name }}__{{ row_id }}" type="submit">
++    {% if action.icon != None %}<span class="glyphicon glyphicon-{{ action.icon }}"></span> {% endif %}
++    {{ action.verbose_name }}
++  </button>
++{% else %}
++  <a href='{{ action.bound_url }}' title='{{ action.verbose_name }}' {{ action.attr_string|safe }}>
++    {% if action.icon != None %}<span class="glyphicon glyphicon-{{ action.icon }}"></span> {% endif %}
++    {{ action.verbose_name }}
++  </a>
++{% endif %}
+diff --git a/horizon/templates/horizon/common/_data_table_row_actions.html b/horizon/templates/horizon/common/_data_table_row_actions.html
+deleted file mode 100644
+index 3f3368b..0000000
+--- a/horizon/templates/horizon/common/_data_table_row_actions.html
++++ /dev/null
+@@ -1,29 +0,0 @@
+-{% load horizon i18n %}
+-
+-{% spaceless %} {# This makes sure whitespace doesn't affect positioning for dropdown. #}
+-{% if row_actions|length > 1 %}
+-<div class="btn-group {% if pull_right %}pull-right{% endif %}">
+-    {% for action in row_actions %}
+-        {% if forloop.first %}
+-          {% include "horizon/common/_data_table_row_action.html" %}
+-          <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+-            <span class="caret"></span>
+-          </a>
+-          <ul class="dropdown-menu row_actions clearfix">
+-        {% else %}
+-          <li class="clearfix">
+-              {% include "horizon/common/_data_table_row_action.html" %}
+-          </li>
+-        {% endif %}
+-        {% if forloop.last %}
+-          </ul>
+-        {% endif %}
+-    {% endfor %}
+-</div>
+-{% endif %}
+-{% if row_actions|length == 1%}
+-  {% for action in row_actions %}
+-    {% include "horizon/common/_data_table_row_action.html" %}
+-  {% endfor %}
+-{% endif %}
+-{% endspaceless %}
+diff --git a/horizon/templates/horizon/common/_data_table_row_actions_dropdown.html b/horizon/templates/horizon/common/_data_table_row_actions_dropdown.html
+new file mode 100644
+index 0000000..781a30e
+--- /dev/null
++++ b/horizon/templates/horizon/common/_data_table_row_actions_dropdown.html
+@@ -0,0 +1,27 @@
++{% load horizon i18n %}
++
++{% spaceless %} {# This makes sure whitespace doesn't affect positioning for dropdown. #}
++{% if row_actions|length > 1 %}
++<div class="btn-group {% if pull_right %}pull-right{% endif %}">
++    {% for action in row_actions %}
++        {% if forloop.first %}
++          {% include "horizon/common/_data_table_row_action_dropdown.html" %}
++          <a class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
++            <span class="caret"></span>
++          </a>
++          <ul class="dropdown-menu row_actions clearfix">
++        {% else %}
++          <li class="clearfix">
++              {% include "horizon/common/_data_table_row_action_dropdown.html" %}
++          </li>
++        {% endif %}
++        {% if forloop.last %}
++          </ul>
++        {% endif %}
++    {% endfor %}
++</div>
++{% endif %}
++{% if row_actions|length == 1%}
++  {% include "horizon/common/_data_table_row_action_dropdown.html" with action=row_actions.0%}
++{% endif %}
++{% endspaceless %}
+diff --git a/horizon/templates/horizon/common/_data_table_row_actions_row.html b/horizon/templates/horizon/common/_data_table_row_actions_row.html
+new file mode 100644
+index 0000000..dd2a5f0
+--- /dev/null
++++ b/horizon/templates/horizon/common/_data_table_row_actions_row.html
+@@ -0,0 +1,8 @@
++{% load i18n %}
++<div class="table_actions clearfix">
++{% block table_actions %}
++  {% for action in row_actions %}
++    {%  include "horizon/common/_data_table_row_action_row.html" %}
++  {% endfor %}
++{% endblock table_actions %}
++</div>

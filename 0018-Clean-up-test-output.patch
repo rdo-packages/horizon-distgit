@@ -1,0 +1,116 @@
+From ca952c4ce36bdcb0d02445c31255e974da81d407 Mon Sep 17 00:00:00 2001
+From: Ana Krivokapic <akrivoka@redhat.com>
+Date: Thu, 9 Oct 2014 15:20:09 +0200
+Subject: [PATCH] Clean up test output
+
+Some of the API calls weren't mocked properly. Add the missing mocks so
+the test output is again clean.
+
+Change-Id: I83fff8ee3f63e79ef5786602d6516703a22f0702
+Partial-bug: #1378907
+---
+ .../dashboards/admin/networks/tests.py             |  8 +++++--
+ .../dashboards/project/instances/tests.py          | 25 +++++++++++++++++-----
+ .../dashboards/project/networks/tests.py           |  8 +++++--
+ openstack_dashboard/test/test_data/cinder_data.py  |  1 +
+ 4 files changed, 33 insertions(+), 9 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/admin/networks/tests.py b/openstack_dashboard/dashboards/admin/networks/tests.py
+index e9f4890..2235c10 100644
+--- a/openstack_dashboard/dashboards/admin/networks/tests.py
++++ b/openstack_dashboard/dashboards/admin/networks/tests.py
+@@ -643,11 +643,15 @@ class NetworkTests(test.BaseAdminViewTests):
+ 
+ class NetworkSubnetTests(test.BaseAdminViewTests):
+ 
+-    @test.create_stubs({api.neutron: ('subnet_get',)})
++    @test.create_stubs({api.neutron: ('network_get', 'subnet_get',)})
+     def test_subnet_detail(self):
++        network = self.networks.first()
+         subnet = self.subnets.first()
++
++        api.neutron.network_get(IsA(http.HttpRequest), network.id)\
++            .AndReturn(network)
+         api.neutron.subnet_get(IsA(http.HttpRequest), subnet.id)\
+-            .AndReturn(self.subnets.first())
++            .AndReturn(subnet)
+ 
+         self.mox.ReplayAll()
+ 
+diff --git a/openstack_dashboard/dashboards/project/instances/tests.py b/openstack_dashboard/dashboards/project/instances/tests.py
+index 6ee921d..163af69 100644
+--- a/openstack_dashboard/dashboards/project/instances/tests.py
++++ b/openstack_dashboard/dashboards/project/instances/tests.py
+@@ -652,11 +652,20 @@ class InstanceTests(helpers.TestCase):
+ 
+         self.assertRedirectsNoFollow(res, INDEX_URL)
+ 
+-    @helpers.create_stubs({api.nova: ("server_get",
+-                                   "instance_volumes_list",
+-                                   "flavor_get"),
+-                        api.network: ("server_security_groups",
+-                                      "servers_update_addresses")})
++    @helpers.create_stubs({
++        api.nova: (
++            "server_get",
++            "instance_volumes_list",
++            "flavor_get",
++            "extension_supported"
++        ),
++        api.network: (
++            "server_security_groups",
++            "servers_update_addresses",
++            "floating_ip_simple_associate_supported",
++            "floating_ip_supported"
++        )
++    })
+     def _get_instance_details(self, server, qs=None,
+                               flavor_return=None, volumes_return=None,
+                               security_groups_return=None, ):
+@@ -683,6 +692,12 @@ class InstanceTests(helpers.TestCase):
+                 .AndReturn(flavor_return)
+         api.network.server_security_groups(IsA(http.HttpRequest), server.id) \
+                 .AndReturn(security_groups_return)
++        api.network.floating_ip_simple_associate_supported(
++            IsA(http.HttpRequest)).MultipleTimes().AndReturn(True)
++        api.network.floating_ip_supported(IsA(http.HttpRequest)) \
++            .MultipleTimes().AndReturn(True)
++        api.nova.extension_supported('AdminActions', IsA(http.HttpRequest)) \
++            .MultipleTimes().AndReturn(True)
+ 
+         self.mox.ReplayAll()
+ 
+diff --git a/openstack_dashboard/dashboards/project/networks/tests.py b/openstack_dashboard/dashboards/project/networks/tests.py
+index 221431d..0224dba 100644
+--- a/openstack_dashboard/dashboards/project/networks/tests.py
++++ b/openstack_dashboard/dashboards/project/networks/tests.py
+@@ -788,11 +788,15 @@ class NetworkTests(test.TestCase):
+ 
+ class NetworkSubnetTests(test.TestCase):
+ 
+-    @test.create_stubs({api.neutron: ('subnet_get',)})
++    @test.create_stubs({api.neutron: ('network_get', 'subnet_get',)})
+     def test_subnet_detail(self):
++        network = self.networks.first()
+         subnet = self.subnets.first()
++
++        api.neutron.network_get(IsA(http.HttpRequest), network.id)\
++            .AndReturn(network)
+         api.neutron.subnet_get(IsA(http.HttpRequest), subnet.id)\
+-            .AndReturn(self.subnets.first())
++            .AndReturn(subnet)
+ 
+         self.mox.ReplayAll()
+ 
+diff --git a/openstack_dashboard/test/test_data/cinder_data.py b/openstack_dashboard/test/test_data/cinder_data.py
+index a26f742..3a04e13 100644
+--- a/openstack_dashboard/test/test_data/cinder_data.py
++++ b/openstack_dashboard/test/test_data/cinder_data.py
+@@ -161,6 +161,7 @@ def data(TEST):
+ 
+     TEST.cinder_volume_snapshots.add(api.cinder.VolumeSnapshot(snapshot))
+     TEST.cinder_volume_snapshots.add(api.cinder.VolumeSnapshot(snapshot2))
++    TEST.cinder_volume_snapshots.first()._volume = volume
+ 
+     volume_backup1 = vol_backups.VolumeBackup(vol_backups.
+                                               VolumeBackupManager(None),

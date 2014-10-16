@@ -25,18 +25,24 @@ Source5:    python-django-horizon-logrotate.conf
 #
 # patches_base=2014.2.rc2
 #
-Patch0001: 0001-change-lockfile-location-to-tmp-and-also-add-localho.patch
-Patch0002: 0002-Add-a-customization-module-based-on-RHOS.patch
-Patch0003: 0003-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
-Patch0004: 0004-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0005: 0005-RCUE-navbar-and-login-screen.patch
-Patch0006: 0006-fix-flake8-issues.patch
-Patch0007: 0007-remove-runtime-dep-to-python-pbr.patch
-Patch0008: 0008-Add-Change-password-link-to-the-RCUE-theme.patch
-Patch0009: 0009-.less-replaced-in-rcue.patch
-Patch0010: 0010-Theme-fixes.patch
+Patch0001: 0001-disable-debug-move-web-root.patch
+Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
+Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
+Patch0004: 0004-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
+Patch0005: 0005-move-SECRET_KEY-secret_key_store-to-tmp.patch
+Patch0006: 0006-RCUE-navbar-and-login-screen.patch
+Patch0007: 0007-fix-flake8-issues.patch
+Patch0008: 0008-remove-runtime-dep-to-python-pbr.patch
+Patch0009: 0009-Add-Change-password-link-to-the-RCUE-theme.patch
+Patch0010: 0010-.less-replaced-in-rcue.patch
 Patch0011: 0011-re-add-lesscpy-to-compile-.less.patch
 Patch0012: 0012-Migration-of-LESS-to-SCSS-and-various-fixes.patch
+Patch0013: 0013-Remove-the-redundant-Settings-button-on-downstream-t.patch
+Patch0014: 0014-Change-page-header-heading-to-H1.patch
+Patch0015: 0015-Add-dropdown-actions-to-detail-page.patch
+Patch0016: 0016-Add-dropdown-actions-to-all-details-pages.patch
+Patch0017: 0017-Add-support-for-row-actions-to-detail-pages.patch
+Patch0018: 0018-Clean-up-test-output.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!

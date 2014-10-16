@@ -1,17 +1,17 @@
-From 128a3b2adb6c1a97dd30f256d8de01aa264ae172 Mon Sep 17 00:00:00 2001
+From f5196bd426ccc7444cd33d88626807a4523f89d9 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 31 Jul 2014 11:17:29 +0200
 Subject: [PATCH] .less replaced in rcue
 
 ---
- openstack_dashboard/dashboards/theme/templates/_stylesheets.html | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ openstack_dashboard/dashboards/theme/templates/_stylesheets.html | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/openstack_dashboard/dashboards/theme/templates/_stylesheets.html b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
-index c3899cf..29c4b69 100644
+index c3899cf..8f9c16b 100644
 --- a/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
 +++ b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
-@@ -1,8 +1,11 @@
+@@ -1,10 +1,12 @@
  {% load compress %}
  
  {% compress css %}
@@ -21,6 +21,9 @@ index c3899cf..29c4b69 100644
 +<link href='{{ STATIC_URL }}dashboard/css/rickshaw.css' type='text/css' media='screen' rel='stylesheet' />
 +<link href='{{ STATIC_URL }}dashboard/scss/horizon_charts.scss' type='text/scss' media='screen' rel='stylesheet' />
 +<link href='{{ STATIC_URL }}dashboard/scss/horizon_workflow.scss' type='text/scss' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}horizon/lib/font-awesome/scss/font-awesome.scss' type='text/scss' media='screen' rel='stylesheet' />
  {% endcompress %}
  
- <link href='{{ STATIC_URL }}dashboard/css/font-awesome.min.css' type='text/css' media='screen' rel='stylesheet' />
+-<link href='{{ STATIC_URL }}dashboard/css/font-awesome.min.css' type='text/css' media='screen' rel='stylesheet' />
+-
+ <link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>

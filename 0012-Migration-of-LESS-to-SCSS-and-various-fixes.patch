@@ -1,4 +1,4 @@
-From d038dc74ffec92b7cf28957d27ec4d024b4e20df Mon Sep 17 00:00:00 2001
+From 7ad131e92325f940d701a1021baec726ede0ebb6 Mon Sep 17 00:00:00 2001
 From: Robb Hamilton <rhamilto@localhost.localdomain>
 Date: Mon, 29 Sep 2014 11:32:19 -0400
 Subject: [PATCH] Migration of LESS to SCSS and various fixes
