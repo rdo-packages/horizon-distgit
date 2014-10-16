@@ -392,6 +392,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
