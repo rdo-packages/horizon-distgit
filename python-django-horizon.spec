@@ -5,7 +5,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    0.7.rc%{milestone}%{?dist}
+Release:    0.9.rc%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -219,6 +219,10 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
 %setup -q -n horizon-%{version}.rc%{milestone}
+
+# remove precompiled egg-info
+rm -rf horizon.egg-info
+
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -259,14 +263,11 @@ sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard
 # compile message strings
 cd horizon && django-admin compilemessages && cd ..
 cd openstack_dashboard && django-admin compilemessages && cd ..
-# remove unnecessary .po files
-find . -name "django*.po" -exec rm -f '{}' \;
 %{__python} setup.py build
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # dirty hack to make SECRET_KEY work:
-#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
 
 
 %{__python} manage.py collectstatic --noinput 
@@ -310,13 +311,9 @@ mv %{buildroot}%{python_sitelib}/openstack_dashboard \
 cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
-# move customization stuff to /usr/share
-mv openstack_dashboard/dashboards/theme %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
-mv openstack_dashboard/enabled/_99_customization.py %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/enabled
-
-# install language files
-mv openstack_dashboard/locale %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard
-mv horizon/locale %{buildroot}%{python_sitelib}/horizon
+# remove unnecessary .po files
+find %{buildroot} -name django.po -exec rm '{}' \;
+find %{buildroot} -name djangojs.po -exec rm '{}' \;
 
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
@@ -367,9 +364,6 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %check
 # don't run tests on rhel
 %if 0%{?rhel} == 0
-#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
-
-# until django-1.6 support for tests is enabled, disable tests
 ./run_tests.sh -N -P
 %endif
 
@@ -446,6 +440,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Oct 16 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.0.9.rc2
+- hide additional 'settings' menu in theme
+- spec cleanup
+
 * Tue Oct 14 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.8.rc2
 - rebase to 2014.2.rc2
 
