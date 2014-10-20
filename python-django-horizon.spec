@@ -12,7 +12,7 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{rc}/+download/horizon-%{version}.rc%{milestone}.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}/%{version}/+download/horizon-%{version}.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -23,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2.rc2
+# patches_base=2014.2
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
@@ -122,7 +122,7 @@ Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
-Requires:   python-django-pyscss >= 1.0.3
+Requires:   python-django-pyscss >= 1.0.5
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular
@@ -153,7 +153,7 @@ BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
-BuildRequires: python-django-pyscss >= 1.0.3
+BuildRequires: python-django-pyscss >= 1.0.5
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
 BuildRequires: python-XStatic-Angular
@@ -440,6 +440,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-1
+- rebase to 2014.2
+
 * Thu Oct 16 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.0.9.rc2
 - hide additional 'settings' menu in theme
 - spec cleanup
