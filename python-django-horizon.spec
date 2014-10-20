@@ -42,6 +42,7 @@ Patch0015: 0015-Add-dropdown-actions-to-detail-page.patch
 Patch0016: 0016-Add-dropdown-actions-to-all-details-pages.patch
 Patch0017: 0017-Add-support-for-row-actions-to-detail-pages.patch
 Patch0018: 0018-Clean-up-test-output.patch
+Patch0019: 0019-Update-WSGI-app-creation-to-be-compatible-with-Djang.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
