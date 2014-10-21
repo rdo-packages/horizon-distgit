@@ -4,7 +4,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -441,6 +441,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-2
+- update wsgi app creation to be compatible with Django 1.7
+
 * Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-1
 - rebase to 2014.2
 
