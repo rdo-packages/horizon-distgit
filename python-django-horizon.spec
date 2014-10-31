@@ -4,7 +4,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -43,6 +43,9 @@ Patch0016: 0016-Add-dropdown-actions-to-all-details-pages.patch
 Patch0017: 0017-Add-support-for-row-actions-to-detail-pages.patch
 Patch0018: 0018-Clean-up-test-output.patch
 Patch0019: 0019-Update-WSGI-app-creation-to-be-compatible-with-Djang.patch
+Patch0020: 0020-Restore-missing-translation-for-the-downstream-theme.patch
+Patch0021: 0021-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
+Patch0022: 0022-Change-branding.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -441,6 +444,11 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri Oct 31 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-3
+- add missing translation
+- fix various issues in IE
+- update brand logo
+
 * Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-2
 - update wsgi app creation to be compatible with Django 1.7
 

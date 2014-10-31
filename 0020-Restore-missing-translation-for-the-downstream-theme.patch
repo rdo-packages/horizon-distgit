@@ -1,0 +1,27 @@
+From c65343f2bfdc3f7c8b831d5e415f1b29039482fd Mon Sep 17 00:00:00 2001
+From: Julie Pichon <jpichon@redhat.com>
+Date: Fri, 10 Oct 2014 14:26:49 +0100
+Subject: [PATCH] Restore missing translation for the downstream theme.
+
+Upstream changed between Havana and Icehouse, and one of the strings we
+were relying on downstream is not present anymore in the upstream
+message catalogues. Restore the string for Japanese, based on the
+previous translations.
+
+Resolves rhbz: 1122785
+
+Change-Id: Ie0a9df9cb54585fa63e2fab4786dee62ffb6d1e3
+---
+ openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po | 3 +++
+ 1 file changed, 3 insertions(+)
+ create mode 100644 openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po
+
+diff --git a/openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po b/openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po
+new file mode 100644
+index 0000000..1599ed8
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po
+@@ -0,0 +1,3 @@
++#: dashboards/theme/templates/horizon/common/_sidebar.html:17
++msgid "Current Project"
++msgstr "現在のプロジェクト"

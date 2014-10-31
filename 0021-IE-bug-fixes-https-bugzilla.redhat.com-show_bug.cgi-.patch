@@ -1,0 +1,91 @@
+From 92bbc867d1ad0df4f2b0da26c34c6bba25703ca1 Mon Sep 17 00:00:00 2001
+From: Robb Hamilton <rhamilto@redhat.com>
+Date: Thu, 30 Oct 2014 18:14:14 +0000
+Subject: [PATCH] IE bug fixes
+ https://bugzilla.redhat.com/show_bug.cgi?id=1153752
+
+(cherry picked from commit 287d2572e5203bc4ed0ca79695e64c39aecbb666)
+---
+ .../theme/static/dashboard/less/rcue/login.less     | 15 +++++++++------
+ .../theme/static/dashboard/less/rcue/navbar.less    | 21 +++++++++++++--------
+ .../theme/static/dashboard/less/rhtheme.less        |  3 ++-
+ 3 files changed, 24 insertions(+), 15 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less
+index 31daff6..46ca5f5 100755
+--- a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/login.less
+@@ -96,12 +96,15 @@
+       color: #E01212;
+       padding: 0;
+     }
+-    fieldset .form-field input {
+-      border-radius: 1px;
+-      height: 20px;
+-      margin-bottom: 0;
+-      padding: 2px 6px;
+-      width: 378px;
++    fieldset {
++     border: 1px solid transparent; // IE
++      .form-field input {
++        border-radius: 1px;
++        height: 20px;
++        margin-bottom: 0;
++        padding: 2px 6px;
++        width: 378px;
++      }
+     }
+     label {
+       color: #fff;
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less
+index 2c67e71..5d3d1bd 100644
+--- a/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rcue/navbar.less
+@@ -331,13 +331,18 @@
+             padding-right: 10px;
+           }
+         }
+-        &#user_info li.dropdown {
+-          > .dropdown-toggle {
+-            padding-left: 26px;
+-            .rcueicon-user {
+-              left: 10px;
+-              position: absolute;
+-              top: 7px;
++        &#user_info {
++          margin-right: 0;
++          padding-bottom: 0;
++          padding-right: 0;
++          li.dropdown {
++            > .dropdown-toggle {
++              padding-left: 26px;
++              .rcueicon-user {
++                left: 10px;
++                position: absolute;
++                top: 7px;
++              }
+             }
+           }
+         }
+@@ -455,4 +460,4 @@
+   .utility .navbar-inner {
+     border-bottom: 1px solid #53565b; 
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less b/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less
+index 10aae13..b9cbade 100644
+--- a/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/less/rhtheme.less
+@@ -44,7 +44,8 @@ p {
+ .topbar {
+   background: transparent;
+   border-bottom: 0;
++  filter: none;
+   padding: 0;
+   margin: 20px 0;
+   min-width: 0;
+-}
+\ No newline at end of file
++}
