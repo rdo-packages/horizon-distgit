@@ -1,31 +1,34 @@
+%global release_name juno
+
 %global with_compression 1
+
 Name:       python-django-horizon
-Version:    2014.2
-Release:    0.2%{?dist}
+Version:    XXX
+Release:    XXX{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    https://launchpad.net/horizon/juno/juno-2/+download/horizon-%{version}.b2.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}/%{version}/+download/horizon-%{version}.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
 
-#
-# patches_base=2014.2.b2
-#
-Patch0001: 0001-Don-t-access-the-net-while-building-docs.patch
-Patch0002: 0002-disable-debug-move-web-root.patch
-Patch0003: 0003-change-lockfile-location-to-tmp-and-also-add-localho.patch
-Patch0004: 0004-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
-Patch0005: 0005-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0006: 0006-remove-runtime-dep-to-python-pbr.patch
+# logrotate config
+Source5:    python-django-horizon-logrotate.conf
 
-
+#
+# patches_base=2014.2
+#
+Patch0001: 0001-disable-debug-move-web-root.patch
+Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
+Patch0003: 0003-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
+Patch0004: 0004-move-SECRET_KEY-secret_key_store-to-tmp.patch
+Patch0005: 0005-remove-runtime-dep-to-python-pbr.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -33,20 +36,14 @@ Patch0006: 0006-remove-runtime-dep-to-python-pbr.patch
 
 BuildArch:  noarch
 
-# epel6 has a separate Django14 package
-%if 0%{?rhel}==6
-Requires:   Django14
-BuildRequires:   Django14
-%else
-BuildRequires:   Django
-Requires:   Django
-%endif
+BuildRequires:   python-django
+Requires:   python-django
 
 
 Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
-Requires:   python-six >= 1.5.2
+Requires:   python-six >= 1.7.0
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
@@ -55,7 +52,8 @@ BuildRequires: python-pbr >= 0.7.0
 BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
-BuildRequires: python-six >= 1.4.1
+BuildRequires: python-six >= 1.7.0
+BuildRequires: gettext
 
 # for checks:
 %if 0%{?rhel} == 0
@@ -90,7 +88,7 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
-Requires:   python-django-openstack-auth >= 1.1.4
+Requires:   python-django-openstack-auth >= 1.1.7
 Requires:   python-django-compressor >= 1.3
 Requires:   python-django-appconf
 %if %{?with_compression} > 0
@@ -110,47 +108,60 @@ Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
-Requires:   python-django-pyscss
+Requires:   python-django-pyscss >= 1.0.5
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular
 Requires:   python-XStatic-Angular-Cookies
 Requires:   python-XStatic-Angular-Mock
 Requires:   python-XStatic-D3
+Requires:   python-XStatic-Font-Awesome
 Requires:   python-XStatic-Hogan
-Requires:   python-XStatic-Jasmine
 Requires:   python-XStatic-JQuery-Migrate
-Requires:   python-XStatic-JQuery.quicksearch
-Requires:   python-XStatic-JQuery.TableSorter
+Requires:   python-XStatic-JQuery-TableSorter
+Requires:   python-XStatic-JQuery-quicksearch
 Requires:   python-XStatic-JSEncrypt
+Requires:   python-XStatic-Jasmine
 Requires:   python-XStatic-QUnit
 Requires:   python-XStatic-Rickshaw
 Requires:   python-XStatic-Spin
-Requires:   python-XStatic-Font-Awesome
+Requires:   python-XStatic-jquery-ui
+Requires:   python-XStatic-Bootstrap-Datepicker
+Requires:   python-XStatic-Bootstrap-SCSS
+Requires:   python-scss >= 1.2.1
+Requires:   fontawesome-fonts-web >= 4.1.0
 
-BuildRequires: python-django-openstack-auth >= 1.1.4
+
+Requires:   logrotate
+
+BuildRequires: python-django-openstack-auth >= 1.1.7
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
-BuildRequires: python-django-pyscss
+BuildRequires: python-django-pyscss >= 1.0.5
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
 BuildRequires: python-XStatic-Angular
 BuildRequires: python-XStatic-Angular-Cookies
 BuildRequires: python-XStatic-Angular-Mock
 BuildRequires: python-XStatic-D3
+BuildRequires: python-XStatic-Font-Awesome
 BuildRequires: python-XStatic-Hogan
-BuildRequires: python-XStatic-Jasmine
 BuildRequires: python-XStatic-JQuery-Migrate
-BuildRequires: python-XStatic-JQuery.quicksearch
-BuildRequires: python-XStatic-JQuery.TableSorter
+BuildRequires: python-XStatic-JQuery-TableSorter
+BuildRequires: python-XStatic-JQuery-quicksearch
 BuildRequires: python-XStatic-JSEncrypt
+BuildRequires: python-XStatic-Jasmine
 BuildRequires: python-XStatic-QUnit
 BuildRequires: python-XStatic-Rickshaw
 BuildRequires: python-XStatic-Spin
-BuildRequires: python-XStatic-Font-Awesome
-
+BuildRequires: python-XStatic-jquery-ui
+BuildRequires: python-XStatic-Bootstrap-Datepicker
+BuildRequires: python-XStatic-Bootstrap-SCSS
+# bootstrap-scss requires at least python-scss >= 1.2.1
+BuildRequires: python-scss >= 1.2.1
+BuildRequires: fontawesome-fonts-web >= 4.1.0
 
 BuildRequires: pytz
 
@@ -166,11 +177,7 @@ Summary:    Documentation for Django Horizon
 Group:      Documentation
 
 Requires:   %{name} = %{version}-%{release}
-%if 0%{?rhel}==6
-BuildRequires: python-sphinx10
-%else
 BuildRequires: python-sphinx >= 1.1.3
-%endif
 
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-dateutil
@@ -191,6 +198,10 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %prep
 %setup -q -n horizon-%{upstream_version}
+
+# remove precompiled egg-info
+rm -rf horizon.egg-info
+
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
 git init
@@ -200,14 +211,12 @@ git add .
 git commit -a -q -m "%{version} baseline"
 git am %{patches}
 
-# remove unnecessary .po files
-find . -name "django*.po" -exec rm -f '{}' \;
-
-# workaround for https://bugs.launchpad.net/tripleo/+bug/1349774
-sed -i 's/^DEBUG =.*/DEBUG = True/' openstack_dashboard/local/local_settings.py.example
-
 sed -i s/REDHATVERSION/%{version}/ horizon/version.py
 sed -i s/REDHATRELEASE/%{release}/ horizon/version.py
+
+# remove unnecessary .mo files
+# they will be generated later during package build
+find . -name "django*.mo" -exec rm -f '{}' \;
 
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
@@ -218,7 +227,7 @@ cp -p %{SOURCE4} .
 
 %if 0%{?with_compression} > 0
 # set COMPRESS_OFFLINE=True
-sed -i 's:COMPRESS_OFFLINE = False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
+sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
 %else
 # set COMPRESS_OFFLINE=False
 sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
@@ -227,17 +236,21 @@ sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard
 
 
 %build
+# compile message strings
+cd horizon && django-admin compilemessages && cd ..
+cd openstack_dashboard && django-admin compilemessages && cd ..
 %{__python} setup.py build
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # dirty hack to make SECRET_KEY work:
-#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
+
+
 %{__python} manage.py collectstatic --noinput 
 
 # offline compression
 %if 0%{?with_compression} > 0
-%{__python} manage.py compress 
+%{__python} manage.py compress --force
 cp -a static/dashboard %{_builddir}
 %endif
 
@@ -245,11 +258,7 @@ cp -a static/dashboard %{_builddir}
 
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
-%if 0%{?rhel}==6
-sphinx-1.0-build -b html doc/source html
-%else
 sphinx-build -b html doc/source html
-%endif
 
 # undo hack
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
@@ -277,6 +286,10 @@ mv %{buildroot}%{python_sitelib}/openstack_dashboard \
    %{buildroot}%{_datadir}/openstack-dashboard
 cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
+
+# remove unnecessary .po files
+find %{buildroot} -name django.po -exec rm '{}' \;
+find %{buildroot} -name djangojs.po -exec rm '{}' \;
 
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
@@ -319,14 +332,15 @@ mkdir -p %{buildroot}%{_sharedstatedir}/openstack-dashboard
 # create /var/log/horizon and own it
 mkdir -p %{buildroot}%{_var}/log/horizon
 
+# place logrotate config:
+mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
+cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
+
 
 %check
 # don't run tests on rhel
 %if 0%{?rhel} == 0
-#sed -i 's:^SECRET_KEY =.*:SECRET_KEY = "badcafe":' openstack_dashboard/local/local_settings.py
-
-# until django-1.6 support for tests is enabled, disable tests
-# TODO : enable this again, problems with the most recent python-ceilometerclient
+# since rawhide has django-1.7 now, tests fail
 #./run_tests.sh -N -P
 %endif
 
@@ -336,6 +350,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %{python_sitelib}/horizon/*.py*
 %{python_sitelib}/horizon/browsers
 %{python_sitelib}/horizon/conf
+%{python_sitelib}/horizon/contrib
 %{python_sitelib}/horizon/forms
 %{python_sitelib}/horizon/management
 %{python_sitelib}/horizon/static
@@ -354,12 +369,14 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
+%dir %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
+%{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
@@ -367,6 +384,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
+%{_datadir}/openstack-dashboard/openstack_dashboard/templatetags
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/utils
@@ -389,22 +407,48 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
+%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %files doc
 %doc html
 
 %changelog
-* Thu Sep 11 2014 Derek Higgins <derekh@redhat.com> - XXX
-- Add dependency on python-XStatic-Font-Awesome
+* Fri Oct 31 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-3
+- add missing translation
+- fix various issues in IE
+- update brand logo
 
-* Mon Aug 25 2014 Derek Higgins <derekh@redhat.com> - XXX
-- Add dependency on new XStatic packages
+* Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-2
+- update wsgi app creation to be compatible with Django 1.7
 
-* Wed Aug 20 2014 Derek Higgins <derekh@redhat.com> - XXX
-- Include the dashboards/identity dir in the package
+* Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-1
+- rebase to 2014.2
 
-* Tue Aug 19 2014 Derek Higgins <derekh@redhat.com> - XXX
-- Include the openstack_dashboard/management dir in the package
+* Thu Oct 16 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.0.9.rc2
+- hide additional 'settings' menu in theme
+- spec cleanup
+
+* Tue Oct 14 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.8.rc2
+- rebase to 2014.2.rc2
+
+* Thu Oct 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.7.rc1
+- rebase to 2014.2.rc1
+- custom theme fixes
+
+* Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
+- regenerate locale files during package build
+- re-enable compression
+- require python-django-openstack-auth >= 1.1.7 (rhbz#1141840)
+- logrotation fails on duplicate log entry (rhbz#1148451)
+- explicitly require python-django-pyscss >= 1.0.3
+- require python-scss >= 1.2.1
+
+* Thu Sep 11 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.4.b3
+- rebase to Juno-3
+- spec cleanups
+
+* Tue Sep 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.3.b2
+- add logrotate script
 
 * Thu Jul 31 2014 Matthias Runge <mrunge@redhat.com> 2014.2-0.2
 - rebase to Juno-2
