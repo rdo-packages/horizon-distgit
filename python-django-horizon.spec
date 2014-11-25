@@ -4,7 +4,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -46,6 +46,8 @@ Patch0019: 0019-Update-WSGI-app-creation-to-be-compatible-with-Djang.patch
 Patch0020: 0020-Restore-missing-translation-for-the-downstream-theme.patch
 Patch0021: 0021-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
 Patch0022: 0022-Change-branding.patch
+Patch0023: 0023-Fix-dashboard-nav-when-panelgroup-empty.patch
+Patch0024: 0024-Fix-404-errors-connected-to-font-awesome-and-RCUE.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -444,6 +446,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Nov 25 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-4
+- fix 404 errors with bootstrap and glyphicons (rhbz#1163206)
+
 * Fri Oct 31 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-3
 - add missing translation
 - fix various issues in IE
