@@ -106,6 +106,7 @@ Requires:   python-ceilometerclient
 Requires:   python-troveclient >= 1.0.0
 Requires:   python-saharaclient
 Requires:   python-netaddr
+Requires:   python-oslo-i18n
 Requires:   python-oslo-config
 Requires:   python-eventlet
 Requires:   python-django-pyscss >= 1.0.5
@@ -138,6 +139,7 @@ BuildRequires: python-django-openstack-auth >= 1.1.7
 BuildRequires: python-django-compressor >= 1.3
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
+BuildRequires: python-oslo-i18n
 BuildRequires: python-oslo-config
 BuildRequires: python-django-pyscss >= 1.0.5
 BuildRequires: python-XStatic
