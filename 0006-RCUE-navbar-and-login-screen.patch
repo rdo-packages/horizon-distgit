@@ -1,4 +1,4 @@
-From 313c2529670282ffa9f8d59de97c0bccf966f8dc Mon Sep 17 00:00:00 2001
+From 6a7c712ee8eb259076a01c0213a13880bcf15490 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Tue, 14 Oct 2014 11:33:00 +0200
 Subject: [PATCH] RCUE navbar and login screen

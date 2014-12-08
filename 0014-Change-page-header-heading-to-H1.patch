@@ -1,4 +1,4 @@
-From dfe519cce7c2715c9d9761b8935730289259c45b Mon Sep 17 00:00:00 2001
+From 61c53b9f10888e1f406892c8ed65bdf738725df3 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Tue, 19 Aug 2014 17:28:37 +0200
 Subject: [PATCH] Change page header heading to H1
@@ -122,7 +122,7 @@ index 58cbc1b..ec304a2 100644
          self.assertContains(res, "<dd>Volume name</dd>", 1, 200)
          self.assertContains(res, "<dd>%s</dd>" % volume.id, 1, 200)
 diff --git a/openstack_dashboard/static/dashboard/scss/horizon.scss b/openstack_dashboard/static/dashboard/scss/horizon.scss
-index 20aadaf..496e58d 100755
+index 247479b..e35149b 100755
 --- a/openstack_dashboard/static/dashboard/scss/horizon.scss
 +++ b/openstack_dashboard/static/dashboard/scss/horizon.scss
 @@ -172,12 +172,12 @@ dt {

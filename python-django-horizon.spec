@@ -42,12 +42,10 @@ Patch0015: 0015-Add-dropdown-actions-to-detail-page.patch
 Patch0016: 0016-Add-dropdown-actions-to-all-details-pages.patch
 Patch0017: 0017-Add-support-for-row-actions-to-detail-pages.patch
 Patch0018: 0018-Clean-up-test-output.patch
-Patch0019: 0019-Update-WSGI-app-creation-to-be-compatible-with-Djang.patch
-Patch0020: 0020-Restore-missing-translation-for-the-downstream-theme.patch
-Patch0021: 0021-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
-Patch0022: 0022-Change-branding.patch
-Patch0023: 0023-Fix-dashboard-nav-when-panelgroup-empty.patch
-Patch0024: 0024-Fix-404-errors-connected-to-font-awesome-and-RCUE.patch
+Patch0019: 0019-Restore-missing-translation-for-the-downstream-theme.patch
+Patch0020: 0020-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
+Patch0021: 0021-Change-branding.patch
+Patch0022: 0022-Add-missing-translation-for-the-downstream-theme-zh_.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!

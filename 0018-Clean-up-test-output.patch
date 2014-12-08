@@ -1,4 +1,4 @@
-From ca952c4ce36bdcb0d02445c31255e974da81d407 Mon Sep 17 00:00:00 2001
+From 025e8166ff96f1c508058439fc6aa9dccc790de5 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Thu, 9 Oct 2014 15:20:09 +0200
 Subject: [PATCH] Clean up test output

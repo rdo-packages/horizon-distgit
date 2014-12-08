@@ -1,4 +1,4 @@
-From 4beb6924bc7530f0a8c52c87070e0ab91d8235e7 Mon Sep 17 00:00:00 2001
+From 4e558864b8f7090f0687efe8e418e4d299b41813 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Tue, 26 Aug 2014 13:19:12 +0200
 Subject: [PATCH] Add dropdown actions to detail page
@@ -99,10 +99,10 @@ index f068e9e..c78cd09 100644
  
      @memoized.memoized_method
 diff --git a/openstack_dashboard/static/dashboard/scss/horizon.scss b/openstack_dashboard/static/dashboard/scss/horizon.scss
-index 496e58d..961850a 100755
+index e35149b..9cb077f 100755
 --- a/openstack_dashboard/static/dashboard/scss/horizon.scss
 +++ b/openstack_dashboard/static/dashboard/scss/horizon.scss
-@@ -1090,20 +1090,25 @@ td.select {
+@@ -1091,7 +1091,7 @@ td.select {
  
  /* Actions dropdown */
  
@@ -111,7 +111,8 @@ index 496e58d..961850a 100755
    white-space: nowrap;
    padding: 10px;
    position: relative;
-   width: 200px;
+@@ -1099,13 +1099,18 @@ td.actions_column {
+   background-clip: padding-box;
  }
  
 -td.actions_column .btn-group {
@@ -133,7 +134,7 @@ index 496e58d..961850a 100755
  div.table_actions_menu .dropdown-menu a,
  div.table_actions_menu .dropdown-menu input,
  div.table_actions_menu .dropdown-menu button {
-@@ -1118,11 +1123,11 @@ div.table_actions_menu .dropdown-menu button {
+@@ -1120,11 +1125,11 @@ div.table_actions_menu .dropdown-menu button {
    @include box-shadow(none);
  }
  
@@ -147,7 +148,7 @@ index 496e58d..961850a 100755
    font-weight: bold;
  }
  
-@@ -1156,8 +1161,8 @@ td.actions_column .btn-action-required {
+@@ -1158,8 +1163,8 @@ td.actions_column .btn-action-required {
    background: none;
  }
  
@@ -158,7 +159,7 @@ index 496e58d..961850a 100755
  div.table_actions_menu .dropdown-menu a:hover,
  div.table_actions_menu .dropdown-menu button:hover {
    background-color: $gray-lighter;
-@@ -1172,30 +1177,30 @@ div.table_actions_menu .dropdown-menu button:hover {
+@@ -1174,30 +1179,30 @@ div.table_actions_menu .dropdown-menu button:hover {
  
  /* Overrides for single-action rows (no dropdown) */
  

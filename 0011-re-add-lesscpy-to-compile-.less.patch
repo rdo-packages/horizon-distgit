@@ -1,4 +1,4 @@
-From 75e41ad9bb3b945967774462132ae5b565355287 Mon Sep 17 00:00:00 2001
+From 729edbc8bf6e1b9cb906d67f608c700d9c7739da Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 6 Oct 2014 12:54:03 +0200
 Subject: [PATCH] re-add lesscpy to compile .less

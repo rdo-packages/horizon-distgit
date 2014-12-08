@@ -1,4 +1,4 @@
-From dd6d7410af06051533aac01049c778267ea1d8f2 Mon Sep 17 00:00:00 2001
+From dc6b1ce230ccf2f108a1a5c9e59dffcecaf10021 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Wed, 3 Sep 2014 12:09:02 +0200
 Subject: [PATCH] Add dropdown actions to all details pages
@@ -181,7 +181,7 @@ index 36966dd..58fd5ae 100644
      def get_tabs(self, request, *args, **kwargs):
          image = self.get_data()
 diff --git a/openstack_dashboard/dashboards/project/instances/views.py b/openstack_dashboard/dashboards/project/instances/views.py
-index 954e2e1..07c8cc6 100644
+index 7d67a5d..73c7c62 100644
 --- a/openstack_dashboard/dashboards/project/instances/views.py
 +++ b/openstack_dashboard/dashboards/project/instances/views.py
 @@ -253,7 +253,11 @@ class DetailView(tabs.TabView):
