@@ -3,8 +3,8 @@
 %global with_compression 1
 
 Name:       python-django-horizon
-Version:    2014.2
-Release:    4%{?dist}
+Version:    2014.2.1
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -22,7 +22,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2
+# patches_base=2014.2.1
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
@@ -59,7 +59,6 @@ BuildRequires:   python-django
 Requires:   python-django
 
 
-Requires:   python-dateutil
 Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-six >= 1.7.0
@@ -199,7 +198,6 @@ Requires:   %{name} = %{version}-%{release}
 BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
-BuildRequires: python-dateutil
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 2.15.0
@@ -446,6 +444,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Dec 08 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.1-1
+- rebase to 2014.2.1
+- drop earlier patch for rhbz#1163206
+
 * Tue Nov 25 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-4
 - fix 404 errors with bootstrap and glyphicons (rhbz#1163206)
 
