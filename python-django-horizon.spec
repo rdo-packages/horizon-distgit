@@ -4,7 +4,7 @@
 
 Name:       python-django-horizon
 Version:    2014.2.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -46,6 +46,7 @@ Patch0019: 0019-Restore-missing-translation-for-the-downstream-theme.patch
 Patch0020: 0020-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
 Patch0021: 0021-Change-branding.patch
 Patch0022: 0022-Add-missing-translation-for-the-downstream-theme-zh_.patch
+Patch0023: 0023-Horizon-login-page-contains-DOS-attack-mechanism.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -442,6 +443,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Dec 15 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.1-2
+- Fix CVE-2014-8124 (rhbz#1174066)
+
 * Mon Dec 08 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.1-1
 - rebase to 2014.2.1
 - drop earlier patch for rhbz#1163206
