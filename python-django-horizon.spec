@@ -1,17 +1,18 @@
-%global release_name juno
+%global release_name kilo
 
+%global milestone 2
 %global with_compression 1
 
 Name:       python-django-horizon
-Version:    2014.2.1
-Release:    2%{?dist}
+Version:    2015.1
+Release:    0.1.b%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}/%{version}/+download/horizon-%{version}.tar.gz
+Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.0b%{milestone}.tar.gz
 Source1:    openstack-dashboard.conf
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -22,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2014.2.1
+# patches_base=2015.1.0b2+3
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
@@ -106,7 +107,7 @@ Requires:   httpd
 Requires:   mod_wsgi
 Requires:   python-django-horizon >= %{version}
 Requires:   python-django-openstack-auth >= 1.1.7
-Requires:   python-django-compressor >= 1.3
+Requires:   python-django-compressor >= 1.4
 Requires:   python-django-appconf
 %if %{?with_compression} > 0
 Requires:   python-lesscpy
@@ -145,9 +146,19 @@ Requires:   python-XStatic-Spin
 Requires:   python-XStatic-jquery-ui
 Requires:   python-XStatic-Bootstrap-Datepicker
 Requires:   python-XStatic-Bootstrap-SCSS
+Requires:   python-XStatic-termjs
+Requires:   python-XStatic-smart-table
+
 Requires:   python-scss >= 1.2.1
 Requires:   fontawesome-fonts-web >= 4.1.0
 
+Requires:   python-oslo-concurrency
+Requires:   python-oslo-config
+Requires:   python-oslo-i18n
+Requires:   python-oslo-serialization
+Requires:   python-oslo-utils
+Requires:   python-babel
+Requires:   python-pint
 
 Requires:   logrotate
 
@@ -176,9 +187,18 @@ BuildRequires: python-XStatic-Spin
 BuildRequires: python-XStatic-jquery-ui
 BuildRequires: python-XStatic-Bootstrap-Datepicker
 BuildRequires: python-XStatic-Bootstrap-SCSS
+BuildRequires: python-XStatic-termjs
+BuildRequires: python-XStatic-smart-table
 # bootstrap-scss requires at least python-scss >= 1.2.1
 BuildRequires: python-scss >= 1.2.1
 BuildRequires: fontawesome-fonts-web >= 4.1.0
+BuildRequires: python-oslo-concurrency
+BuildRequires: python-oslo-config
+BuildRequires: python-oslo-i18n
+BuildRequires: python-oslo-serialization
+BuildRequires: python-oslo-utils
+BuildRequires: python-babel
+BuildRequires: python-pint
 
 BuildRequires: pytz
 
