@@ -1,4 +1,4 @@
-From 6a7c712ee8eb259076a01c0213a13880bcf15490 Mon Sep 17 00:00:00 2001
+From fbcd2c7d88cc753facf51abc4dae2a2d279ba115 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Tue, 14 Oct 2014 11:33:00 +0200
 Subject: [PATCH] RCUE navbar and login screen
@@ -89,7 +89,7 @@ Conflicts:
  .../dashboards/theme/theme_index/panel.py          |  28 ++
  .../dashboards/theme/theme_index/urls.py           |   2 +
  .../dashboards/theme/theme_index/views.py          |   0
- openstack_dashboard/enabled/_99_customization.py   |   9 +
+ openstack_dashboard/enabled/_99_customization.py   |   1 +
  openstack_dashboard/settings.py                    |  11 +-
  openstack_dashboard_theme/__init__.py              |   0
  openstack_dashboard_theme/models.py                |   0
@@ -99,7 +99,7 @@ Conflicts:
  .../templates/auth/login.html                      |  10 -
  .../templates/horizon/common/_sidebar.html         |  35 --
  openstack_dashboard_theme/templates/splash.html    |  17 -
- 89 files changed, 3536 insertions(+), 163 deletions(-)
+ 89 files changed, 3528 insertions(+), 163 deletions(-)
  create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
  create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
  create mode 100644 openstack_dashboard/dashboards/theme/models.py
@@ -179,7 +179,6 @@ Conflicts:
  create mode 100644 openstack_dashboard/dashboards/theme/theme_index/panel.py
  create mode 100644 openstack_dashboard/dashboards/theme/theme_index/urls.py
  create mode 100644 openstack_dashboard/dashboards/theme/theme_index/views.py
- create mode 100644 openstack_dashboard/enabled/_99_customization.py
  delete mode 100644 openstack_dashboard_theme/__init__.py
  delete mode 100644 openstack_dashboard_theme/models.py
  delete mode 100644 openstack_dashboard_theme/static/dashboard/less/rhtheme.less
@@ -19077,25 +19076,19 @@ diff --git a/openstack_dashboard/dashboards/theme/theme_index/views.py b/opensta
 new file mode 100644
 index 0000000..e69de29
 diff --git a/openstack_dashboard/enabled/_99_customization.py b/openstack_dashboard/enabled/_99_customization.py
-new file mode 100644
-index 0000000..f37f848
---- /dev/null
+index 272bcbe..f37f848 100644
+--- a/openstack_dashboard/enabled/_99_customization.py
 +++ b/openstack_dashboard/enabled/_99_customization.py
-@@ -0,0 +1,9 @@
-+# The name of the dashboard to be added to HORIZON['dashboards']. Required.
-+DASHBOARD = 'theme'
-+# If set to True, this dashboard will be set as the default dashboard.
-+DEFAULT = False
-+# A dictionary of exception classes to be added to HORIZON['exceptions'].
-+ADD_EXCEPTIONS = {}
-+# A list of applications to be added to INSTALLED_APPS.
-+ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
+@@ -6,3 +6,4 @@ DEFAULT = False
+ ADD_EXCEPTIONS = {}
+ # A list of applications to be added to INSTALLED_APPS.
+ ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 1fad2e9..0e5084a 100644
+index 4fb2e80..3a613c4 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -144,7 +144,7 @@ TEMPLATE_LOADERS = (
+@@ -126,7 +126,7 @@ TEMPLATE_LOADERS = (
  
  TEMPLATE_DIRS = (
      os.path.join(ROOT_PATH, 'templates'),
@@ -19104,7 +19097,7 @@ index 1fad2e9..0e5084a 100644
  
  STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.FileSystemFinder',
-@@ -228,15 +228,6 @@ INSTALLED_APPS = [
+@@ -163,15 +163,6 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  
@@ -19119,7 +19112,7 @@ index 1fad2e9..0e5084a 100644
 -
  TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
  AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
- MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+ MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
 diff --git a/openstack_dashboard_theme/__init__.py b/openstack_dashboard_theme/__init__.py
 deleted file mode 100644
 index e69de29..0000000

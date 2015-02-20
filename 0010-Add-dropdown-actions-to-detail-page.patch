@@ -1,0 +1,42 @@
+From b7457e813154bd9de8e274a29ca00e8acdd80291 Mon Sep 17 00:00:00 2001
+From: Ana Krivokapic <akrivoka@redhat.com>
+Date: Tue, 26 Aug 2014 13:19:12 +0200
+Subject: [PATCH] Add dropdown actions to detail page
+
+Add support for performing actions on an object from the object's
+detail page. Actions are displayed in the page header, in a
+dropdown menu. As a POC, this patch enables dropdown actions on a
+detail page of a volume (/project/volumes/volume-id/).
+
+Partially implements: blueprint detail-pages-ia
+
+Change-Id: Ie21c63d86c2806d9689ae7f1a67b67c83710c108
+---
+ .../dashboards/project/volumes/volumes/views.py              | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
+index 7ee8647..f32b0dc 100644
+--- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
++++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
+@@ -45,16 +45,12 @@ class DetailView(tabs.TabView):
+     template_name = 'project/volumes/volumes/detail.html'
+ 
+     def get_context_data(self, **kwargs):
+-        context = super(DetailView, self).get_context_data(**kwargs)
+-        volume = self.get_data()
++        datum = self.get_data()
+         table = project_tables.VolumesTable(self.request)
+-        context["volume"] = volume
++        context = super(DetailView, self).get_context_data(**kwargs)
++        context["volume"] = datum
+         context["url"] = self.get_redirect_url()
+-        context["actions"] = table.render_row_actions(volume)
+-        context["page_title"] = _("Volume Details: "
+-                                  "%(volume_name)s") % {'volume_name':
+-                                                        volume.name}
+-
++        context["actions"] = table.render_row_actions(datum)
+         return context
+ 
+     @memoized.memoized_method

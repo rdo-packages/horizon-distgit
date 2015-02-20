@@ -1,7 +1,7 @@
 %global release_name kilo
 
 %global milestone 2
-%global with_compression 1
+%global with_compression 0
 
 Name:       python-django-horizon
 Version:    2015.1
@@ -26,28 +26,21 @@ Source5:    python-django-horizon-logrotate.conf
 # patches_base=2015.1.0b2+3
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
-Patch0002: 0002-change-lockfile-location-to-tmp-and-also-add-localho.patch
+Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
-Patch0004: 0004-move-RBAC-policy-files-and-checks-to-etc-openstack-d.patch
-Patch0005: 0005-move-SECRET_KEY-secret_key_store-to-tmp.patch
-Patch0006: 0006-RCUE-navbar-and-login-screen.patch
-Patch0007: 0007-fix-flake8-issues.patch
-Patch0008: 0008-remove-runtime-dep-to-python-pbr.patch
-Patch0009: 0009-Add-Change-password-link-to-the-RCUE-theme.patch
-Patch0010: 0010-.less-replaced-in-rcue.patch
-Patch0011: 0011-re-add-lesscpy-to-compile-.less.patch
-Patch0012: 0012-Migration-of-LESS-to-SCSS-and-various-fixes.patch
-Patch0013: 0013-Remove-the-redundant-Settings-button-on-downstream-t.patch
-Patch0014: 0014-Change-page-header-heading-to-H1.patch
-Patch0015: 0015-Add-dropdown-actions-to-detail-page.patch
-Patch0016: 0016-Add-dropdown-actions-to-all-details-pages.patch
-Patch0017: 0017-Add-support-for-row-actions-to-detail-pages.patch
-Patch0018: 0018-Clean-up-test-output.patch
-Patch0019: 0019-Restore-missing-translation-for-the-downstream-theme.patch
-Patch0020: 0020-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
-Patch0021: 0021-Change-branding.patch
-Patch0022: 0022-Add-missing-translation-for-the-downstream-theme-zh_.patch
-Patch0023: 0023-Horizon-login-page-contains-DOS-attack-mechanism.patch
+Patch0004: 0004-RCUE-navbar-and-login-screen.patch
+Patch0005: 0005-Add-Change-password-link-to-the-RCUE-theme.patch
+Patch0006: 0006-.less-replaced-in-rcue.patch
+Patch0007: 0007-re-add-lesscpy-to-compile-.less.patch
+Patch0008: 0008-Migration-of-LESS-to-SCSS-and-various-fixes.patch
+Patch0009: 0009-Remove-the-redundant-Settings-button-on-downstream-t.patch
+Patch0010: 0010-Add-dropdown-actions-to-detail-page.patch
+Patch0011: 0011-Add-dropdown-actions-to-all-details-pages.patch
+Patch0012: 0012-Add-support-for-row-actions-to-detail-pages.patch
+Patch0013: 0013-Restore-missing-translation-for-the-downstream-theme.patch
+Patch0014: 0014-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
+Patch0015: 0015-Change-branding.patch
+Patch0016: 0016-Add-missing-translation-for-the-downstream-theme-zh_.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -129,9 +122,9 @@ Requires:   python-eventlet
 Requires:   python-django-pyscss >= 1.0.5
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
-Requires:   python-XStatic-Angular
-Requires:   python-XStatic-Angular-Cookies
+Requires:   python-XStatic-Angular >= 1:1.3.7
 Requires:   python-XStatic-Angular-Mock
+Requires:   python-XStatic-Angular-Bootstrap
 Requires:   python-XStatic-D3
 Requires:   python-XStatic-Font-Awesome
 Requires:   python-XStatic-Hogan
@@ -170,9 +163,9 @@ BuildRequires: python-oslo-config
 BuildRequires: python-django-pyscss >= 1.0.5
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
-BuildRequires: python-XStatic-Angular
-BuildRequires: python-XStatic-Angular-Cookies
+BuildRequires: python-XStatic-Angular >= 1:1.3.7
 BuildRequires: python-XStatic-Angular-Mock
+BuildRequires: python-XStatic-Angular-Bootstrap
 BuildRequires: python-XStatic-D3
 BuildRequires: python-XStatic-Font-Awesome
 BuildRequires: python-XStatic-Hogan
@@ -240,7 +233,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}
+%setup -q -n horizon-%{version}.0b%{milestone}
 
 # remove precompiled egg-info
 rm -rf horizon.egg-info
@@ -267,6 +260,17 @@ rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 
 # make doc build compatible with python-oslo-sphinx RPM
 sed -i 's/oslosphinx/oslo.sphinx/' doc/source/conf.py
+
+# make build compatible with older oslo_config
+sed -i 's/oslo_config/oslo.config/' openstack_dashboard/policy.py
+sed -i 's/oslo_config/oslo.config/' openstack_dashboard/test/integration_tests/config.py
+
+# make build compatible with older oslo_utils
+sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/test/test_data/swift_data.py
+sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/api/swift.py
+sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/dashboards/project/stacks/forms.py
+sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/openstack/common/log.py
+sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/openstack/common/fileutils.py
 
 # drop config snippet
 cp -p %{SOURCE4} .
@@ -463,6 +467,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri Feb 20 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.1.b2
+- rebase to 2015.1.0b2
+
 * Mon Dec 15 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.1-2
 - Fix CVE-2014-8124 (rhbz#1174066)
 

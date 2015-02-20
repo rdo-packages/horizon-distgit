@@ -1,4 +1,4 @@
-From 25980e6d5932ffab51d13734f0bd2112a4adea82 Mon Sep 17 00:00:00 2001
+From 98dc151326b13f1c88c31eb0ab7bde95ecdc2f8a Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
@@ -7,7 +7,10 @@ Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
 
 Conflicts:
 	openstack_dashboard/settings.py
+
+fix flake8 issues
 ---
+ openstack_dashboard/enabled/_99_customization.py   |  8 ++++
  openstack_dashboard/settings.py                    | 12 ++++-
  openstack_dashboard_theme/__init__.py              |  0
  openstack_dashboard_theme/models.py                |  0
@@ -17,7 +20,8 @@ Conflicts:
  .../templates/auth/login.html                      | 10 ++++
  .../templates/horizon/common/_sidebar.html         | 35 ++++++++++++++
  openstack_dashboard_theme/templates/splash.html    | 17 +++++++
- 9 files changed, 163 insertions(+), 2 deletions(-)
+ 10 files changed, 171 insertions(+), 2 deletions(-)
+ create mode 100644 openstack_dashboard/enabled/_99_customization.py
  create mode 100644 openstack_dashboard_theme/__init__.py
  create mode 100644 openstack_dashboard_theme/models.py
  create mode 100644 openstack_dashboard_theme/static/dashboard/less/rhtheme.less
@@ -27,11 +31,25 @@ Conflicts:
  create mode 100644 openstack_dashboard_theme/templates/horizon/common/_sidebar.html
  create mode 100644 openstack_dashboard_theme/templates/splash.html
 
+diff --git a/openstack_dashboard/enabled/_99_customization.py b/openstack_dashboard/enabled/_99_customization.py
+new file mode 100644
+index 0000000..272bcbe
+--- /dev/null
++++ b/openstack_dashboard/enabled/_99_customization.py
+@@ -0,0 +1,8 @@
++# The name of the dashboard to be added to HORIZON['dashboards']. Required.
++DASHBOARD = 'theme'
++# If set to True, this dashboard will be set as the default dashboard.
++DEFAULT = False
++# A dictionary of exception classes to be added to HORIZON['exceptions'].
++ADD_EXCEPTIONS = {}
++# A list of applications to be added to INSTALLED_APPS.
++ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 786978e..1fad2e9 100644
+index d8e7022..4fb2e80 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -138,14 +138,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
+@@ -120,14 +120,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
  )
  
  TEMPLATE_LOADERS = (
@@ -47,7 +65,7 @@ index 786978e..1fad2e9 100644
  
  STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.FileSystemFinder',
-@@ -229,6 +228,15 @@ INSTALLED_APPS = [
+@@ -164,6 +163,15 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  
@@ -62,7 +80,7 @@ index 786978e..1fad2e9 100644
 +
  TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
  AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
- MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+ MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
 diff --git a/openstack_dashboard_theme/__init__.py b/openstack_dashboard_theme/__init__.py
 new file mode 100644
 index 0000000..e69de29

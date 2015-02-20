@@ -1,0 +1,172 @@
+From a27fd5350079fe565fa0840fdda84903179a63d2 Mon Sep 17 00:00:00 2001
+From: Ana Krivokapic <akrivoka@redhat.com>
+Date: Thu, 11 Sep 2014 13:31:45 +0200
+Subject: [PATCH] Add support for row actions to detail pages
+
+Add support for performing actions on an object from the object's
+detail page. Actions are displayed in the page header, in a
+row of buttons. To use this newly added capability, `row=True`
+must be passed as a parameter to the render_row_actions method,
+when called from a DetailView.
+
+Change-Id: I4fd96433f9514242c21d6c47f79bf83f3a5e4fc0
+Implements: blueprint detail-pages-ia
+---
+ openstack_dashboard/dashboards/admin/networks/tests.py            | 7 -------
+ openstack_dashboard/dashboards/project/images/images/views.py     | 3 +++
+ openstack_dashboard/dashboards/project/instances/views.py         | 3 +++
+ openstack_dashboard/dashboards/project/networks/views.py          | 3 +++
+ openstack_dashboard/dashboards/project/stacks/views.py            | 4 ----
+ openstack_dashboard/dashboards/project/volumes/backups/views.py   | 4 ++++
+ openstack_dashboard/dashboards/project/volumes/snapshots/views.py | 3 +++
+ openstack_dashboard/dashboards/project/volumes/volumes/views.py   | 4 ++++
+ openstack_dashboard/dashboards/theme/theme_index/panel.py         | 1 +
+ openstack_dashboard/enabled/_99_customization.py                  | 1 -
+ 10 files changed, 21 insertions(+), 12 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/admin/networks/tests.py b/openstack_dashboard/dashboards/admin/networks/tests.py
+index de933e7..e26ad31 100644
+--- a/openstack_dashboard/dashboards/admin/networks/tests.py
++++ b/openstack_dashboard/dashboards/admin/networks/tests.py
+@@ -191,19 +191,12 @@ class NetworkTests(test.BaseAdminViewTests):
+         api.neutron.is_extension_supported(IsA(http.HttpRequest),
+                                            'mac-learning')\
+             .AndReturn(mac_learning)
+-<<<<<<< HEAD
+         api.neutron.is_extension_supported(
+             IsA(http.HttpRequest),
+             'dhcp_agent_scheduler').AndReturn(True)
+         api.neutron.is_extension_supported(
+             IsA(http.HttpRequest),
+             'dhcp_agent_scheduler').AndReturn(True)
+-=======
+-        api.neutron.is_extension_supported(IsA(http.HttpRequest),
+-                'dhcp_agent_scheduler').AndReturn(True)
+-        api.neutron.is_extension_supported(IsA(http.HttpRequest),
+-                'dhcp_agent_scheduler').AndReturn(True)
+->>>>>>> dc6b1ce... Add dropdown actions to all details pages
+ 
+         self.mox.ReplayAll()
+ 
+diff --git a/openstack_dashboard/dashboards/project/images/images/views.py b/openstack_dashboard/dashboards/project/images/images/views.py
+index 58fd5ae..97475b0 100644
+--- a/openstack_dashboard/dashboards/project/images/images/views.py
++++ b/openstack_dashboard/dashboards/project/images/images/views.py
+@@ -91,6 +91,9 @@ class DetailView(tabs.TabView):
+         context["image"] = image
+         context["url"] = self.get_redirect_url()
+         context["actions"] = table.render_row_actions(image)
++        context["page_title"] = _("Image Details: "
++                                  "%(image_name)s") % {'image_name':
++                                                       image.name}
+         return context
+ 
+     @staticmethod
+diff --git a/openstack_dashboard/dashboards/project/instances/views.py b/openstack_dashboard/dashboards/project/instances/views.py
+index 3686ede..178f9f0 100644
+--- a/openstack_dashboard/dashboards/project/instances/views.py
++++ b/openstack_dashboard/dashboards/project/instances/views.py
+@@ -260,6 +260,9 @@ class DetailView(tabs.TabView):
+         table = project_tables.InstancesTable(self.request)
+         context["url"] = reverse(self.redirect_url)
+         context["actions"] = table.render_row_actions(instance)
++        context["page_title"] = _("Instance Details: "
++                                  "%(instance_name)s") % {'instance_name':
++                                                          instance.name}
+         return context
+ 
+     @memoized.memoized_method
+diff --git a/openstack_dashboard/dashboards/project/networks/views.py b/openstack_dashboard/dashboards/project/networks/views.py
+index c9610de..ec2e26a 100644
+--- a/openstack_dashboard/dashboards/project/networks/views.py
++++ b/openstack_dashboard/dashboards/project/networks/views.py
+@@ -136,6 +136,9 @@ class DetailView(tables.MultiTableView):
+         table = project_tables.NetworksTable(self.request)
+         context["url"] = self.get_redirect_url()
+         context["actions"] = table.render_row_actions(network)
++        context["page_title"] = _("Network Details: "
++                                  "%(network_name)s") % {'network_name':
++                                                         network.name}
+         return context
+ 
+     @staticmethod
+diff --git a/openstack_dashboard/dashboards/project/stacks/views.py b/openstack_dashboard/dashboards/project/stacks/views.py
+index b08b172..c3a6662 100644
+--- a/openstack_dashboard/dashboards/project/stacks/views.py
++++ b/openstack_dashboard/dashboards/project/stacks/views.py
+@@ -239,10 +239,6 @@ class DetailView(tabs.TabView):
+     def get_redirect_url():
+         return reverse('horizon:project:stacks:index')
+ 
+-    @staticmethod
+-    def get_redirect_url():
+-        return reverse('horizon:project:stacks:index')
+-
+ 
+ class ResourceView(tabs.TabView):
+     tab_group_class = project_tabs.ResourceDetailTabs
+diff --git a/openstack_dashboard/dashboards/project/volumes/backups/views.py b/openstack_dashboard/dashboards/project/volumes/backups/views.py
+index 43e1afd..fbbad2c 100644
+--- a/openstack_dashboard/dashboards/project/volumes/backups/views.py
++++ b/openstack_dashboard/dashboards/project/volumes/backups/views.py
+@@ -53,6 +53,10 @@ class BackupDetailView(tabs.TabView):
+         context["backup"] = backup
+         context["url"] = self.get_redirect_url()
+         context["actions"] = table.render_row_actions(backup)
++        context["page_title"] = _("Volume Backup Details: "
++                                  "%(backup_name)s") % {'backup_name':
++                                                        backup.name}
++
+         return context
+ 
+     @memoized.memoized_method
+diff --git a/openstack_dashboard/dashboards/project/volumes/snapshots/views.py b/openstack_dashboard/dashboards/project/volumes/snapshots/views.py
+index 2e2227a..8fa7e18 100644
+--- a/openstack_dashboard/dashboards/project/volumes/snapshots/views.py
++++ b/openstack_dashboard/dashboards/project/volumes/snapshots/views.py
+@@ -69,6 +69,9 @@ class DetailView(tabs.TabView):
+         context["snapshot"] = snapshot
+         context["url"] = self.get_redirect_url()
+         context["actions"] = table.render_row_actions(snapshot)
++        context["page_title"] = _("Volume Snapshot Details: "
++                                  "%(snapshot_name)s") % {'snapshot_name':
++                                                          snapshot.name}
+         return context
+ 
+     @memoized.memoized_method
+diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
+index 32b96d3..7ee8647 100644
+--- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
++++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
+@@ -51,6 +51,10 @@ class DetailView(tabs.TabView):
+         context["volume"] = volume
+         context["url"] = self.get_redirect_url()
+         context["actions"] = table.render_row_actions(volume)
++        context["page_title"] = _("Volume Details: "
++                                  "%(volume_name)s") % {'volume_name':
++                                                        volume.name}
++
+         return context
+ 
+     @memoized.memoized_method
+diff --git a/openstack_dashboard/dashboards/theme/theme_index/panel.py b/openstack_dashboard/dashboards/theme/theme_index/panel.py
+index 9c42a79..7d85f3c 100644
+--- a/openstack_dashboard/dashboards/theme/theme_index/panel.py
++++ b/openstack_dashboard/dashboards/theme/theme_index/panel.py
+@@ -20,6 +20,7 @@ import horizon
+ 
+ from openstack_dashboard.dashboards.theme import dashboard
+ 
++
+ class ThemePanel(horizon.Panel):
+     name = _("Panel providing a theme")
+     slug = 'theme_index'
+diff --git a/openstack_dashboard/enabled/_99_customization.py b/openstack_dashboard/enabled/_99_customization.py
+index f37f848..272bcbe 100644
+--- a/openstack_dashboard/enabled/_99_customization.py
++++ b/openstack_dashboard/enabled/_99_customization.py
+@@ -6,4 +6,3 @@ DEFAULT = False
+ ADD_EXCEPTIONS = {}
+ # A list of applications to be added to INSTALLED_APPS.
+ ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
+-
