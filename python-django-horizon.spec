@@ -1,11 +1,11 @@
 %global release_name kilo
 
-%global milestone 2
+%global milestone 3
 %global with_compression 0
 
 Name:       python-django-horizon
 Version:    2015.1
-Release:    0.1.b%{milestone}%{?dist}
+Release:    0.2.b%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -23,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2015.1.0b2+3
+# patches_base=2015.1.0b3+3
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
@@ -467,6 +467,8 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Mar 23 2015 Matthias Runge <mrunge@redhat.com> - 2015-1-0.2.b3
+- rebase to 2015.1-0.2.b3
 * Fri Feb 20 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.1.b2
 - rebase to 2015.1.0b2
 
