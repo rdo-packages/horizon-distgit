@@ -1,4 +1,4 @@
-From a27fd5350079fe565fa0840fdda84903179a63d2 Mon Sep 17 00:00:00 2001
+From 8d7bbf8baf5e92d95d05585e10fc05fb1ee4bed4 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Thu, 11 Sep 2014 13:31:45 +0200
 Subject: [PATCH] Add support for row actions to detail pages
@@ -25,7 +25,7 @@ Implements: blueprint detail-pages-ia
  10 files changed, 21 insertions(+), 12 deletions(-)
 
 diff --git a/openstack_dashboard/dashboards/admin/networks/tests.py b/openstack_dashboard/dashboards/admin/networks/tests.py
-index de933e7..e26ad31 100644
+index a05d5c9..09979ba 100644
 --- a/openstack_dashboard/dashboards/admin/networks/tests.py
 +++ b/openstack_dashboard/dashboards/admin/networks/tests.py
 @@ -191,19 +191,12 @@ class NetworkTests(test.BaseAdminViewTests):
@@ -49,10 +49,10 @@ index de933e7..e26ad31 100644
          self.mox.ReplayAll()
  
 diff --git a/openstack_dashboard/dashboards/project/images/images/views.py b/openstack_dashboard/dashboards/project/images/images/views.py
-index 58fd5ae..97475b0 100644
+index 2bf34bd..5b5b36d 100644
 --- a/openstack_dashboard/dashboards/project/images/images/views.py
 +++ b/openstack_dashboard/dashboards/project/images/images/views.py
-@@ -91,6 +91,9 @@ class DetailView(tabs.TabView):
+@@ -94,6 +94,9 @@ class DetailView(tabs.TabView):
          context["image"] = image
          context["url"] = self.get_redirect_url()
          context["actions"] = table.render_row_actions(image)
@@ -63,10 +63,10 @@ index 58fd5ae..97475b0 100644
  
      @staticmethod
 diff --git a/openstack_dashboard/dashboards/project/instances/views.py b/openstack_dashboard/dashboards/project/instances/views.py
-index 3686ede..178f9f0 100644
+index 8e0ee0f..0164c9e 100644
 --- a/openstack_dashboard/dashboards/project/instances/views.py
 +++ b/openstack_dashboard/dashboards/project/instances/views.py
-@@ -260,6 +260,9 @@ class DetailView(tabs.TabView):
+@@ -295,6 +295,9 @@ class DetailView(tabs.TabView):
          table = project_tables.InstancesTable(self.request)
          context["url"] = reverse(self.redirect_url)
          context["actions"] = table.render_row_actions(instance)
@@ -77,10 +77,10 @@ index 3686ede..178f9f0 100644
  
      @memoized.memoized_method
 diff --git a/openstack_dashboard/dashboards/project/networks/views.py b/openstack_dashboard/dashboards/project/networks/views.py
-index c9610de..ec2e26a 100644
+index 5dec3a8..1f4b2a9 100644
 --- a/openstack_dashboard/dashboards/project/networks/views.py
 +++ b/openstack_dashboard/dashboards/project/networks/views.py
-@@ -136,6 +136,9 @@ class DetailView(tables.MultiTableView):
+@@ -143,6 +143,9 @@ class DetailView(tables.MultiTableView):
          table = project_tables.NetworksTable(self.request)
          context["url"] = self.get_redirect_url()
          context["actions"] = table.render_row_actions(network)
@@ -91,10 +91,10 @@ index c9610de..ec2e26a 100644
  
      @staticmethod
 diff --git a/openstack_dashboard/dashboards/project/stacks/views.py b/openstack_dashboard/dashboards/project/stacks/views.py
-index b08b172..c3a6662 100644
+index 87a86a3..dc34564 100644
 --- a/openstack_dashboard/dashboards/project/stacks/views.py
 +++ b/openstack_dashboard/dashboards/project/stacks/views.py
-@@ -239,10 +239,6 @@ class DetailView(tabs.TabView):
+@@ -308,10 +308,6 @@ class DetailView(tabs.TabView):
      def get_redirect_url():
          return reverse('horizon:project:stacks:index')
  
@@ -106,10 +106,10 @@ index b08b172..c3a6662 100644
  class ResourceView(tabs.TabView):
      tab_group_class = project_tabs.ResourceDetailTabs
 diff --git a/openstack_dashboard/dashboards/project/volumes/backups/views.py b/openstack_dashboard/dashboards/project/volumes/backups/views.py
-index 43e1afd..fbbad2c 100644
+index d9eed58..5a24857 100644
 --- a/openstack_dashboard/dashboards/project/volumes/backups/views.py
 +++ b/openstack_dashboard/dashboards/project/volumes/backups/views.py
-@@ -53,6 +53,10 @@ class BackupDetailView(tabs.TabView):
+@@ -59,6 +59,10 @@ class BackupDetailView(tabs.TabView):
          context["backup"] = backup
          context["url"] = self.get_redirect_url()
          context["actions"] = table.render_row_actions(backup)
@@ -121,10 +121,10 @@ index 43e1afd..fbbad2c 100644
  
      @memoized.memoized_method
 diff --git a/openstack_dashboard/dashboards/project/volumes/snapshots/views.py b/openstack_dashboard/dashboards/project/volumes/snapshots/views.py
-index 2e2227a..8fa7e18 100644
+index c03c908..5e5f5ae 100644
 --- a/openstack_dashboard/dashboards/project/volumes/snapshots/views.py
 +++ b/openstack_dashboard/dashboards/project/volumes/snapshots/views.py
-@@ -69,6 +69,9 @@ class DetailView(tabs.TabView):
+@@ -76,6 +76,9 @@ class DetailView(tabs.TabView):
          context["snapshot"] = snapshot
          context["url"] = self.get_redirect_url()
          context["actions"] = table.render_row_actions(snapshot)
@@ -135,10 +135,10 @@ index 2e2227a..8fa7e18 100644
  
      @memoized.memoized_method
 diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-index 32b96d3..7ee8647 100644
+index d87078c..b09681b 100644
 --- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
 +++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-@@ -51,6 +51,10 @@ class DetailView(tabs.TabView):
+@@ -52,6 +52,10 @@ class DetailView(tabs.TabView):
          context["volume"] = volume
          context["url"] = self.get_redirect_url()
          context["actions"] = table.render_row_actions(volume)

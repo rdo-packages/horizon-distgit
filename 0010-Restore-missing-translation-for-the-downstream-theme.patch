@@ -1,4 +1,4 @@
-From f60afc9e528d6ba7c5a55fb94c33b34b27a765a6 Mon Sep 17 00:00:00 2001
+From aa050b4eb83f810a5f851080bd13566b9970826a Mon Sep 17 00:00:00 2001
 From: Julie Pichon <jpichon@redhat.com>
 Date: Fri, 10 Oct 2014 14:26:49 +0100
 Subject: [PATCH] Restore missing translation for the downstream theme.

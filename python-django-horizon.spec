@@ -25,22 +25,19 @@ Source5:    python-django-horizon-logrotate.conf
 #
 # patches_base=2015.1.0b3+3
 #
-Patch0001: 0001-disable-debug-move-web-root.patch
-Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
-Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
-Patch0004: 0004-RCUE-navbar-and-login-screen.patch
-Patch0005: 0005-Add-Change-password-link-to-the-RCUE-theme.patch
-Patch0006: 0006-.less-replaced-in-rcue.patch
-Patch0007: 0007-re-add-lesscpy-to-compile-.less.patch
-Patch0008: 0008-Migration-of-LESS-to-SCSS-and-various-fixes.patch
-Patch0009: 0009-Remove-the-redundant-Settings-button-on-downstream-t.patch
-Patch0010: 0010-Add-dropdown-actions-to-detail-page.patch
-Patch0011: 0011-Add-dropdown-actions-to-all-details-pages.patch
-Patch0012: 0012-Add-support-for-row-actions-to-detail-pages.patch
-Patch0013: 0013-Restore-missing-translation-for-the-downstream-theme.patch
-Patch0014: 0014-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
-Patch0015: 0015-Change-branding.patch
-Patch0016: 0016-Add-missing-translation-for-the-downstream-theme-zh_.patch
+Patch0001: 0001-RCUE-navbar-and-login-screen.patch
+Patch0002: 0002-Add-Change-password-link-to-the-RCUE-theme.patch
+Patch0003: 0003-.less-replaced-in-rcue.patch
+Patch0004: 0004-re-add-lesscpy-to-compile-.less.patch
+Patch0005: 0005-Migration-of-LESS-to-SCSS-and-various-fixes.patch
+Patch0006: 0006-Remove-the-redundant-Settings-button-on-downstream-t.patch
+Patch0007: 0007-Add-dropdown-actions-to-detail-page.patch
+Patch0008: 0008-Add-dropdown-actions-to-all-details-pages.patch
+Patch0009: 0009-Add-support-for-row-actions-to-detail-pages.patch
+Patch0010: 0010-Restore-missing-translation-for-the-downstream-theme.patch
+Patch0011: 0011-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
+Patch0012: 0012-Change-branding.patch
+Patch0013: 0013-Add-missing-translation-for-the-downstream-theme-zh_.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!

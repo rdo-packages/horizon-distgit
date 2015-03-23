@@ -1,4 +1,4 @@
-From 2544d9ed6fcb904a3982d08c77fec04fc6290e46 Mon Sep 17 00:00:00 2001
+From cedef82fbc196640a5656b127ee1e29d2be16b8a Mon Sep 17 00:00:00 2001
 From: Robb Hamilton <rhamilto@redhat.com>
 Date: Thu, 30 Oct 2014 18:14:14 +0000
 Subject: [PATCH] IE bug fixes

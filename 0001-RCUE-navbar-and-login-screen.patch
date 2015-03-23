@@ -1,4 +1,4 @@
-From fbcd2c7d88cc753facf51abc4dae2a2d279ba115 Mon Sep 17 00:00:00 2001
+From eaeadbed5512b0648db276ee80ed802effadf200 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Tue, 14 Oct 2014 11:33:00 +0200
 Subject: [PATCH] RCUE navbar and login screen
@@ -19085,10 +19085,10 @@ index 272bcbe..f37f848 100644
  ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 4fb2e80..3a613c4 100644
+index 832ccb4..a3a387d 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -126,7 +126,7 @@ TEMPLATE_LOADERS = (
+@@ -132,7 +132,7 @@ TEMPLATE_LOADERS = (
  
  TEMPLATE_DIRS = (
      os.path.join(ROOT_PATH, 'templates'),
@@ -19097,7 +19097,7 @@ index 4fb2e80..3a613c4 100644
  
  STATICFILES_FINDERS = (
      'django.contrib.staticfiles.finders.FileSystemFinder',
-@@ -163,15 +163,6 @@ INSTALLED_APPS = [
+@@ -169,15 +169,6 @@ INSTALLED_APPS = [
      'openstack_auth',
  ]
  
@@ -19112,7 +19112,7 @@ index 4fb2e80..3a613c4 100644
 -
  TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
  AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
- MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+ AUTHENTICATION_URLS = ['openstack_auth.urls']
 diff --git a/openstack_dashboard_theme/__init__.py b/openstack_dashboard_theme/__init__.py
 deleted file mode 100644
 index e69de29..0000000
