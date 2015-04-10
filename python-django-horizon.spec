@@ -98,7 +98,7 @@ Group:      Applications/System
 
 Requires:   httpd
 Requires:   mod_wsgi
-Requires:   python-django-horizon >= %{version}
+Requires:   %{name} = %{version}-%{release}
 Requires:   python-django-openstack-auth >= 1.1.7
 Requires:   python-django-compressor >= 1.4
 Requires:   python-django-appconf
