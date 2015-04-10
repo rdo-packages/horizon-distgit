@@ -1,0 +1,87 @@
+From 13eb914a2815fcce892629a3e97e6c4d5eed6284 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Fri, 5 Apr 2013 10:07:53 +0200
+Subject: [PATCH] disable debug, move web root
+
+move RBAC policy files and checks to /etc/openstack-dashboard
+---
+ openstack_dashboard/local/local_settings.py.example | 11 ++++++-----
+ openstack_dashboard/settings.py                     |  3 ++-
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
+index 9c2c12d..c9cbc3f 100644
+--- a/openstack_dashboard/local/local_settings.py.example
++++ b/openstack_dashboard/local/local_settings.py.example
+@@ -4,13 +4,13 @@ from django.utils.translation import ugettext_lazy as _
+ 
+ from openstack_dashboard import exceptions
+ 
+-DEBUG = True
++DEBUG = False
+ TEMPLATE_DEBUG = DEBUG
+ 
+ 
+ # WEBROOT is the location relative to Webserver root
+ # should end with a slash.
+-WEBROOT = '/'
++WEBROOT = '/dashboard/'
+ # LOGIN_URL = WEBROOT + 'auth/login/'
+ # LOGOUT_URL = WEBROOT + 'auth/logout/'
+ #
+@@ -25,7 +25,7 @@ WEBROOT = '/'
+ # with the list of host/domain names that the application can serve.
+ # For more information see:
+ # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+-#ALLOWED_HOSTS = ['horizon.example.com', ]
++ALLOWED_HOSTS = ['horizon.example.com', 'localhost']
+ 
+ # Set SSL proxy settings:
+ # For Django 1.4+ pass this header from the proxy after terminating the SSL,
+@@ -101,7 +101,6 @@ HORIZON_CONFIG = {
+ # including on the login form.
+ #HORIZON_CONFIG["disable_password_reveal"] = False
+ 
+-LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
+ 
+ # Set custom secret key:
+ # You can either set it to a specific value or you can let horizon generate a
+@@ -113,6 +112,7 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
+ # requests routed to the same dashboard instance or you set the same SECRET_KEY
+ # for all of them.
+ from horizon.utils import secret_key
++LOCAL_PATH = '/tmp'
+ SECRET_KEY = secret_key.generate_or_read_from_file(
+     os.path.join(LOCAL_PATH, '.secret_key_store'))
+ 
+@@ -315,7 +315,8 @@ TIME_ZONE = "UTC"
+ # target installation.
+ 
+ # Path to directory containing policy.json files
+-#POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
++# POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
++POLICY_FILES_PATH = '/etc/openstack-dashboard'
+ # Map of local copy of service policy files
+ #POLICY_FILES = {
+ #    'identity': 'keystone_policy.json',
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 9d0a683..b762880 100644
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -32,7 +32,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
+     '%s: %s' % (category.__name__, message)
+ 
+ ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+-BIN_DIR = os.path.abspath(os.path.join(ROOT_PATH, '..', 'bin'))
++BIN_DIR = '/usr/bin'
+ 
+ if ROOT_PATH not in sys.path:
+     sys.path.append(ROOT_PATH)
+@@ -153,6 +153,7 @@ COMPRESS_ENABLED = True
+ COMPRESS_OUTPUT_DIR = 'dashboard'
+ COMPRESS_CSS_HASHING_METHOD = 'hash'
+ COMPRESS_PARSER = 'compressor.parser.HtmlParser'
++COMPRESS_OFFLINE = True
+ 
+ INSTALLED_APPS = [
+     'openstack_dashboard',
