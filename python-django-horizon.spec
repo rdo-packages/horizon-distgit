@@ -23,7 +23,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2015.1.0b3+3
+# patches_base=2015.1.0b3+0
 #
 Patch0001: 0001-RCUE-navbar-and-login-screen.patch
 Patch0002: 0002-Add-Change-password-link-to-the-RCUE-theme.patch
