@@ -1,4 +1,4 @@
-From 8597d6d8f2e9eaa5f3807656e34020a7105babb4 Mon Sep 17 00:00:00 2001
+From 8ed503208dbbd6ee4503b746cf71436b8b3330f8 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Tue, 26 Aug 2014 13:19:12 +0200
 Subject: [PATCH] Add dropdown actions to detail page
@@ -16,7 +16,7 @@ Change-Id: Ie21c63d86c2806d9689ae7f1a67b67c83710c108
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-index d87078c..0984926 100644
+index b5bd7fc..f59beac 100644
 --- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
 +++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
 @@ -46,10 +46,10 @@ class DetailView(tabs.TabView):

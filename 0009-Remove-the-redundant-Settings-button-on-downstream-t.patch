@@ -1,4 +1,4 @@
-From 2c07ede2fb98ee7d1b23250a027d28eb8d218314 Mon Sep 17 00:00:00 2001
+From daf2e19db467d888bb395b66dfc5b6ef71f11b0d Mon Sep 17 00:00:00 2001
 From: Julie Pichon <jpichon@redhat.com>
 Date: Wed, 15 Oct 2014 11:06:59 +0100
 Subject: [PATCH] Remove the redundant 'Settings' button on downstream theme

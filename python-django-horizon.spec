@@ -5,7 +5,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1
-Release:    0.2.b%{milestone}%{?dist}
+Release:    0.3.%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -236,7 +236,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.0b%{milestone}
+%setup -q -n horizon-%{version}.0%{milestone}
 
 # remove precompiled egg-info
 rm -rf horizon.egg-info

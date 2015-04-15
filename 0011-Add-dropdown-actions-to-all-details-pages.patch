@@ -1,4 +1,4 @@
-From e730a3327159665157660688e14f02d6c0705209 Mon Sep 17 00:00:00 2001
+From 59f3666afadac38e7ff108f87f05faaaa863900e Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Wed, 3 Sep 2014 12:09:02 +0200
 Subject: [PATCH] Add dropdown actions to all details pages
@@ -16,7 +16,7 @@ Conflicts:
  3 files changed, 14 insertions(+), 3 deletions(-)
 
 diff --git a/openstack_dashboard/dashboards/admin/networks/tests.py b/openstack_dashboard/dashboards/admin/networks/tests.py
-index 09979ba..a05d5c9 100644
+index 764a070..e233302 100644
 --- a/openstack_dashboard/dashboards/admin/networks/tests.py
 +++ b/openstack_dashboard/dashboards/admin/networks/tests.py
 @@ -191,12 +191,19 @@ class NetworkTests(test.BaseAdminViewTests):
@@ -55,7 +55,7 @@ index dc34564..87a86a3 100644
  class ResourceView(tabs.TabView):
      tab_group_class = project_tabs.ResourceDetailTabs
 diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-index 0984926..d87078c 100644
+index f59beac..b5bd7fc 100644
 --- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
 +++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
 @@ -46,10 +46,10 @@ class DetailView(tabs.TabView):

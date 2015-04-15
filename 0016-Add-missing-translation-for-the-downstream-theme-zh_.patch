@@ -1,4 +1,4 @@
-From 77d90b532172050a1991ae21e899c576ece934ff Mon Sep 17 00:00:00 2001
+From 2f9e9df18d4145efb16733f61aaf1ba1314a1258 Mon Sep 17 00:00:00 2001
 From: Julie Pichon <jpichon@redhat.com>
 Date: Fri, 10 Oct 2014 14:26:49 +0100
 Subject: [PATCH] Add missing translation for the downstream theme - zh_CN
