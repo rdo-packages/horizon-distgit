@@ -1,7 +1,7 @@
 %global release_name kilo
 
-%global milestone 3
-%global with_compression 0
+%global milestone rc1
+%global with_compression 1
 
 Name:       python-django-horizon
 Version:    2015.1
@@ -12,8 +12,7 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.0b%{milestone}.tar.gz
-Source1:    openstack-dashboard.conf
+Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.0%{milestone}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # demo config for separate logging
@@ -23,7 +22,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2015.1.0b3+0
+# patches_base=2015.1.0rc1+0
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
@@ -141,6 +140,8 @@ Requires:   python-XStatic-Bootstrap-Datepicker
 Requires:   python-XStatic-Bootstrap-SCSS
 Requires:   python-XStatic-termjs
 Requires:   python-XStatic-smart-table
+Requires:   python-XStatic-Angular-lrdragndrop
+Requires:   python-XStatic-Magic-Search
 
 Requires:   python-scss >= 1.2.1
 Requires:   fontawesome-fonts-web >= 4.1.0
@@ -155,8 +156,8 @@ Requires:   python-pint
 
 Requires:   logrotate
 
-BuildRequires: python-django-openstack-auth >= 1.1.7
-BuildRequires: python-django-compressor >= 1.3
+BuildRequires: python-django-openstack-auth >= 1.2.0
+BuildRequires: python-django-compressor >= 1.4
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
@@ -182,6 +183,8 @@ BuildRequires: python-XStatic-Bootstrap-Datepicker
 BuildRequires: python-XStatic-Bootstrap-SCSS
 BuildRequires: python-XStatic-termjs
 BuildRequires: python-XStatic-smart-table
+BuildRequires: python-XStatic-Angular-lrdragndrop
+BuildRequires: python-XStatic-Magic-Search
 # bootstrap-scss requires at least python-scss >= 1.2.1
 BuildRequires: python-scss >= 1.2.1
 BuildRequires: fontawesome-fonts-web >= 4.1.0
@@ -296,15 +299,15 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 # dirty hack to make SECRET_KEY work:
 
 
-%{__python} manage.py collectstatic --noinput 
+%{__python} manage.py collectstatic --noinput
 
 # offline compression
 %if 0%{?with_compression} > 0
 %{__python} manage.py compress --force
-cp -a static/dashboard %{_builddir}
+#cp -a static/dashboard %{_builddir}
 %endif
 
-cp -a static/dashboard %{_builddir}
+#cp -a static/dashboard %{_builddir}
 
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
@@ -347,21 +350,8 @@ ln -s ../../../../../%{_sysconfdir}/openstack-dashboard/local_settings %{buildro
 
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %{buildroot}%{_sysconfdir}/openstack-dashboard
 
-%if 0%{?rhel} > 6 || 0%{?fedora} >= 16
 %find_lang django
 %find_lang djangojs
-%else
-# Handling locale files
-# This is adapted from the %%find_lang macro, which cannot be directly
-# used since Django locale files are not located in %%{_datadir}
-#
-# The rest of the packaging guideline still apply -- do not list
-# locale files by hand!
-(cd $RPM_BUILD_ROOT && find . -name 'django*.mo') | %{__sed} -e 's|^.||' |
-%{__sed} -e \
-   's:\(.*/locale/\)\([^/_]\+\)\(.*\.mo$\):%lang(\2) \1\2\3:' \
-      >> django.lang
-%endif
 
 grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
 grep "\/site-packages\/horizon" django.lang > horizon.lang
@@ -395,7 +385,8 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %endif
 
 %files -f horizon.lang
-%doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
+%doc README.rst openstack-dashboard-httpd-logging.conf
+%license LICENSE
 %dir %{python_sitelib}/horizon
 %{python_sitelib}/horizon/*.py*
 %{python_sitelib}/horizon/browsers
@@ -468,8 +459,12 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
-* Mon Mar 23 2015 Matthias Runge <mrunge@redhat.com> - 2015-1-0.2.b3
+* Wed Apr 15 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.3.rc1
+- rebase to 2015.1rc1
+
+* Mon Mar 23 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.2.b3
 - rebase to 2015.1-0.2.b3
+
 * Fri Feb 20 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.1.b2
 - rebase to 2015.1.0b2
 
