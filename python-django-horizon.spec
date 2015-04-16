@@ -1,7 +1,5 @@
 %global release_name kilo
 
-%global with_compression 1
-
 Name:       python-django-horizon
 Version:    2015.1
 Release:    0.1%{?dist}
@@ -13,6 +11,7 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    http://tarballs.openstack.org/horizon/horizon-master.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
+Source3:    python-django-horizon-systemd.conf
 
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
@@ -81,9 +80,7 @@ Requires:   %{name} = %{version}-%{release}
 Requires:   python-django-openstack-auth >= 1.1.7
 Requires:   python-django-compressor >= 1.4
 Requires:   python-django-appconf
-%if %{?with_compression} > 0
 Requires:   python-lesscpy
-%endif
 
 Requires:   python-glanceclient
 Requires:   python-keystoneclient >= 0.7.0
@@ -177,6 +174,7 @@ BuildRequires: python-babel
 BuildRequires: python-pint
 
 BuildRequires: pytz
+BuildRequires: systemd
 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
@@ -232,13 +230,8 @@ sed -i "/^.*POLICY_FILES_PATH =.*/c\POLICY_FILES_PATH = '/etc/openstack-dashboar
 sed -i "/^BIN_DIR = .*/c\BIN_DIR = '/usr/bin'" openstack_dashboard/settings.py
 sed -i "/^COMPRESS_PARSER = .*/a COMPRESS_OFFLINE = True" openstack_dashboard/settings.py
 
-%if 0%{?with_compression} > 0
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
-%else
-# set COMPRESS_OFFLINE=False
-sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
-%endif
 
 
 
@@ -260,16 +253,6 @@ ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 
 
-%{__python} manage.py collectstatic --noinput
-
-# offline compression
-%if 0%{?with_compression} > 0
-%{__python} manage.py compress --force
-cp -a static/dashboard %{_builddir}
-%endif
-
-cp -a static/dashboard %{_builddir}
-
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
 sphinx-build -b html doc/source html
@@ -288,6 +271,10 @@ install -m 0644 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/httpd/conf.d/opensta
 install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
+
+# create directory for systemd snippet
+mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
+cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
 
 # Copy everything to /usr/share
@@ -337,6 +324,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 # since rawhide has django-1.7 now, tests fail
 #./run_tests.sh -N -P
 %endif
+
+%postun
+# update systemd unit files
+%{systemd_postun}
 
 %files -f horizon.lang
 %doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
@@ -402,7 +393,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
-%{_sysconfdir}/logrotate.d/openstack-dashboard
+%config(noreplace) %{_sysconfdir}/logrotate.d/openstack-dashboard
+%attr(755,root,root) %dir %{_unitdir}/httpd.service.d
+%config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
 %files doc
 %doc html
