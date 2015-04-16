@@ -40,6 +40,7 @@ Patch0013: 0013-Restore-missing-translation-for-the-downstream-theme.patch
 Patch0014: 0014-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
 Patch0015: 0015-Change-branding.patch
 Patch0016: 0016-Add-missing-translation-for-the-downstream-theme-zh_.patch
+Patch0017: 0017-Adapt-paths-for-theme-subpackage.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
