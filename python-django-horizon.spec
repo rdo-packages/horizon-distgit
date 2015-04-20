@@ -251,6 +251,8 @@ ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
+# get it ready for compressing later in puppet-horizon
+%{__python} manage.py collectstatic --noinput
 
 
 # build docs
