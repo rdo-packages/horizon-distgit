@@ -377,6 +377,11 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
 cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
+%post
+# ugly hack to set a unique SECRET_KEY
+sed -i "/^from horizon.utils import secret_key$/d' /etc/openstack-dashboard/local_settings
+sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`date +%N | sha256sum`'/}" /etc/openstack-dashboard/local_settings
+
 
 %check
 # don't run tests on rhel
