@@ -1,0 +1,44 @@
+From c39f153dc09c6ab8aac85775e25290547c380587 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Mon, 20 Apr 2015 12:37:41 +0200
+Subject: [PATCH] static files are now below /dashboard/static
+
+Change-Id: Ide2c97ae5ecbf1f71c6441b5b3b14ef60fec4b4e
+---
+ .../dashboards/theme/templates/horizon/common/_sidebar.html           | 2 +-
+ openstack_dashboard/dashboards/theme/templates/splash.html            | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html b/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+index e5e7480..ee06be2 100644
+--- a/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+@@ -4,7 +4,7 @@
+ <div class="header rcue clearfix">
+   <div class="navbar utility">
+     <div class="navbar-inner">
+-      <a class="brand" href="{% url 'horizon:user_home' %}"><img src="/static/dashboard/img/brand.svg" alt="{% site_branding %}" /></a>
++      <a class="brand" href="{% url 'horizon:user_home' %}"><img src="/dashboard/static/dashboard/img/brand.svg" alt="{% site_branding %}" /></a>
+       {% horizon_main_nav %}
+       {% include "_header.html" %}
+       {% if request.horizon.dashboard.supports_tenants %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/splash.html b/openstack_dashboard/dashboards/theme/templates/splash.html
+index 830fd8c..4b4e61a 100644
+--- a/openstack_dashboard/dashboards/theme/templates/splash.html
++++ b/openstack_dashboard/dashboards/theme/templates/splash.html
+@@ -8,13 +8,13 @@
+   </head>
+   <body id="splash">
+     <a href="http://www.redhat.com/" id="redhat">
+-      <img src="/static/dashboard/img/logo.svg" alt="Red Hat" />
++      <img src="/dashboard/static/dashboard/img/logo.svg" alt="Red Hat" />
+     </a>
+     <div class="container">
+       <div class="row-fluid">
+         <div class="span12">
+           <div id="brand">
+-            <img src="/static/dashboard/img/brand.svg">
++            <img src="/dashboard/static/dashboard/img/brand.svg">
+           </div><!--/#brand-->
+         </div><!--/.span*-->
+         {% include 'auth/_login.html' %}
