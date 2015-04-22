@@ -131,6 +131,7 @@ Requires:   python-oslo-utils
 Requires:   python-babel
 Requires:   python-pint
 
+Requires:   openssl
 Requires:   logrotate
 
 BuildRequires: python-django-openstack-auth >= 1.1.7
@@ -326,6 +327,11 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 # since rawhide has django-1.7 now, tests fail
 #./run_tests.sh -N -P
 %endif
+
+%post
+# ugly hack to set a unique SECRET_KEY
+sed -i "/^from horizon.utils import secret_key$/d' /etc/openstack-dashboard/local_settings
+sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
 
 %postun
 # update systemd unit files
