@@ -5,7 +5,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1
-Release:    0.3.%{milestone}%{?dist}
+Release:    0.4.%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -379,7 +379,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
 cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
-%post
+%post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
 sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
 sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
@@ -467,6 +467,10 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Apr 23 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.4.rc1
+- fix static image paths
+- introduce hook into httpd
+
 * Wed Apr 15 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.3.rc1
 - rebase to 2015.1rc1
 
