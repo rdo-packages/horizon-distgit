@@ -156,6 +156,7 @@ Requires:   python-oslo-utils
 Requires:   python-babel
 Requires:   python-pint
 
+Requires:   openssl
 Requires:   logrotate
 
 BuildRequires: python-django-openstack-auth >= 1.2.0
@@ -380,8 +381,8 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %post
 # ugly hack to set a unique SECRET_KEY
-sed -i "/^from horizon.utils import secret_key$/d' /etc/openstack-dashboard/local_settings
-sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`date +%N | sha256sum`'/}" /etc/openstack-dashboard/local_settings
+sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
+sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
 
 
 %check
