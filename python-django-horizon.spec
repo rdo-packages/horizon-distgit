@@ -328,9 +328,9 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 #./run_tests.sh -N -P
 %endif
 
-%post
+%post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
-sed -i "/^from horizon.utils import secret_key$/d' /etc/openstack-dashboard/local_settings
+sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
 sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
 
 %postun
