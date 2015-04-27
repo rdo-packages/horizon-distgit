@@ -1,11 +1,11 @@
 %global release_name kilo
 
-%global milestone rc1
+%global milestone rc2
 %global with_compression 1
 
 Name:       python-django-horizon
 Version:    2015.1
-Release:    0.4.%{milestone}%{?dist}
+Release:    0.5.%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -22,7 +22,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 #
-# patches_base=2015.1.0rc1+0
+# patches_base=2015.1.0rc2+0
 #
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
@@ -467,6 +467,9 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Apr 27 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.5.rc2
+- rebase to rc2
+
 * Thu Apr 23 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.4.rc1
 - fix static image paths
 - introduce hook into httpd
