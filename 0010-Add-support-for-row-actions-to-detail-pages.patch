@@ -1,4 +1,4 @@
-From d94a1deee1fb47c599e6140a4c77fd46582c686c Mon Sep 17 00:00:00 2001
+From a8c08de875715b51c2a3e6c072d4e85b045d1903 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Thu, 11 Sep 2014 13:31:45 +0200
 Subject: [PATCH] Add support for row actions to detail pages

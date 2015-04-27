@@ -1,14 +1,34 @@
-From c39f153dc09c6ab8aac85775e25290547c380587 Mon Sep 17 00:00:00 2001
+From c6ac7bf5056321570a534810badb23582525e0fb Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Mon, 20 Apr 2015 12:37:41 +0200
-Subject: [PATCH] static files are now below /dashboard/static
+Date: Wed, 15 Apr 2015 13:57:27 +0200
+Subject: [PATCH] Adapt paths for -theme subpackage
+
+Change-Id: I4e1a46957c536d81bc376de6425888750382c2f6
+
+static files are now below /dashboard/static
 
 Change-Id: Ide2c97ae5ecbf1f71c6441b5b3b14ef60fec4b4e
 ---
+ openstack_dashboard/dashboards/theme/templates/_stylesheets.html      | 4 +---
  .../dashboards/theme/templates/horizon/common/_sidebar.html           | 2 +-
  openstack_dashboard/dashboards/theme/templates/splash.html            | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ 3 files changed, 4 insertions(+), 6 deletions(-)
 
+diff --git a/openstack_dashboard/dashboards/theme/templates/_stylesheets.html b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
+index 4615e6f..198c227 100755
+--- a/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
++++ b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
+@@ -3,9 +3,7 @@
+ {% compress css %}
+ <link href='{{ STATIC_URL }}dashboard/scss/horizon.scss' type='text/scss' media='screen' rel='stylesheet' />
+ <link href='{{ STATIC_URL }}dashboard/scss/rhtheme.scss' type='text/scss' media='screen' rel='stylesheet' />
+-<link href='{{ STATIC_URL }}dashboard/css/rickshaw.css' type='text/css' media='screen' rel='stylesheet' />
+-<link href='{{ STATIC_URL }}dashboard/scss/horizon_charts.scss' type='text/scss' media='screen' rel='stylesheet' />
+-<link href='{{ STATIC_URL }}dashboard/scss/horizon_workflow.scss' type='text/scss' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}horizon/lib/rickshaw.css' type='text/css' media='screen' rel='stylesheet' />
+ <link href='{{ STATIC_URL }}horizon/lib/font-awesome/scss/font-awesome.scss' type='text/scss' media='screen' rel='stylesheet' />
+ {% endcompress %}
+ 
 diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html b/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
 index e5e7480..ee06be2 100644
 --- a/openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html

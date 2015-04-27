@@ -1,4 +1,4 @@
-From 800613e16778e3ed470c082541ac107b43c5c2eb Mon Sep 17 00:00:00 2001
+From e1bd2df336c97b53da5d4de524995ec6de0f0eb0 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
@@ -46,7 +46,7 @@ index 0000000..272bcbe
 +# A list of applications to be added to INSTALLED_APPS.
 +ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 663f4d7..e3c5405 100644
+index d7d5483..942ea5a 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -121,14 +121,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (

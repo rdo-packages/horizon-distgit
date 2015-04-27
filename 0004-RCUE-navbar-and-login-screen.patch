@@ -1,4 +1,4 @@
-From 36b2981dd20cc3fa4fd86e5277022301f8413bed Mon Sep 17 00:00:00 2001
+From f4edb226d321be7cc460ec0f97205236dcc11814 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Tue, 14 Oct 2014 11:33:00 +0200
 Subject: [PATCH] RCUE navbar and login screen
@@ -9,6 +9,14 @@ Conflicts:
 
 Conflicts:
 	openstack_dashboard/settings.py
+
+Add "Change password" link to the RCUE theme.
+
+Resolves rhbz: 1099076
+
+Change-Id: I2f3df72c40464a4478177a566c5cf8f2660e52e2
+
+.less replaced in rcue
 ---
  openstack_dashboard/dashboards/theme/__init__.py   |   1 +
  openstack_dashboard/dashboards/theme/dashboard.py  |  30 ++
@@ -76,8 +84,8 @@ Conflicts:
  .../theme/static/dashboard/less/rcue/navbar.less   | 458 +++++++++++++++++++++
  .../static/dashboard/less/rcue/variables.less      |  92 +++++
  .../theme/static/dashboard/less/rhtheme.less       |  50 +++
- .../dashboards/theme/templates/_header.html        |  16 +
- .../dashboards/theme/templates/_stylesheets.html   |  10 +
+ .../dashboards/theme/templates/_header.html        |  17 +
+ .../dashboards/theme/templates/_stylesheets.html   |  12 +
  .../dashboards/theme/templates/auth/_login.html    |  29 ++
  .../dashboards/theme/templates/auth/login.html     |   2 +
  .../dashboards/theme/templates/base.html           |  39 ++
@@ -99,7 +107,7 @@ Conflicts:
  .../templates/auth/login.html                      |  10 -
  .../templates/horizon/common/_sidebar.html         |  35 --
  openstack_dashboard_theme/templates/splash.html    |  17 -
- 89 files changed, 3528 insertions(+), 163 deletions(-)
+ 89 files changed, 3531 insertions(+), 163 deletions(-)
  create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
  create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
  create mode 100644 openstack_dashboard/dashboards/theme/models.py
@@ -18759,10 +18767,10 @@ index 0000000..10aae13
 \ No newline at end of file
 diff --git a/openstack_dashboard/dashboards/theme/templates/_header.html b/openstack_dashboard/dashboards/theme/templates/_header.html
 new file mode 100644
-index 0000000..c8fdbee
+index 0000000..071c12b
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/_header.html
-@@ -0,0 +1,16 @@
+@@ -0,0 +1,17 @@
 +{% load i18n %}
 +{% load url from future %}
 +<ul class="nav pull-right" id="user_info">
@@ -18772,7 +18780,8 @@ index 0000000..c8fdbee
 +  <li class="dropdown {% if request.horizon.dashboard.slug == "settings" %}active{% endif %}">
 +    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="rcueicon rcueicon-user"></span> {% blocktrans with username=request.user.username %}{{ username }}{% endblocktrans %}<b class="caret"></b></a>
 +    <ul class="dropdown-menu">
-+      <li{% if request.horizon.dashboard.slug == "settings" %} class="active"{% endif %}><a href="{% url 'horizon:settings:user:index' %}">{% trans "Settings" %}</a></li>
++      <li{% if request.horizon.dashboard.slug == "settings" and request.horizon.panel.slug == "user" %} class="active"{% endif %}><a href="{% url 'horizon:settings:user:index' %}">{% trans "Settings" %}</a></li>
++      <li{% if request.horizon.dashboard.slug == "settings" and request.horizon.panel.slug == "password" %} class="active"{% endif %}><a href="{% url 'horizon:settings:password:index' %}">{% trans "Change Password" %}</a></li>
 +      <li class="divider"></li>
 +      <li><a href="{% url 'logout' %}">{% trans "Sign Out" %}</a></li>
 +    </ul>
@@ -18781,18 +18790,20 @@ index 0000000..c8fdbee
 +</ul>
 diff --git a/openstack_dashboard/dashboards/theme/templates/_stylesheets.html b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
 new file mode 100644
-index 0000000..c3899cf
+index 0000000..8f9c16b
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/_stylesheets.html
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,12 @@
 +{% load compress %}
 +
 +{% compress css %}
-+<link href='{{ STATIC_URL }}dashboard/less/horizon.less' type='text/less' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}dashboard/scss/horizon.scss' type='text/scss' media='screen' rel='stylesheet' />
 +<link href='{{ STATIC_URL }}dashboard/less/rhtheme.less' type='text/less' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}dashboard/css/rickshaw.css' type='text/css' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}dashboard/scss/horizon_charts.scss' type='text/scss' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}dashboard/scss/horizon_workflow.scss' type='text/scss' media='screen' rel='stylesheet' />
++<link href='{{ STATIC_URL }}horizon/lib/font-awesome/scss/font-awesome.scss' type='text/scss' media='screen' rel='stylesheet' />
 +{% endcompress %}
-+
-+<link href='{{ STATIC_URL }}dashboard/css/font-awesome.min.css' type='text/css' media='screen' rel='stylesheet' />
 +
 +<link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>
 diff --git a/openstack_dashboard/dashboards/theme/templates/auth/_login.html b/openstack_dashboard/dashboards/theme/templates/auth/_login.html
@@ -19085,7 +19096,7 @@ index 272bcbe..f37f848 100644
  ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
 +
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index e3c5405..2b00685 100644
+index 942ea5a..44823e2 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -127,7 +127,7 @@ TEMPLATE_LOADERS = (

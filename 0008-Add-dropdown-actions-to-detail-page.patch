@@ -1,4 +1,4 @@
-From 8ed503208dbbd6ee4503b746cf71436b8b3330f8 Mon Sep 17 00:00:00 2001
+From bab5394511cad767e72bceb91e98213a1bfcc413 Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Tue, 26 Aug 2014 13:19:12 +0200
 Subject: [PATCH] Add dropdown actions to detail page

@@ -1,4 +1,4 @@
-From 59f3666afadac38e7ff108f87f05faaaa863900e Mon Sep 17 00:00:00 2001
+From c61f0d21383fb2041e35c5e3d1b0f11627ab599d Mon Sep 17 00:00:00 2001
 From: Ana Krivokapic <akrivoka@redhat.com>
 Date: Wed, 3 Sep 2014 12:09:02 +0200
 Subject: [PATCH] Add dropdown actions to all details pages

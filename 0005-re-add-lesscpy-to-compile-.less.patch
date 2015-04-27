@@ -1,4 +1,4 @@
-From 67f7c99bedc7ef7b44bb6572ef8a7f5a28c4bb12 Mon Sep 17 00:00:00 2001
+From 08de9dfdf5485a4480044d9e23b9073175998ad0 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Mon, 6 Oct 2014 12:54:03 +0200
 Subject: [PATCH] re-add lesscpy to compile .less
@@ -8,7 +8,7 @@ Subject: [PATCH] re-add lesscpy to compile .less
  1 file changed, 1 insertion(+)
 
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 2b00685..10b0847 100644
+index 44823e2..2539f6f 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -136,6 +136,7 @@ STATICFILES_FINDERS = (
