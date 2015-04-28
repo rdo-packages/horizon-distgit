@@ -454,6 +454,8 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
 %{_sysconfdir}/logrotate.d/openstack-dashboard
+%attr(755,root,root) %dir %{_unitdir}/httpd.service.d
+%config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
 %files doc
 %doc html
