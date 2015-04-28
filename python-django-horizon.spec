@@ -5,7 +5,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1
-Release:    0.5.%{milestone}%{?dist}
+Release:    0.6.%{milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -14,6 +14,9 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.0%{milestone}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
+
+# systemd snippet to collect static files and compress on httpd restart
+Source3:    python-django-horizon-systemd.conf
 
 # demo config for separate logging
 Source4:    openstack-dashboard-httpd-logging.conf
@@ -197,6 +200,7 @@ BuildRequires: python-babel
 BuildRequires: python-pint
 
 BuildRequires: pytz
+BuildRequires: systemd
 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
@@ -296,18 +300,10 @@ cd openstack_dashboard && django-admin compilemessages && cd ..
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
-# dirty hack to make SECRET_KEY work:
 
-
+# get it ready for compressing later in puppet-horizon
 %{__python} manage.py collectstatic --noinput
 
-# offline compression
-%if 0%{?with_compression} > 0
-%{__python} manage.py compress --force
-#cp -a static/dashboard %{_builddir}
-%endif
-
-#cp -a static/dashboard %{_builddir}
 
 # build docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
@@ -323,16 +319,15 @@ rm -fr html/.doctrees html/.buildinfo
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 # drop httpd-conf snippet
-%if 0%{?rhel} <7 && 0%{?fedora} <18
-install -m 0644 -D -p %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
-%else
-# httpd-2.4 changed the syntax
 install -m 0644 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
-%endif
 install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
 
+
+# create directory for systemd snippet
+mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
+cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
 # Copy everything to /usr/share
 mv %{buildroot}%{python_sitelib}/openstack_dashboard \
@@ -388,6 +383,15 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 # since rawhide has django-1.7 now, tests fail
 #./run_tests.sh -N -P
 %endif
+
+%post -n openstack-dashboard
+# ugly hack to set a unique SECRET_KEY
+sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
+sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
+
+%postun
+# update systemd unit files
+%{systemd_postun}
 
 %files -f horizon.lang
 %doc README.rst openstack-dashboard-httpd-logging.conf
@@ -464,6 +468,9 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Apr 28 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.6.rc2
+- import missing changes from delorean and spec cleanup
+
 * Mon Apr 27 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.5.rc2
 - rebase to rc2
 
