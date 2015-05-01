@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    1%{?milestone}%{?dist}
+Release:    2%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -41,6 +41,7 @@ Patch0012: 0012-IE-bug-fixes-https-bugzilla.redhat.com-show_bug.cgi-.patch
 Patch0013: 0013-Change-branding.patch
 Patch0014: 0014-Add-missing-translation-for-the-downstream-theme-zh_.patch
 Patch0015: 0015-Adapt-paths-for-theme-subpackage.patch
+Patch0016: 0016-Fixing-data-processing-operations-for-alternate-webr.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -447,5 +448,9 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri May 01 2015  2015.1.0-2
+- Fixing data processing operations for alternate webroots (sahara)
+  https://bugs.launchpad.net/horizon/+bug/1450535
+
 * Thu Apr 30 2015 Alan Pevec <alan.pevec@redhat.com> 2015.1.0-1
 - OpenStack Kilo release

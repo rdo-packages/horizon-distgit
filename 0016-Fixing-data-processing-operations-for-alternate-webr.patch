@@ -1,0 +1,120 @@
+From 576f9fc7d5865164e3babddf39f24b489f159c89 Mon Sep 17 00:00:00 2001
+From: Chad Roberts <croberts@redhat.com>
+Date: Thu, 30 Apr 2015 12:23:25 -0400
+Subject: [PATCH] Fixing data processing operations for alternate webroots
+
+No longer doing a urlresolver.resolve on the path for any
+requests.  Instead, we are now using the kwargs that
+ are already available in the request.
+
+Change-Id: Iad413bdf618a4f5374df1fd40793c0b609b17d99
+Closes-Bug: #1450535
+(cherry picked from commit 66bd9667946d12a6ee584da369f1ab048fa6648a)
+---
+ .../dashboards/project/data_processing/clusters/workflows/create.py | 6 ++----
+ .../dashboards/project/data_processing/jobs/workflows/create.py     | 6 ++----
+ .../project/data_processing/nodegroup_templates/workflows/create.py | 6 ++----
+ .../dashboards/project/data_processing/utils/workflow_helpers.py    | 6 ++----
+ 4 files changed, 8 insertions(+), 16 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/project/data_processing/clusters/workflows/create.py b/openstack_dashboard/dashboards/project/data_processing/clusters/workflows/create.py
+index e680c94..cded566 100644
+--- a/openstack_dashboard/dashboards/project/data_processing/clusters/workflows/create.py
++++ b/openstack_dashboard/dashboards/project/data_processing/clusters/workflows/create.py
+@@ -22,7 +22,6 @@ from openstack_dashboard.dashboards.project.data_processing.utils \
+ import openstack_dashboard.dashboards.project.data_processing.utils. \
+     workflow_helpers as whelpers
+ 
+-from django.core import urlresolvers
+ from django.utils.translation import ugettext_lazy as _
+ 
+ from openstack_dashboard.api import sahara as saharaclient
+@@ -163,10 +162,9 @@ class GeneralConfigAction(workflows.Action):
+         # cluster_template_id comes from cluster templates table, when
+         # Create Cluster from template is clicked there
+         selected_template_name = None
+-        resolver_match = urlresolvers.resolve(request.path)
+-        if "cluster_template_name" in resolver_match.kwargs:
++        if "cluster_template_name" in request.resolver_match.kwargs:
+             selected_template_name = (
+-                resolver_match.kwargs["cluster_template_name"])
++                request.resolver_match.kwargs["cluster_template_name"])
+         if selected_template_name:
+             for template in templates:
+                 if template.name == selected_template_name:
+diff --git a/openstack_dashboard/dashboards/project/data_processing/jobs/workflows/create.py b/openstack_dashboard/dashboards/project/data_processing/jobs/workflows/create.py
+index 4e93556..c051e70 100644
+--- a/openstack_dashboard/dashboards/project/data_processing/jobs/workflows/create.py
++++ b/openstack_dashboard/dashboards/project/data_processing/jobs/workflows/create.py
+@@ -14,7 +14,6 @@
+ import json
+ import logging
+ 
+-from django.core import urlresolvers
+ from django.utils.translation import ugettext_lazy as _
+ 
+ from horizon import exceptions
+@@ -90,10 +89,9 @@ class GeneralConfigAction(workflows.Action):
+     def __init__(self, request, context, *args, **kwargs):
+         super(GeneralConfigAction,
+               self).__init__(request, context, *args, **kwargs)
+-        resolver_match = urlresolvers.resolve(request.path)
+-        if "guide_job_type" in resolver_match.kwargs:
++        if "guide_job_type" in request.resolver_match.kwargs:
+             self.fields["job_type"].initial = (
+-                resolver_match.kwargs["guide_job_type"].lower())
++                request.resolver_match.kwargs["guide_job_type"].lower())
+ 
+     def populate_job_type_choices(self, request, context):
+         choices = [("pig", _("Pig")), ("hive", _("Hive")),
+diff --git a/openstack_dashboard/dashboards/project/data_processing/nodegroup_templates/workflows/create.py b/openstack_dashboard/dashboards/project/data_processing/nodegroup_templates/workflows/create.py
+index 0a4eedb..98fab4b 100644
+--- a/openstack_dashboard/dashboards/project/data_processing/nodegroup_templates/workflows/create.py
++++ b/openstack_dashboard/dashboards/project/data_processing/nodegroup_templates/workflows/create.py
+@@ -13,7 +13,6 @@
+ 
+ import logging
+ 
+-from django.core import urlresolvers
+ from django.utils.translation import ugettext_lazy as _
+ 
+ from saharaclient.api import base as api_base
+@@ -156,12 +155,11 @@ class GeneralConfigAction(workflows.Action):
+         for param in node_parameters:
+             self.fields[param.name] = workflow_helpers.build_control(param)
+ 
+-        resolver_match = urlresolvers.resolve(request.path)
+-        if "guide_template_type" in resolver_match.kwargs:
++        if "guide_template_type" in request.resolver_match.kwargs:
+             self.fields["guide_template_type"] = forms.CharField(
+                 required=False,
+                 widget=forms.HiddenInput(),
+-                initial=resolver_match.kwargs["guide_template_type"])
++                initial=request.resolver_match.kwargs["guide_template_type"])
+ 
+     def populate_flavor_choices(self, request, context):
+         flavors = nova_utils.flavor_list(request)
+diff --git a/openstack_dashboard/dashboards/project/data_processing/utils/workflow_helpers.py b/openstack_dashboard/dashboards/project/data_processing/utils/workflow_helpers.py
+index b0ce8e3..05f2c82 100644
+--- a/openstack_dashboard/dashboards/project/data_processing/utils/workflow_helpers.py
++++ b/openstack_dashboard/dashboards/project/data_processing/utils/workflow_helpers.py
+@@ -12,7 +12,6 @@
+ # limitations under the License.
+ import logging
+ 
+-from django.core import urlresolvers
+ from django.utils.translation import ugettext_lazy as _
+ 
+ from horizon import forms
+@@ -160,9 +159,8 @@ def get_plugin_and_hadoop_version(request):
+         plugin_name = request.REQUEST["plugin_name"]
+         hadoop_version = request.REQUEST["hadoop_version"]
+     else:
+-        resolver_match = urlresolvers.resolve(request.path)
+-        plugin_name = resolver_match.kwargs["plugin_name"]
+-        hadoop_version = resolver_match.kwargs["hadoop_version"]
++        plugin_name = request.resolver_match.kwargs["plugin_name"]
++        hadoop_version = request.resolver_match.kwargs["hadoop_version"]
+     return (plugin_name, hadoop_version)
+ 
+ 
