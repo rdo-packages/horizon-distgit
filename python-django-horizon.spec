@@ -1,18 +1,21 @@
 %global release_name kilo
+%global service horizon
 
-%global milestone rc2
+%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
+
 %global with_compression 1
 
 Name:       python-django-horizon
-Version:    2015.1
-Release:    0.6.%{milestone}%{?dist}
+Version:    2015.1.0
+Release:    1%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://launchpad.net/horizon/%{release_name}/%{release_name}-%{milestone}/+download/horizon-%{version}.0%{milestone}.tar.gz
+Source0:    http://launchpad.net/%{service}/%{release_name}/%{version}/+download/%{service}-%{upstream_version}.tar.gz
+
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # systemd snippet to collect static files and compress on httpd restart
@@ -24,11 +27,7 @@ Source4:    openstack-dashboard-httpd-logging.conf
 # logrotate config
 Source5:    python-django-horizon-logrotate.conf
 
-#
-# patches_base=2015.1.0rc2+0
-#
 Patch0001: 0001-disable-debug-move-web-root.patch
-Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
 Patch0004: 0004-RCUE-navbar-and-login-screen.patch
 Patch0005: 0005-re-add-lesscpy-to-compile-.less.patch
@@ -56,15 +55,15 @@ Requires:   python-django
 Requires:   pytz
 Requires:   python-lockfile
 Requires:   python-six >= 1.7.0
+Requires:   python-pbr
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
-BuildRequires: python-d2to1
-BuildRequires: python-pbr >= 0.7.0
+BuildRequires: python-pbr >= 0.10.8
 BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
-BuildRequires: python-six >= 1.7.0
+BuildRequires: python-six >= 1.9.0
 BuildRequires: gettext
 
 # for checks:
@@ -163,7 +162,7 @@ BuildRequires: python-django-openstack-auth >= 1.2.0
 BuildRequires: python-django-compressor >= 1.4
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
-BuildRequires: python-oslo-config
+BuildRequires: python-oslo-config >= 1.9.3
 BuildRequires: python-django-pyscss >= 1.0.5
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
@@ -195,7 +194,7 @@ BuildRequires: python-oslo-concurrency
 BuildRequires: python-oslo-config
 BuildRequires: python-oslo-i18n
 BuildRequires: python-oslo-serialization
-BuildRequires: python-oslo-utils
+BuildRequires: python-oslo-utils >= 1.4.0
 BuildRequires: python-babel
 BuildRequires: python-pint
 
@@ -227,7 +226,7 @@ BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
 BuildRequires: python-troveclient >= 1.0.0
 BuildRequires: python-saharaclient
-BuildRequires: python-oslo-sphinx
+BuildRequires: python-oslo-sphinx >= 2.3.0
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -240,7 +239,7 @@ Requires: openstack-dashboard = %{version}
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
-%setup -q -n horizon-%{version}.0%{milestone}
+%setup -q -n horizon-%{upstream_version}
 
 # remove precompiled egg-info
 rm -rf horizon.egg-info
@@ -254,9 +253,6 @@ git add .
 git commit -a -q -m "%{version} baseline"
 git am %{patches}
 
-sed -i s/REDHATVERSION/%{version}/ horizon/version.py
-sed -i s/REDHATRELEASE/%{release}/ horizon/version.py
-
 # remove unnecessary .mo files
 # they will be generated later during package build
 find . -name "django*.mo" -exec rm -f '{}' \;
@@ -264,20 +260,6 @@ find . -name "django*.mo" -exec rm -f '{}' \;
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
 rm -rf {test-,}requirements.txt tools/{pip,test}-requires
-
-# make doc build compatible with python-oslo-sphinx RPM
-sed -i 's/oslosphinx/oslo.sphinx/' doc/source/conf.py
-
-# make build compatible with older oslo_config
-sed -i 's/oslo_config/oslo.config/' openstack_dashboard/policy.py
-sed -i 's/oslo_config/oslo.config/' openstack_dashboard/test/integration_tests/config.py
-
-# make build compatible with older oslo_utils
-sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/test/test_data/swift_data.py
-sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/api/swift.py
-sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/dashboards/project/stacks/forms.py
-sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/openstack/common/log.py
-sed -i 's/oslo_utils/oslo.utils/' openstack_dashboard/openstack/common/fileutils.py
 
 # drop config snippet
 cp -p %{SOURCE4} .
@@ -465,287 +447,5 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
-* Tue Apr 28 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.6.rc2
-- import missing changes from delorean and spec cleanup
-
-* Mon Apr 27 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.5.rc2
-- rebase to rc2
-
-* Thu Apr 23 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.4.rc1
-- fix static image paths
-- introduce hook into httpd
-
-* Wed Apr 15 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.3.rc1
-- rebase to 2015.1rc1
-
-* Mon Mar 23 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.2.b3
-- rebase to 2015.1-0.2.b3
-
-* Fri Feb 20 2015 Matthias Runge <mrunge@redhat.com> - 2015.1-0.1.b2
-- rebase to 2015.1.0b2
-
-* Mon Dec 15 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.1-2
-- Fix CVE-2014-8124 (rhbz#1174066)
-
-* Mon Dec 08 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.1-1
-- rebase to 2014.2.1
-- drop earlier patch for rhbz#1163206
-
-* Tue Nov 25 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-4
-- fix 404 errors with bootstrap and glyphicons (rhbz#1163206)
-
-* Fri Oct 31 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-3
-- add missing translation
-- fix various issues in IE
-- update brand logo
-
-* Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-2
-- update wsgi app creation to be compatible with Django 1.7
-
-* Mon Oct 20 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-1
-- rebase to 2014.2
-
-* Thu Oct 16 2014 Matthias Runge <mrunge@redhat.com> - 2014.2.0.9.rc2
-- hide additional 'settings' menu in theme
-- spec cleanup
-
-* Tue Oct 14 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.8.rc2
-- rebase to 2014.2.rc2
-
-* Thu Oct 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.7.rc1
-- rebase to 2014.2.rc1
-- custom theme fixes
-
-* Fri Sep 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.5.b3
-- regenerate locale files during package build
-- re-enable compression
-- require python-django-openstack-auth >= 1.1.7 (rhbz#1141840)
-- logrotation fails on duplicate log entry (rhbz#1148451)
-- explicitly require python-django-pyscss >= 1.0.3
-- require python-scss >= 1.2.1
-
-* Thu Sep 11 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.4.b3
-- rebase to Juno-3
-- spec cleanups
-
-* Tue Sep 09 2014 Matthias Runge <mrunge@redhat.com> - 2014.2-0.3.b2
-- add logrotate script
-
-* Thu Jul 31 2014 Matthias Runge <mrunge@redhat.com> 2014.2-0.2
-- rebase to Juno-2
-
-* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2014.1-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
-
-* Mon May 05 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-4
-- fix typo
-- Add missing comma in Volume ResourceWrapper class
-
-* Fri May 02 2014 Alan Pevec <apevec@redhat.com> - 2014.1-3
-- remove requirement to python-pbr
-
-* Fri Apr 18 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-1
-- rebase to 2014.1
-
-* Tue Apr 08 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.14.rc2
-- rebase to 2014.1.rc2
-
-* Tue Apr 08 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.13.rc1
-- own openstack_dashboard/enabled/_99_customization.py? in the right
-  package (rhbz#1085344)
-
-* Fri Apr 04 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.12.rc1
-- rebase to horizon-2014.1.rc1
-- remove runtime requirement to mox (rhbz#1080326)
-
-* Wed Apr 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.11.b3
-- No images/javascript in horizon dashboard (rhbz#1081612)
-- skip selenium tests during build
-
-* Tue Apr 01 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.10.b3
-- Failed to create a tenant (rhbz#1082646)
-- add Red Hat Access to the upper right corner based on RCUE (rhbz#1069316)
-- lower keystoneclient requirement until rc-1 build
-
-* Fri Mar 28 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.9.b3
-- re-enable tests
-- increase requirements versions
-
-* Thu Mar 27 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.8.b3
-- disable tests until lp bug 1298332 is resolved
-
-* Thu Mar 27 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.7.b3
-- cleanup and re-enable tests
-
-* Wed Mar 26 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.6.b3
-- move theme to dashboards/theme
-
-* Tue Mar 25 2014 Pádraig Brady <pbrady@redhat.com> - 2014.1-0.5.b3
-- add dependency on python-mox
-
-* Thu Mar 13 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.4.b3
-- remove hard selenium requirement for tests
-
-* Fri Mar 07 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.3.b3
-- rebase to 2014.1.b3
-
-* Sun Feb 02 2014 Matthias Runge <mrunge@redhat.com> - 2014.1-0.2b2
-- rebase to 2014.1.b2
-- make compression conditional
-
-* Fri Dec 06 2013 Matthias Runge <mrunge@redhat.com> - 2014.1-0.1b1
-- rebase to 2014.1.b1
-
-* Mon Dec 02 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-4
-- fixes CVE-2013-6406 (rhbz#1035913)
-
-* Wed Nov 13 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-3
-- add requirement python-pbr
-
-* Fri Oct 18 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-2
-- update to Horizon-2013.2 release
-- require python-eventlet
-- create /var/log/horizon
-
-* Thu Oct 17 2013 Matthias Runge <mrunge@redhat.com> - 2013.2.0.15.rc3
-- rebase to Havana rc3
-
-* Tue Oct 15 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.14.rc2
-- rebase to Havana-rc2
-
-* Fri Oct 04 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.12.rc1
-- update to Havana-rc1
-- move secret_keystone to /var/lib/openstack-dashboard
-
-* Thu Sep 19 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.11b3
-- add BuildRequires python-eventlet to fix ./manage.py issue during build
-- fix import in rhteme.less
-
-* Mon Sep 09 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.10b3
-- Havana-3 snapshot
-- drop node.js and node-less from buildrequirements
-- add runtime requirement python-lesscpy
-- own openstack_dashboard dir
-- fix keystore handling issue
-
-* Wed Aug 28 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.8b2
-- add a -custom subpackage to use a custom logo
-
-* Mon Aug 26 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.7b2
-- enable tests in check section (rhbz#856182)
-
-* Wed Aug 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.5b2
-- move requirements from horizon to openstack-dashboard package
-- introduce explicit requirements for dependencies
-
-* Thu Jul 25 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.4b2
-- havana-2
-- change requirements from python-quantumclient to neutronclient
-- require python-ceilometerclient
-- add requirement python-lockfile, change lockfile location to /tmp
-
-* Thu Jun 06 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.2b1
-- havana doesn't require explicitly Django-1.4
-
-* Fri May 31 2013 Matthias Runge <mrunge@redhat.com> - 2013.2-0.1b1
-- prepare for havana-1
-
-* Mon May 13 2013 Matthias Runge <mrunge@redhat.com> - 2013.1.1-1
-- change buildrequires from lessjs to nodejs-less
-- update to 2013.1.1
-
-* Fri Apr 05 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-2
-- explicitly require python-django14
-
-* Fri Apr 05 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-1
-- update to 2013.1 
-
-* Fri Mar 08 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.6.g3
-- fix syntax error in config
-
-* Wed Feb 27 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.5.g3
-- update to grizzly-3
-
-* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2013.1-0.4.g2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
-
-* Sat Jan 19 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.4.g2
-- update to grizzly-2
-- fix compression during build
-
-* Mon Jan 07 2013 Matthias Runge <mrunge@redhat.com> - 2013.1-0.3.g1
-- use nodejs/lessjs to compress
-
-* Fri Dec 14 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.2.g1
-- add config example snippet to enable logging to separate files
-
-* Thu Nov 29 2012 Matthias Runge <mrunge@redhat.com> - 2013.1-0.1.g1
-- update to grizzly-1 milestone
-
-* Tue Nov 13 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-4
-- drop dependency to python-cloudfiles
-- fix /etc/openstack-dashboard permission CVE-2012-5474 (rhbz#873120)
-
-* Mon Oct 22 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-3
-- require Django14 for EPEL6
-- finally move login/logout to /dashboard/auth/login
-- adapt httpd config to httpd-2.4 (bz 868408)
-
-* Mon Oct 15 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-2
-- fix static img, static fonts issue
-
-* Wed Sep 26 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.10.rc2
-- more el6 compatibility
-
-* Tue Sep 25 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.9.rc2
-- remove %%post section
-
-* Mon Sep 24 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.8.rc2
-- also require pytz
-
-* Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.7.rc2
-- update to release folsom rc2
-
-* Fri Sep 21 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.6.rc1
-- fix compressing issue
-
-* Mon Sep 17 2012 Matthias Runge <mrunge@redhat.com> - 2012.2-0.5.rc1
-- update to folsom rc1
-- require python-django instead of Django
-- add requirements to python-django-compressor, python-django-openstack-auth
-- add requirements to python-swiftclient
-- use compressed js, css files
-
-* Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2012.2-0.4.f1
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
-
-* Tue Jun 26 2012 Matthias Runge <mrunge@matthias-runge.de> - 2012.2-0.3.f1
-- add additional provides django-horizon
-
-* Wed Jun 06 2012 Pádraig Brady <P@draigBrady.com> - 2012.2-0.2.f1
-- Update to folsom milestone 1
-
-* Wed May 09 2012 Alan Pevec <apevec@redhat.com> - 2012.1-4
-- Remove the currently uneeded dependency on python-django-nose
-
-* Thu May 03 2012 Pádraig Brady <P@draigBrady.com> - 2012.1-3
-- CVE-2012-2144 session reuse vulnerability
-
-* Tue Apr 17 2012 Pádraig Brady <P@draigBrady.com> - 2012.1-2
-- CVE-2012-2094 XSS vulnerability in Horizon log viewer
-- Configure the default database to use
-
-* Mon Apr 09 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-1
-- Update to essex final release
-- Package manage.py (bz 808219)
-- Properly access all needed javascript (bz 807567)
-
-* Sat Mar 03 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-0.1.rc1
-- Update to rc1 snapshot
-- Drop no longer needed packages
-- Change default URL to http://localhost/dashboard
-- Add dep on newly packaged python-django-nose
-- Fix static content viewing (patch from Jan van Eldik) (bz 788567)
-
-* Mon Jan 30 2012 Cole Robinson <crobinso@redhat.com> - 2012.1-0.1.e3
-- Initial package
+* Thu Apr 30 2015 Alan Pevec <alan.pevec@redhat.com> 2015.1.0-1
+- OpenStack Kilo release
