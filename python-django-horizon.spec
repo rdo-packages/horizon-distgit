@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    2%{?milestone}%{?dist}
+Release:    3%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -450,6 +450,9 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Wed May 06 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-3
+- theme fixes
+
 * Fri May 01 2015  2015.1.0-2
 - Fixing data processing operations for alternate webroots (sahara)
   https://bugs.launchpad.net/horizon/+bug/1450535
