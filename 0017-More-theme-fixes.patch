@@ -1,0 +1,52 @@
+From 67f3ebebcbe5d7a2698a6e5d480fb33cf9c3de99 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Wed, 6 May 2015 08:58:11 +0200
+Subject: [PATCH] More theme fixes
+
+Change-Id: Ifba49e7dc6cbf9a009c02aa92d62666ecd05da93
+---
+ .../dashboards/theme/static/dashboard/scss/rhtheme.scss                | 3 +++
+ openstack_dashboard/dashboards/theme/templates/_header.html            | 2 +-
+ .../dashboards/theme/templates/horizon/_subnav_list.html               | 2 +-
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
+index ce9fe51..51bc9f0 100755
+--- a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
+@@ -10,6 +10,9 @@ b, strong {
+ 
+ body {
+   font-family: $font-family-base;
++  &:not(#splash) {
++    background-image: none;
++  }
+ }
+ 
+ h2 {
+diff --git a/openstack_dashboard/dashboards/theme/templates/_header.html b/openstack_dashboard/dashboards/theme/templates/_header.html
+index 071c12b..3999024 100644
+--- a/openstack_dashboard/dashboards/theme/templates/_header.html
++++ b/openstack_dashboard/dashboards/theme/templates/_header.html
+@@ -5,7 +5,7 @@
+   <li><a href="{{ HORIZON_CONFIG.help_url }}" target="_new">{% trans "Help" %}</a></li>
+   {% endif %}
+   <li class="dropdown {% if request.horizon.dashboard.slug == "settings" %}active{% endif %}">
+-    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="rcueicon rcueicon-user"></span> {% blocktrans with username=request.user.username %}{{ username }}{% endblocktrans %}<b class="caret"></b></a>
++    <a href="#" class="dropdown-toggle">share<span class="rcueicon rcueicon-user"></span> {% blocktrans with username=request.user.username %}{{ username }}{% endblocktrans %}<b class="caret"></b></a>
+     <ul class="dropdown-menu">
+       <li{% if request.horizon.dashboard.slug == "settings" and request.horizon.panel.slug == "user" %} class="active"{% endif %}><a href="{% url 'horizon:settings:user:index' %}">{% trans "Settings" %}</a></li>
+       <li{% if request.horizon.dashboard.slug == "settings" and request.horizon.panel.slug == "password" %} class="active"{% endif %}><a href="{% url 'horizon:settings:password:index' %}">{% trans "Change Password" %}</a></li>
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html b/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
+index 1c1d70c..0200e9c 100644
+--- a/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
+@@ -5,7 +5,7 @@
+     {% if filtered_panels %}
+       {% if heading %}
+         <li class="{% if request.horizon.panel in filtered_panels %}active{% else %}dropdown{% endif %}">
+-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ heading }} <b class="caret"></b></a>
++          <a href="#" class="dropdown-toggle"subna>{{ heading }} <b class="caret"></b></a>
+           <ul class="{% if request.horizon.panel in filtered_panels %}persistent{% else %}dropdown-menu{% endif %}">
+           {% for panel in filtered_panels %}
+             <li {% if current == panel.slug %}class="active"{% endif %}>

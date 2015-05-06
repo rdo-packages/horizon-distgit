@@ -16,18 +16,8 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    http://launchpad.net/%{service}/%{release_name}/%{version}/+download/%{service}-%{upstream_version}.tar.gz
 
-Source2:    openstack-dashboard-httpd-2.4.conf
-
-# systemd snippet to collect static files and compress on httpd restart
-Source3:    python-django-horizon-systemd.conf
-
-# demo config for separate logging
-Source4:    openstack-dashboard-httpd-logging.conf
-
-# logrotate config
-Source5:    python-django-horizon-logrotate.conf
-
 Patch0001: 0001-disable-debug-move-web-root.patch
+Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
 Patch0004: 0004-RCUE-navbar-and-login-screen.patch
 Patch0005: 0005-re-add-lesscpy-to-compile-.less.patch
@@ -42,6 +32,18 @@ Patch0013: 0013-Change-branding.patch
 Patch0014: 0014-Add-missing-translation-for-the-downstream-theme-zh_.patch
 Patch0015: 0015-Adapt-paths-for-theme-subpackage.patch
 Patch0016: 0016-Fixing-data-processing-operations-for-alternate-webr.patch
+Patch0017: 0017-More-theme-fixes.patch
+
+Source2:    openstack-dashboard-httpd-2.4.conf
+
+# systemd snippet to collect static files and compress on httpd restart
+Source3:    python-django-horizon-systemd.conf
+
+# demo config for separate logging
+Source4:    openstack-dashboard-httpd-logging.conf
+
+# logrotate config
+Source5:    python-django-horizon-logrotate.conf
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
