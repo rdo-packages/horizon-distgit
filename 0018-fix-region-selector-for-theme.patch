@@ -1,0 +1,46 @@
+From cf13df7e27b59743274eac7c78d80709ead5f7fc Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Fri, 8 May 2015 10:24:52 +0200
+Subject: [PATCH] fix region selector for -theme
+
+Change-Id: I7f6234c23d77361bf553f5e7c88aabec272d54ce
+---
+ .../dashboards/theme/templates/_header.html               |  2 +-
+ .../theme/templates/horizon/common/_region_selector.html  | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html
+
+diff --git a/openstack_dashboard/dashboards/theme/templates/_header.html b/openstack_dashboard/dashboards/theme/templates/_header.html
+index 3999024..3a39fc1 100644
+--- a/openstack_dashboard/dashboards/theme/templates/_header.html
++++ b/openstack_dashboard/dashboards/theme/templates/_header.html
+@@ -5,7 +5,7 @@
+   <li><a href="{{ HORIZON_CONFIG.help_url }}" target="_new">{% trans "Help" %}</a></li>
+   {% endif %}
+   <li class="dropdown {% if request.horizon.dashboard.slug == "settings" %}active{% endif %}">
+-    <a href="#" class="dropdown-toggle">share<span class="rcueicon rcueicon-user"></span> {% blocktrans with username=request.user.username %}{{ username }}{% endblocktrans %}<b class="caret"></b></a>
++    <a href="#" class="dropdown-toggle"><span class="rcueicon rcueicon-user"></span> {% blocktrans with username=request.user.username %}{{ username }}{% endblocktrans %}<b class="caret"></b></a>
+     <ul class="dropdown-menu">
+       <li{% if request.horizon.dashboard.slug == "settings" and request.horizon.panel.slug == "user" %} class="active"{% endif %}><a href="{% url 'horizon:settings:user:index' %}">{% trans "Settings" %}</a></li>
+       <li{% if request.horizon.dashboard.slug == "settings" and request.horizon.panel.slug == "password" %} class="active"{% endif %}><a href="{% url 'horizon:settings:password:index' %}">{% trans "Change Password" %}</a></li>
+diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html b/openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html
+new file mode 100644
+index 0000000..086cb59
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html
+@@ -0,0 +1,15 @@
++{% load url from future %}
++{% if regions.support %}
++  <li id="region_switcher" class="dropdown switcher_bar" tabindex='1'>
++    <a class="dropdown-toggle" data-toggle="dropdown">
++      {{ regions.current.name }}
++    </a>
++    <ul id="region_list" class="dropdown-menu topbar-dropdown-menu">
++      {% for region in regions.available %}
++        {% if region.name != regions.current.name %}
++          <li><a class="ajax-modal" href="{% url 'login' %}?region={{ region.endpoint|urlencode }}">{{ region.name }}</a></li>
++        {% endif %}
++      {% endfor %}
++    </ul>
++  </li>
++{% endif %}
