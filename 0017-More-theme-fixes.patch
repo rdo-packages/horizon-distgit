@@ -1,4 +1,4 @@
-From 67f3ebebcbe5d7a2698a6e5d480fb33cf9c3de99 Mon Sep 17 00:00:00 2001
+From 0a2cb3bc96629861048f820f15da1277a92fad02 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Wed, 6 May 2015 08:58:11 +0200
 Subject: [PATCH] More theme fixes
@@ -8,7 +8,8 @@ Change-Id: Ifba49e7dc6cbf9a009c02aa92d62666ecd05da93
  .../dashboards/theme/static/dashboard/scss/rhtheme.scss                | 3 +++
  openstack_dashboard/dashboards/theme/templates/_header.html            | 2 +-
  .../dashboards/theme/templates/horizon/_subnav_list.html               | 2 +-
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ openstack_dashboard/static/dashboard/scss/_variables.scss              | 2 +-
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
 index ce9fe51..51bc9f0 100755
@@ -50,3 +51,16 @@ index 1c1d70c..0200e9c 100644
            <ul class="{% if request.horizon.panel in filtered_panels %}persistent{% else %}dropdown-menu{% endif %}">
            {% for panel in filtered_panels %}
              <li {% if current == panel.slug %}class="active"{% endif %}>
+diff --git a/openstack_dashboard/static/dashboard/scss/_variables.scss b/openstack_dashboard/static/dashboard/scss/_variables.scss
+index 0349ff5..0c3b890 100644
+--- a/openstack_dashboard/static/dashboard/scss/_variables.scss
++++ b/openstack_dashboard/static/dashboard/scss/_variables.scss
+@@ -4,7 +4,7 @@ to our variables */
+ 
+ /* This variable can be used to change the web root of horizon
+ default value is already '/' */
+-$webroot: "" !default;
++$webroot: "/dashboard" !default;
+ 
+ /* Bootstrap variables overrides */
+ 

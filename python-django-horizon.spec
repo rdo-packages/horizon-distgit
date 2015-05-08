@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    3%{?milestone}%{?dist}
+Release:    4%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -129,7 +129,7 @@ Requires:   python-XStatic-Angular >= 1:1.3.7
 Requires:   python-XStatic-Angular-Mock
 Requires:   python-XStatic-Angular-Bootstrap
 Requires:   python-XStatic-D3
-Requires:   python-XStatic-Font-Awesome
+Requires:   python-XStatic-Font-Awesome >= 4.1.0.0-4
 Requires:   python-XStatic-Hogan
 Requires:   python-XStatic-JQuery-Migrate
 Requires:   python-XStatic-JQuery-TableSorter
@@ -450,6 +450,9 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri May 08 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-4
+- honor moved webroot a little better (rhbz#1218627)
+
 * Wed May 06 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-3
 - theme fixes
 
