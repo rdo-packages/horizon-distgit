@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    4%{?milestone}%{?dist}
+Release:    5%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -369,6 +369,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
 sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
 sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
+systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun
 # update systemd unit files
@@ -451,8 +452,10 @@ sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/op
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
-* Fri May 08 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-4
+* Fri May 08 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-5
+- fix region selector in -theme
 - honor moved webroot a little better (rhbz#1218627)
+- make sure, systemd service is reloaded (rhbz#1219006)
 
 * Wed May 06 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-3
 - theme fixes
