@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    5%{?milestone}%{?dist}
+Release:    6%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -453,6 +453,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri May 21 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-6
+- add AUTH_USER_MODEL reference (rhbz#1221117)
+
 * Fri May 08 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-5
 - fix region selector in -theme
 - honor moved webroot a little better (rhbz#1218627)
