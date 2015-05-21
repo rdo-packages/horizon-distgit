@@ -1,0 +1,23 @@
+From 2b20dcb80471f83cbcc1d1f02b8ae0a7c3c27492 Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Thu, 21 May 2015 18:38:07 +0200
+Subject: [PATCH] Add back reference to AUTH_USER_MODEL
+
+Change-Id: I3e335fcb6187e9e4e301ea35d0c7658fd7afe83a
+Resolves: rhbz#1221117
+---
+ openstack_dashboard/settings.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
+index 2539f6f..9120016 100755
+--- a/openstack_dashboard/settings.py
++++ b/openstack_dashboard/settings.py
+@@ -168,6 +168,7 @@ INSTALLED_APPS = [
+ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+ AUTHENTICATION_BACKENDS = ('openstack_auth.backend.KeystoneBackend',)
+ AUTHENTICATION_URLS = ['openstack_auth.urls']
++AUTH_USER_MODEL = 'openstack_auth.User'
+ MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+ 
+ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

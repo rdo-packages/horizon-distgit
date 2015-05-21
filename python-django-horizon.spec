@@ -34,6 +34,7 @@ Patch0015: 0015-Adapt-paths-for-theme-subpackage.patch
 Patch0016: 0016-Fixing-data-processing-operations-for-alternate-webr.patch
 Patch0017: 0017-More-theme-fixes.patch
 Patch0018: 0018-fix-region-selector-for-theme.patch
+Patch0019: 0019-Add-back-reference-to-AUTH_USER_MODEL.patch
 
 Source2:    openstack-dashboard-httpd-2.4.conf
 
