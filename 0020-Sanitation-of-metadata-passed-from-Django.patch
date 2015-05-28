@@ -1,0 +1,32 @@
+From 59f92637ac5bba143b70319b9ff4db217b2eecf6 Mon Sep 17 00:00:00 2001
+From: Thai Tran <tqtran@us.ibm.com>
+Date: Fri, 1 May 2015 10:25:29 -0700
+Subject: [PATCH] Sanitation of metadata passed from Django
+
+We need to escape HTML in metadata passed from Django, which
+can lead to security issues. Refer to the bug for more details.
+
+Co-Authored-By: Szymon Wroblewski <szymon.wroblewski@intel.com>
+Change-Id: I4821eacb0bb274befab7995f3a8f87c82d3997f5
+Closes-bug: #1449260
+(cherry picked from commit e7f3e0880f4e311c768c413e43317674cb234515)
+(cherry picked from commit 30dde700701040d0d405e7e759a3d73e3b97bf71)
+---
+ horizon/templates/horizon/common/_modal_form_update_metadata.html | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/horizon/templates/horizon/common/_modal_form_update_metadata.html b/horizon/templates/horizon/common/_modal_form_update_metadata.html
+index 1c8e1c9..1123247 100644
+--- a/horizon/templates/horizon/common/_modal_form_update_metadata.html
++++ b/horizon/templates/horizon/common/_modal_form_update_metadata.html
+@@ -11,8 +11,8 @@
+                     existing="existing"
+                     model="tree"></hz-metadata-tree>
+   <script type="text/javascript">
+-    var existing_metadata = {{ existing_metadata|safe }};
+-    var available_metadata = {{ available_metadata|safe }};
++    var existing_metadata = JSON.parse('{{ existing_metadata|escapejs }}');
++    var available_metadata = JSON.parse('{{ available_metadata|escapejs }}');
+   </script>
+ {% endblock %}
+ 

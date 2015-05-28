@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    6%{?milestone}%{?dist}
+Release:    7%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -35,6 +35,7 @@ Patch0016: 0016-Fixing-data-processing-operations-for-alternate-webr.patch
 Patch0017: 0017-More-theme-fixes.patch
 Patch0018: 0018-fix-region-selector-for-theme.patch
 Patch0019: 0019-Add-back-reference-to-AUTH_USER_MODEL.patch
+Patch0020: 0020-Sanitation-of-metadata-passed-from-Django.patch
 
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -453,7 +454,10 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
-* Fri May 21 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-6
+* Thu May 28 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-7
+- CVE-2015-3988 python-django-horizon: persistent XSS in Horizon metadata
+
+* Thu May 21 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-6
 - add AUTH_USER_MODEL reference (rhbz#1221117)
 
 * Fri May 08 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-5
