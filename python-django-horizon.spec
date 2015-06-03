@@ -356,6 +356,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/horizon/test
 %{python_sitelib}/horizon/utils
 %{python_sitelib}/horizon/workflows
+%{python_sitelib}/horizon/karma.conf.js
 %{python_sitelib}/*.egg-info
 
 %files -n openstack-dashboard -f dashboard.lang
@@ -374,6 +375,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 #%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
+%{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
 %{_datadir}/openstack-dashboard/openstack_dashboard/openstack
