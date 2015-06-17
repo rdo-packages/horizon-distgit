@@ -128,6 +128,7 @@ Requires:   python-oslo-config
 Requires:   python-oslo-i18n
 Requires:   python-oslo-serialization
 Requires:   python-oslo-utils
+Requires:   python-oslo-policy
 Requires:   python-babel
 Requires:   python-pint
 
@@ -171,6 +172,7 @@ BuildRequires: python-oslo-config
 BuildRequires: python-oslo-i18n
 BuildRequires: python-oslo-serialization
 BuildRequires: python-oslo-utils
+BuildRequires: python-oslo-policy
 BuildRequires: python-babel
 BuildRequires: python-pint
 
@@ -378,7 +380,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
-%{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/templatetags
