@@ -7,7 +7,7 @@
 
 Name:       python-django-horizon
 Version:    2015.1.0
-Release:    7%{?milestone}%{?dist}
+Release:    8%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -454,6 +454,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2015.1.0-8
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Thu May 28 2015 Matthias Runge <mrunge@redhat.com> - 2015.1.0-7
 - CVE-2015-3988 python-django-horizon: persistent XSS in Horizon metadata
 
