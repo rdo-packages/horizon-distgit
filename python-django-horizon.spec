@@ -1,8 +1,11 @@
 %global release_name kilo
 
 Name:       python-django-horizon
-Version:    2015.1
-Release:    0.1%{?dist}
+# Liberty semver reset
+# https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
+Epoch:      1
+Version:    XXX
+Release:    XXX
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -60,7 +63,7 @@ BuildRequires:   python-anyjson
 BuildRequires:   python-iso8601
 
 # additional provides to be consistent with other django packages
-Provides: django-horizon = %{version}-%{release}
+Provides: django-horizon = %{epoch}:%{version}-%{release}
 
 %description
 Horizon is a Django application for providing Openstack UI components.
@@ -76,7 +79,7 @@ Group:      Applications/System
 
 Requires:   httpd
 Requires:   mod_wsgi
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{epoch}:%{version}-%{release}
 Requires:   python-django-openstack-auth >= 1.1.7
 Requires:   python-django-compressor >= 1.4
 Requires:   python-django-appconf
@@ -190,7 +193,7 @@ site.
 Summary:    Documentation for Django Horizon
 Group:      Documentation
 
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{epoch}:%{version}-%{release}
 BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
@@ -211,7 +214,7 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %package -n openstack-dashboard-theme
 Summary: OpenStack web user interface reference implementation theme module
-Requires: openstack-dashboard = %{version}
+Requires: openstack-dashboard = %{epoch}:%{version}-%{release}
 
 %description -n openstack-dashboard-theme
 Customization module for OpenStack Dashboard to provide a branded logo.
