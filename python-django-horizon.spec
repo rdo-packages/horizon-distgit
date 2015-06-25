@@ -291,6 +291,7 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 
 # get it ready for compressing later in puppet-horizon
 %{__python} manage.py collectstatic --noinput
+%{__python} manage.py compress --force
 
 
 # build docs
