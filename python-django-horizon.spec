@@ -371,6 +371,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
+%{_datadir}/openstack-dashboard/openstack_dashboard/contrib
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
