@@ -399,6 +399,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??/LC_MESSAGES
 %{_datadir}/openstack-dashboard/openstack_dashboard/locale/*.pot
+%{_datadir}/openstack-dashboard/openstack_dashboard/.eslintrc
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
