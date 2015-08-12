@@ -121,6 +121,7 @@ Requires:   python-XStatic-Bootstrap-SCSS
 Requires:   python-XStatic-termjs
 Requires:   python-XStatic-smart-table
 Requires:   python-XStatic-Angular-lrdragndrop
+Requires:   python-XStatic-Angular-Gettext
 Requires:   python-XStatic-Magic-Search
 
 Requires:   python-scss >= 1.2.1
@@ -167,6 +168,7 @@ BuildRequires: python-XStatic-termjs
 BuildRequires: python-XStatic-smart-table
 BuildRequires: python-XStatic-Angular-lrdragndrop
 BuildRequires: python-XStatic-Magic-Search
+BuildRequires: python-XStatic-Angular-Gettext
 # bootstrap-scss requires at least python-scss >= 1.2.1
 BuildRequires: python-scss >= 1.2.1
 BuildRequires: fontawesome-fonts-web >= 4.1.0
@@ -376,18 +378,17 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
-%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
-#%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 %{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/templatetags
+%{_datadir}/openstack-dashboard/openstack_dashboard/themes
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/utils
