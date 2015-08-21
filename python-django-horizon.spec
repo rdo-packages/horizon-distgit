@@ -16,38 +16,14 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    http://launchpad.net/%{service}/%{release_name}/%{version}/+download/%{service}-%{upstream_version}.tar.gz
 
-Patch0001: 0001-Bump-pre-release-to-2015.1.1.patch
-Patch0002: 0002-Fix-exponentially-growing-AJAX-updates-for-table-row.patch
-Patch0003: 0003-LBaas-v1-Associate-Monitor-to-Pool-Fails.patch
-Patch0004: 0004-Inherit-environment-variables-for-tests-that-use-nod.patch
-Patch0005: 0005-Sanitation-of-metadata-passed-from-Django.patch
-Patch0006: 0006-Fix-TemplateDoesNotExist-at-manage-unmanage-volumes.patch
-Patch0007: 0007-I-O-error-uploading-image.patch
-Patch0008: 0008-Don-t-pass-read-only-attributes-on-neutron-update.patch
-Patch0009: 0009-User-should-be-able-to-update-allocation-pool-values.patch
-Patch0010: 0010-Fixing-data-processing-operations-for-alternate-webr.patch
-Patch0011: 0011-Prevent-multiple-form-submission-on-table-row-action.patch
-Patch0012: 0012-Escape-the-description-param-from-heat-template.patch
-Patch0013: 0013-corrected-the-create-volume-from-snapshot.patch
-Patch0014: 0014-Handle-errors-during-glance-image-updates-correctly.patch
-Patch0015: 0015-Skip-test_-floatingip-image_register_unregister-crea.patch
-Patch0016: 0016-Wait-until-the-image-is-registered-in-Sahara-image-t.patch
-Patch0017: 0017-Fix-date-pickers-in-metering-modal.patch
-Patch0018: 0018-fix-delete-action-always-cause-error.patch
-Patch0019: 0019-changing-email-from-user-list-deletes-user-passwd.patch
-Patch0020: 0020-Fix-Create-User-form-s-fields-sorting-for-Django-1.7.patch
-Patch0021: 0021-Fix-mock-issues-found-due-to-new-mock-release.patch
-Patch0022: 0022-Add-a-conditional-judgement-to-avoid-invalid-dict-in.patch
-Patch0023: 0023-Removing-Network-Profile-support-in-stable-kilo.patch
-Patch0024: 0024-Updated-from-global-requirements.patch
-Patch0025: 0025-disable-debug-move-web-root.patch
-Patch0026: 0026-remove-runtime-dep-to-python-pbr.patch
-Patch0027: 0027-Add-a-customization-module-based-on-RHOS.patch
-Patch0028: 0028-Configurable-token-hashing.patch
-Patch0029: 0029-Do-not-call-_assertNotContains-override-in-Django-ne.patch
-Patch0030: 0030-Use-charset-instead-of-_charset-for-dj18-response.patch
-Patch0031: 0031-Don-t-escape-request.get_full_path-in-Django1.8.patch
-Patch0032: 0032-Remove-un-related-nova-quota-in-test-data.patch
+Patch0001: 0001-disable-debug-move-web-root.patch
+Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
+Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
+Patch0004: 0004-Configurable-token-hashing.patch
+Patch0005: 0005-Do-not-call-_assertNotContains-override-in-Django-ne.patch
+Patch0006: 0006-Use-charset-instead-of-_charset-for-dj18-response.patch
+Patch0007: 0007-Don-t-escape-request.get_full_path-in-Django1.8.patch
+Patch0008: 0008-Remove-un-related-nova-quota-in-test-data.patch
 
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -376,7 +352,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %check
 # don't run tests on rhel
 %if 0%{?rhel} == 0
-# since rawhide has django-1.7 now, tests fail
+# currently fails due to python-oslo-serialization issue
 #./run_tests.sh -N -P
 %endif
 

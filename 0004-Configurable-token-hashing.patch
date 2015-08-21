@@ -1,0 +1,62 @@
+From bc0f89532a2a6a791d4917b887becfdcbff77e9b Mon Sep 17 00:00:00 2001
+From: Brad Pokorny <brad_pokorny@symantec.com>
+Date: Tue, 28 Jul 2015 16:44:00 -0700
+Subject: [PATCH] Configurable token hashing
+
+Provide info on the option for operators to turn off token
+hashing to be performed by horizon.
+
+In some deployments where PKI token format is used for keystone,
+token hashing causes 401 errors in horizon.
+
+Depends-On: I187b1486db2e453fd49298e1478e30abe97e54fe
+
+Change-Id: I5ebc07850b14b2f2f52fc659831d6cd4aa9f83c3
+Closes-Bug: #1473588
+(cherry picked from commit 48e651d05cbe9366884868c5331d49a501945adc)
+---
+ doc/source/topics/settings.rst                      | 13 +++++++++++++
+ openstack_dashboard/local/local_settings.py.example |  6 ++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/doc/source/topics/settings.rst b/doc/source/topics/settings.rst
+index d612d2d..2c0f0a9 100755
+--- a/doc/source/topics/settings.rst
++++ b/doc/source/topics/settings.rst
+@@ -941,6 +941,19 @@ are using. Allowed values are the algorithms supported by Python's hashlib
+ library.
+ 
+ 
++``OPENSTACK_TOKEN_HASH_ENABLED``
++--------------------------------
++
++.. versionadded:: 8.0.0(Liberty)
++
++Default: ``True``
++
++Hashing tokens from Keystone keeps the Horizon session data smaller, but it
++doesn't work in some cases when using PKI tokens.  Uncomment this value and
++set it to False if using PKI tokens and there are 401 errors due to token
++hashing.
++
++
+ ``POLICY_FILES``
+ ----------------
+ 
+diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
+index 6a762bf..5b1c024 100644
+--- a/openstack_dashboard/local/local_settings.py.example
++++ b/openstack_dashboard/local/local_settings.py.example
+@@ -617,6 +617,12 @@ SECURITY_GROUP_RULES = {
+ # algorithms supported by Python's hashlib library.
+ #OPENSTACK_TOKEN_HASH_ALGORITHM = 'md5'
+ 
++# Hashing tokens from Keystone keeps the Horizon session data smaller, but it
++# doesn't work in some cases when using PKI tokens.  Uncomment this value and
++# set it to False if using PKI tokens and there are 401 errors due to token
++# hashing.
++#OPENSTACK_TOKEN_HASH_ENABLED = True
++
+ # AngularJS requires some settings to be made available to
+ # the client side. Some settings are required by in-tree / built-in horizon
+ # features. These settings must be added to REST_API_REQUIRED_SETTINGS in the

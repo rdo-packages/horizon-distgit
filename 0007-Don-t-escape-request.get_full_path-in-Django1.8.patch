@@ -1,0 +1,89 @@
+From fc144ca8d9dbeed9bc89a30b0731b921ea8c6348 Mon Sep 17 00:00:00 2001
+From: lin-hua-cheng <os.lcheng@gmail.com>
+Date: Sun, 9 Aug 2015 00:52:31 -0700
+Subject: [PATCH] Don't escape request.get_full_path() in Django1.8
+
+In Django1.8, request.get_full_path() method now escapes
+unsafe characters.
+
+Disable the urlquote for containers table when running
+in Django1.8.
+
+Closes-Bug: #1482958
+Partially Implements: blueprint django18
+
+Change-Id: I4b2051942618ec3b9262a26e2027f17ecb589eb8
+(cherry picked from commit 7b4b527dc4042f10d51f2d93dc1707ffefa6902a)
+---
+ .../dashboards/project/containers/tables.py           | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/project/containers/tables.py b/openstack_dashboard/dashboards/project/containers/tables.py
+index f58da71..98e42ac 100644
+--- a/openstack_dashboard/dashboards/project/containers/tables.py
++++ b/openstack_dashboard/dashboards/project/containers/tables.py
+@@ -13,6 +13,7 @@
+ #    under the License.
+ import logging
+ 
++import django
+ from django import shortcuts
+ from django import template
+ from django.template import defaultfilters as filters
+@@ -35,6 +36,14 @@ LOG = logging.getLogger(__name__)
+ LOADING_IMAGE = '<img src="/static/dashboard/img/loading.gif" />'
+ 
+ 
++def _escape_full_url(url):
++    # NOTE (lhcheng): In Django 1.8, HttpRequest.get_full_path()
++    # method now escapes unsafe characters
++    if django.VERSION < (1, 8):
++        return http.urlquote(url)
++    return url
++
++
+ class ViewContainer(tables.LinkAction):
+     name = "view"
+     verbose_name = _("View Details")
+@@ -282,7 +291,7 @@ class ContainersTable(tables.DataTable):
+ 
+     def get_absolute_url(self):
+         url = super(ContainersTable, self).get_absolute_url()
+-        return http.urlquote(url)
++        return _escape_full_url(url)
+ 
+     def get_full_url(self):
+         """Returns the encoded absolute URL path with its query string.
+@@ -293,7 +302,7 @@ class ContainersTable(tables.DataTable):
+ 
+         """
+         url = super(ContainersTable, self).get_full_url()
+-        return http.urlquote(url)
++        return _escape_full_url(url)
+ 
+ 
+ class ViewObject(tables.LinkAction):
+@@ -351,7 +360,7 @@ class DeleteObject(tables.DeleteAction):
+ 
+     def get_success_url(self, request):
+         url = super(DeleteObject, self).get_success_url(request)
+-        return http.urlquote(url)
++        return _escape_full_url(url)
+ 
+ 
+ class DeleteMultipleObjects(DeleteObject):
+@@ -453,7 +462,7 @@ class ObjectsTable(tables.DataTable):
+ 
+     def get_absolute_url(self):
+         url = super(ObjectsTable, self).get_absolute_url()
+-        return http.urlquote(url)
++        return _escape_full_url(url)
+ 
+     def get_full_url(self):
+         """Returns the encoded absolute URL path with its query string.
+@@ -464,4 +473,4 @@ class ObjectsTable(tables.DataTable):
+ 
+         """
+         url = super(ObjectsTable, self).get_full_url()
+-        return http.urlquote(url)
++        return _escape_full_url(url)

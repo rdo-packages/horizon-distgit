@@ -1,0 +1,47 @@
+From a1f9fa48f31f98a33ffb01c4d5188a0fd0ee17a8 Mon Sep 17 00:00:00 2001
+From: lin-hua-cheng <os.lcheng@gmail.com>
+Date: Thu, 30 Jul 2015 22:46:01 -0700
+Subject: [PATCH] Use charset instead of _charset for dj18 response
+
+In django-1.8, the charset attribute has been added.
+Trying to access _charset returns None in django-1.8.
+
+Partially Implements: blueprint django18
+
+Change-Id: Id80d5c16aa41706bfe5dfdd026c168ed64289954
+(cherry picked from commit ef9cba880e991510d2a944fae33bc501844c00f9)
+---
+ openstack_dashboard/dashboards/project/instances/tests.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/openstack_dashboard/dashboards/project/instances/tests.py b/openstack_dashboard/dashboards/project/instances/tests.py
+index ca9adc4..15681eb 100644
+--- a/openstack_dashboard/dashboards/project/instances/tests.py
++++ b/openstack_dashboard/dashboards/project/instances/tests.py
+@@ -19,6 +19,7 @@
+ import json
+ import sys
+ 
++import django
+ from django.conf import settings
+ from django.core.urlresolvers import reverse
+ from django.forms import widgets
+@@ -3250,13 +3251,17 @@ class InstanceTests(helpers.TestCase):
+                                  "Quota exceeded")
+ 
+         res = self.client.get(INDEX_URL)
++        if django.VERSION < (1, 8, 0):
++            resp_charset = res._charset
++        else:
++            resp_charset = res.charset
+         expected_string = encoding.smart_str(u'''
+             <a href="%s" title="%s" class="%s disabled"
+             data-update-url=
+             "/project/instances/?action=launch&amp;table=instances"
+             id="instances__action_launch">
+             <span class="fa fa-cloud-upload"></span>%s</a>
+-            ''' % (url, link_name, " ".join(classes), link_name), res._charset)
++            ''' % (url, link_name, " ".join(classes), link_name), resp_charset)
+ 
+         self.assertContains(res, expected_string, html=True,
+                             msg_prefix="The launch button is not disabled")

@@ -1,0 +1,33 @@
+From ba817e479b6ec1193e390e8c88122d6dfe426911 Mon Sep 17 00:00:00 2001
+From: lin-hua-cheng <os.lcheng@gmail.com>
+Date: Thu, 6 Aug 2015 23:26:24 -0700
+Subject: [PATCH] Remove un-related nova quota in test data
+
+volumes and gigabytes are cinder quotas, it should be removed
+from nova test data.
+
+This also fixes test issue on Defaults panel when running in
+Django1.8 because of stricter checking in assertQuerysetequal().
+
+Closes-Bug: #1482509
+Partially Implements: blueprint django18
+
+Change-Id: I9d5d1388e4b8a3e02a9340d1c84907f0ba8aa510
+(cherry picked from commit bf1a2629f6d07e54b8840b9527d11d61eda6fa22)
+---
+ openstack_dashboard/test/test_data/nova_data.py | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/openstack_dashboard/test/test_data/nova_data.py b/openstack_dashboard/test/test_data/nova_data.py
+index 7e55834..e035b07 100644
+--- a/openstack_dashboard/test/test_data/nova_data.py
++++ b/openstack_dashboard/test/test_data/nova_data.py
+@@ -396,8 +396,6 @@ def data(TEST):
+     # Quota Sets
+     quota_data = dict(metadata_items='1',
+                       injected_file_content_bytes='1',
+-                      volumes='1',
+-                      gigabytes='1000',
+                       ram=10000,
+                       floating_ips='1',
+                       fixed_ips='10',
