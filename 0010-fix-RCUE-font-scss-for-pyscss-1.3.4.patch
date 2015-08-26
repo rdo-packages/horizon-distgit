@@ -1,0 +1,91 @@
+From 812729c47d9f7ce9d8a1eb87f0ddb46d20ff239d Mon Sep 17 00:00:00 2001
+From: Matthias Runge <mrunge@redhat.com>
+Date: Wed, 26 Aug 2015 13:33:03 +0200
+Subject: [PATCH] fix RCUE font scss for pyscss 1.3.4
+
+Change-Id: I63c5f7057595a6293c5575d34e5bfbfc50a31ebc
+---
+ .../theme/static/dashboard/scss/rcue/_fonts.scss   | 52 +++++++++++-----------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss
+index 78f585b..c2c8931 100755
+--- a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss
++++ b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss
+@@ -4,49 +4,49 @@
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 300;
+-  src: '#{$font-path}/OpenSans-Light-webfont.eot';
+-  src: '#{$font-path}/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
+-       '#{$font-path}/OpenSans-Light-webfont.woff') format('woff'),
+-       '#{$font-path}/OpenSans-Light-webfont.ttf') format('truetype'),
+-       '#{$font-path}/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
++  src: ('#{$font-path}/OpenSans-Light-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Light-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Light-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
+ }
+ @font-face {
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 400;
+-  src: '#{$font-path}/OpenSans-Regular-webfont.eot';
+-  src: '#{$font-path}/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+-       '#{$font-path}/OpenSans-Regular-webfont.woff') format('woff'),
+-       '#{$font-path}/OpenSans-Regular-webfont.ttf') format('truetype'),
+-       '#{$font-path}/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
++  src: ('#{$font-path}/OpenSans-Regular-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Regular-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Regular-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+ }
+ @font-face {
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 600;
+-  src: '#{$font-path}/OpenSans-Semibold-webfont.eot';
+-  src: '#{$font-path}/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
+-       '#{$font-path}/OpenSans-Semibold-webfont.woff') format('woff'),
+-       '#{$font-path}/OpenSans-Semibold-webfont.ttf') format('truetype'),
+-       '#{$font-path}/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
++  src: ('#{$font-path}/OpenSans-Semibold-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Semibold-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Semibold-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
+ }
+ @font-face {
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 700;
+-  src: '#{$font-path}/OpenSans-Bold-webfont.eot';
+-  src: '#{$font-path}/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+-       '#{$font-path}/OpenSans-Bold-webfont.woff') format('woff'),
+-       '#{$font-path}/OpenSans-Bold-webfont.ttf') format('truetype'),
+-       '#{$font-path}/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
++  src: ('#{$font-path}/OpenSans-Bold-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Bold-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Bold-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
+ }
+ @font-face {
+   font-family: 'Open Sans';
+   font-style: normal;
+   font-weight: 800;
+-  src: '#{$font-path}/OpenSans-ExtraBold-webfont.eot';
+-  src: '#{$font-path}/OpenSans-ExtraBold-webfont.eot?#iefix') format('embedded-opentype'),
+-       '#{$font-path}/OpenSans-ExtraBold-webfont.woff') format('woff'),
+-       '#{$font-path}/OpenSans-ExtraBold-webfont.ttf') format('truetype'),
+-       '#{$font-path}/OpenSans-ExtraBold-webfont.svg#OpenSansExtrabold') format('svg');
+-}
+\ No newline at end of file
++  src: ('#{$font-path}/OpenSans-ExtraBold-webfont.eot');
++  src: ('#{$font-path}/OpenSans-ExtraBold-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-ExtraBold-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-ExtraBold-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-ExtraBold-webfont.svg#OpenSansExtrabold') format('svg');
++}

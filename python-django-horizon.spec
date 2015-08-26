@@ -24,6 +24,8 @@ Patch0005: 0005-Do-not-call-_assertNotContains-override-in-Django-ne.patch
 Patch0006: 0006-Use-charset-instead-of-_charset-for-dj18-response.patch
 Patch0007: 0007-Don-t-escape-request.get_full_path-in-Django1.8.patch
 Patch0008: 0008-Remove-un-related-nova-quota-in-test-data.patch
+Patch0009: 0009-Compatibility-fix-for-pyscss-1.3.4.patch
+Patch0010: 0010-fix-RCUE-font-scss-for-pyscss-1.3.4.patch
 
 Source2:    openstack-dashboard-httpd-2.4.conf
 
