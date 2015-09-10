@@ -123,6 +123,9 @@ Requires:   python-XStatic-smart-table
 Requires:   python-XStatic-Angular-lrdragndrop
 Requires:   python-XStatic-Angular-Gettext
 Requires:   python-XStatic-Magic-Search
+Requires:   python-XStatic-bootswatch
+Requires:   python-XStatic-roboto-fontface
+Requires:   python-XStatic-mdi
 
 Requires:   python-scss >= 1.2.1
 Requires:   fontawesome-fonts-web >= 4.1.0
@@ -169,6 +172,9 @@ BuildRequires: python-XStatic-smart-table
 BuildRequires: python-XStatic-Angular-lrdragndrop
 BuildRequires: python-XStatic-Magic-Search
 BuildRequires: python-XStatic-Angular-Gettext
+BuildRequires: python-XStatic-bootswatch
+BuildRequires: python-XStatic-roboto-fontface
+BuildRequires: python-XStatic-mdi
 # bootstrap-scss requires at least python-scss >= 1.2.1
 BuildRequires: python-scss >= 1.2.1
 BuildRequires: fontawesome-fonts-web >= 4.1.0
@@ -261,6 +267,7 @@ ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # get it ready for compressing later in puppet-horizon
 %{__python} manage.py collectstatic --noinput --clear
+%{__python} manage.py compress --force
 
 
 # build docs
