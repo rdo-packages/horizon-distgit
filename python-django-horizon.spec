@@ -99,7 +99,7 @@ Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
 Requires:   python-eventlet
-Requires:   python-django-pyscss >= 1.0.5
+Requires:   python-django-pyscss >= 2.0.2
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular >= 1:1.3.7
@@ -128,7 +128,7 @@ Requires:   python-XStatic-bootswatch
 Requires:   python-XStatic-roboto-fontface
 Requires:   python-XStatic-mdi
 
-Requires:   python-scss >= 1.2.1
+Requires:   python-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
 
 Requires:   python-oslo-concurrency
@@ -148,7 +148,7 @@ BuildRequires: python-django-compressor >= 1.4
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
-BuildRequires: python-django-pyscss >= 1.0.5
+BuildRequires: python-django-pyscss >= 2.0.2
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
 BuildRequires: python-XStatic-Angular >= 1:1.3.7
@@ -177,7 +177,7 @@ BuildRequires: python-XStatic-bootswatch
 BuildRequires: python-XStatic-roboto-fontface
 BuildRequires: python-XStatic-mdi
 # bootstrap-scss requires at least python-scss >= 1.2.1
-BuildRequires: python-scss >= 1.2.1
+BuildRequires: python-scss >= 1.3.4
 BuildRequires: fontawesome-fonts-web >= 4.1.0
 BuildRequires: python-oslo-concurrency
 BuildRequires: python-oslo-config
