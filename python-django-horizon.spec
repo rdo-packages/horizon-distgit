@@ -1,32 +1,27 @@
-%global release_name kilo
+%global release_series liberty
+%global release_name %{?release_series}-3
 %global service horizon
+%global milestone .0b3
 
-%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 %global with_compression 1
 
 Name:       python-django-horizon
-Version:    2015.1.1
-Release:    1%{?milestone}%{?dist}
+
+# Liberty semver reset
+# https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
+Epoch:      1
+Version:    8.0.0
+Release:    0.1%{?milestone}%{?dist}
+%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://launchpad.net/%{service}/%{release_name}/%{version}/+download/%{service}-%{upstream_version}.tar.gz
-
-Patch0001: 0001-disable-debug-move-web-root.patch
-Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
-Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
-Patch0004: 0004-Configurable-token-hashing.patch
-Patch0005: 0005-Do-not-call-_assertNotContains-override-in-Django-ne.patch
-Patch0006: 0006-Use-charset-instead-of-_charset-for-dj18-response.patch
-Patch0007: 0007-Don-t-escape-request.get_full_path-in-Django1.8.patch
-Patch0008: 0008-Remove-un-related-nova-quota-in-test-data.patch
-Patch0009: 0009-Compatibility-fix-for-pyscss-1.3.4.patch
-Patch0010: 0010-fix-RCUE-font-scss-for-pyscss-1.3.4.patch
-
+# https://launchpad.net/horizon/liberty/liberty-3/+download/horizon-8.0.0.0b3.tar.gz
+Source0:    https://launchpad.net/%{service}/liberty/%{release_name}/+download/%{service}-%{upstream_version}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # systemd snippet to collect static files and compress on httpd restart
@@ -37,6 +32,17 @@ Source4:    openstack-dashboard-httpd-logging.conf
 
 # logrotate config
 Source5:    python-django-horizon-logrotate.conf
+
+
+#Patch0001: 0001-disable-debug-move-web-root.patch
+#Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
+#Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
+#Patch0004: 0004-Configurable-token-hashing.patch
+#Patch0005: 0005-Do-not-call-_assertNotContains-override-in-Django-ne.patch
+#Patch0006: 0006-Use-charset-instead-of-_charset-for-dj18-response.patch
+#Patch0009: 0009-Compatibility-fix-for-pyscss-1.3.4.patch
+#Patch0010: 0010-fix-RCUE-font-scss-for-pyscss-1.3.4.patch
+Patch0011: 0010-Improving-find-static-robustness.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -50,7 +56,7 @@ Requires:   python-django
 
 Requires:   pytz
 Requires:   python-lockfile
-Requires:   python-six >= 1.7.0
+Requires:   python-six >= 1.9.0
 Requires:   python-pbr
 
 BuildRequires: python2-devel
@@ -76,9 +82,8 @@ BuildRequires:   python-kombu
 BuildRequires:   python-anyjson
 BuildRequires:   python-iso8601
 
-
 # additional provides to be consistent with other django packages
-Provides: django-horizon = %{version}-%{release}
+Provides: django-horizon = %{epoch}:%{version}-%{release}
 
 %description
 Horizon is a Django application for providing Openstack UI components.
@@ -94,13 +99,11 @@ Group:      Applications/System
 
 Requires:   httpd
 Requires:   mod_wsgi
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{epoch}:%{version}-%{release}
 Requires:   python-django-openstack-auth >= 1.1.7
 Requires:   python-django-compressor >= 1.4
 Requires:   python-django-appconf
-%if %{?with_compression} > 0
 Requires:   python-lesscpy
-%endif
 
 Requires:   python-glanceclient
 Requires:   python-keystoneclient >= 0.7.0
@@ -139,6 +142,11 @@ Requires:   python-XStatic-termjs
 Requires:   python-XStatic-smart-table
 Requires:   python-XStatic-Angular-lrdragndrop
 Requires:   python-XStatic-Magic-Search
+Requires:   python-XStatic-Angular-Gettext
+Requires:   python-XStatic-Magic-Search
+Requires:   python-XStatic-bootswatch
+Requires:   python-XStatic-roboto-fontface
+Requires:   python-XStatic-mdi
 
 Requires:   python-scss >= 1.2.1
 Requires:   fontawesome-fonts-web >= 4.1.0
@@ -148,6 +156,7 @@ Requires:   python-oslo-config
 Requires:   python-oslo-i18n
 Requires:   python-oslo-serialization
 Requires:   python-oslo-utils
+Requires:   python-oslo-policy
 Requires:   python-babel
 Requires:   python-pint
 
@@ -158,7 +167,6 @@ BuildRequires: python-django-openstack-auth >= 1.2.0
 BuildRequires: python-django-compressor >= 1.4
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
-BuildRequires: python-oslo-config >= 1.9.3
 BuildRequires: python-django-pyscss >= 1.0.5
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
@@ -183,11 +191,15 @@ BuildRequires: python-XStatic-termjs
 BuildRequires: python-XStatic-smart-table
 BuildRequires: python-XStatic-Angular-lrdragndrop
 BuildRequires: python-XStatic-Magic-Search
+BuildRequires: python-XStatic-Angular-Gettext
+BuildRequires: python-XStatic-bootswatch
+BuildRequires: python-XStatic-roboto-fontface
+BuildRequires: python-XStatic-mdi
 # bootstrap-scss requires at least python-scss >= 1.2.1
 BuildRequires: python-scss >= 1.2.1
 BuildRequires: fontawesome-fonts-web >= 4.1.0
 BuildRequires: python-oslo-concurrency
-BuildRequires: python-oslo-config
+BuildRequires: python-oslo-config >= 1.9.3
 BuildRequires: python-oslo-i18n
 BuildRequires: python-oslo-serialization
 BuildRequires: python-oslo-utils >= 1.4.0
@@ -208,7 +220,7 @@ site.
 Summary:    Documentation for Django Horizon
 Group:      Documentation
 
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{epoch}:%{version}-%{release}
 BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
@@ -229,16 +241,13 @@ Documentation for the Django Horizon application for talking with Openstack
 
 %package -n openstack-dashboard-theme
 Summary: OpenStack web user interface reference implementation theme module
-Requires: openstack-dashboard = %{version}
+Requires: openstack-dashboard = %{epoch}:%{version}-%{release}
 
 %description -n openstack-dashboard-theme
 Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
 %setup -q -n horizon-%{upstream_version}
-
-# remove precompiled egg-info
-rm -rf horizon.egg-info
 
 # Use git to manage patches.
 # http://rwmj.wordpress.com/2011/08/09/nice-rpm-git-patch-management-trick/
@@ -260,13 +269,19 @@ rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 # drop config snippet
 cp -p %{SOURCE4} .
 
-%if 0%{?with_compression} > 0
+# customize default settings
+# WAS [PATCH] disable debug, move web root
+sed -i "/^DEBUG =.*/c\DEBUG = False" openstack_dashboard/local/local_settings.py.example
+sed -i "/^WEBROOT =.*/c\WEBROOT = '/dashboard/'" openstack_dashboard/local/local_settings.py.example
+sed -i "/^.*ALLOWED_HOSTS =.*/c\ALLOWED_HOSTS = ['horizon.example.com', 'localhost']" openstack_dashboard/local/local_settings.py.example
+sed -i "/^.*LOCAL_PATH =.*/c\LOCAL_PATH = '/tmp'" openstack_dashboard/local/local_settings.py.example
+sed -i "/^.*POLICY_FILES_PATH =.*/c\POLICY_FILES_PATH = '/etc/openstack-dashboard'" openstack_dashboard/local/local_settings.py.example
+
+sed -i "/^BIN_DIR = .*/c\BIN_DIR = '/usr/bin'" openstack_dashboard/settings.py
+sed -i "/^COMPRESS_PARSER = .*/a COMPRESS_OFFLINE = True" openstack_dashboard/settings.py
+
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
-%else
-# set COMPRESS_OFFLINE=False
-sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard/settings.py
-%endif
 
 
 
@@ -274,6 +289,14 @@ sed -i 's:COMPRESS_OFFLINE = True:COMPRESS_OFFLINE = False:' openstack_dashboard
 # compile message strings
 cd horizon && django-admin compilemessages && cd ..
 cd openstack_dashboard && django-admin compilemessages && cd ..
+# Dist tarball is missing .mo files so they're not listed in distributed egg metadata.
+# Removing egg-info and letting PBR regenerate it was working around that issue
+# but PBR cannot regenerate complete SOURCES.txt so some other files wont't get installed.
+# Further reading why not remove upstream egg metadata:
+# https://github.com/emonty/python-oslo-messaging/commit/f632684eb2d582253601e8da7ffdb8e55396e924
+# https://fedorahosted.org/fpc/ticket/488
+echo >> horizon.egg-info/SOURCES.txt
+ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 %{__python} setup.py build
 
 # compress css, js etc.
@@ -303,6 +326,10 @@ install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
 
+# create directory for systemd snippet
+mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
+cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
+
 
 # create directory for systemd snippet
 mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
@@ -330,9 +357,7 @@ mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %
 grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
 grep "\/site-packages\/horizon" django.lang > horizon.lang
 
-%if 0%{?rhel} > 6 || 0%{?fedora} >= 16
 cat djangojs.lang >> horizon.lang
-%endif
 
 # copy static files to %{_datadir}/openstack-dashboard/static
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
@@ -362,6 +387,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
 sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
 sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
+# reload systemd unit files
 systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun
@@ -377,6 +403,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/horizon/conf
 %{python_sitelib}/horizon/contrib
 %{python_sitelib}/horizon/forms
+%{python_sitelib}/horizon/locale/*.pot
 %{python_sitelib}/horizon/management
 %{python_sitelib}/horizon/static
 %{python_sitelib}/horizon/tables
@@ -386,6 +413,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/horizon/test
 %{python_sitelib}/horizon/utils
 %{python_sitelib}/horizon/workflows
+%{python_sitelib}/horizon/karma.conf.js
 %{python_sitelib}/*.egg-info
 
 %files -n openstack-dashboard -f dashboard.lang
@@ -394,22 +422,22 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/*.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/api
+%{_datadir}/openstack-dashboard/openstack_dashboard/contrib
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/admin
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/identity
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
-%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/router
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
-%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
+%{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
-%{_datadir}/openstack-dashboard/openstack_dashboard/openstack
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
 %{_datadir}/openstack-dashboard/openstack_dashboard/templatetags
+%{_datadir}/openstack-dashboard/openstack_dashboard/themes
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/utils
@@ -420,6 +448,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??/LC_MESSAGES
+%{_datadir}/openstack-dashboard/openstack_dashboard/locale/*.pot
+%{_datadir}/openstack-dashboard/openstack_dashboard/.eslintrc
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
@@ -434,6 +464,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
 %{_sysconfdir}/logrotate.d/openstack-dashboard
+%config(noreplace) %{_sysconfdir}/logrotate.d/openstack-dashboard
 %attr(755,root,root) %dir %{_unitdir}/httpd.service.d
 %config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
@@ -441,10 +472,13 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %doc html
 
 %files -n openstack-dashboard-theme
-%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
-%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
+#%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
+#%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Sep 17 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.1.0b3
+- liberty pre-release
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2015.1.0-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
