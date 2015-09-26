@@ -53,7 +53,7 @@ BuildRequires: gettext
 %if 0%{?rhel} == 0
 BuildRequires:   python-django-nose >= 1.2
 BuildRequires:   python-coverage
-BuildRequires:   python-mox
+BuildRequires:   python-mox3
 BuildRequires:   python-nose-exclude
 BuildRequires:   python-nose
 BuildRequires:   python-selenium
