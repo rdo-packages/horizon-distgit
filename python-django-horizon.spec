@@ -1,7 +1,7 @@
 %global release_series liberty
 %global release_name %{?release_series}-3
 %global service horizon
-%global milestone .0b3
+%global milestone .0rc1
 
 
 %global with_compression 1
@@ -34,6 +34,8 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 
+#
+# patches_base=8.0.0.0rc1
 #Patch0001: 0001-disable-debug-move-web-root.patch
 #Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 #Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
