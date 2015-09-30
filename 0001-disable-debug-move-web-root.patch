@@ -1,21 +1,21 @@
-From 80ca9b017587ada6c31a972af2893e39b8d7fbbe Mon Sep 17 00:00:00 2001
+From 222857f708154f60d1ba78564c2c606df7224970 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
 
 move RBAC policy files and checks to /etc/openstack-dashboard
 ---
- openstack_dashboard/local/local_settings.py.example | 11 ++++++-----
+ openstack_dashboard/local/local_settings.py.example | 16 ++++++++--------
  openstack_dashboard/settings.py                     |  3 ++-
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
-index 569cf21..6a762bf 100644
+index e53ee35..572889d 100644
 --- a/openstack_dashboard/local/local_settings.py.example
 +++ b/openstack_dashboard/local/local_settings.py.example
-@@ -4,13 +4,13 @@ from django.utils.translation import ugettext_lazy as _
- 
+@@ -7,15 +7,15 @@ from horizon.utils import secret_key
  from openstack_dashboard import exceptions
+ from openstack_dashboard.settings import HORIZON_CONFIG
  
 -DEBUG = True
 +DEBUG = False
@@ -25,11 +25,15 @@ index 569cf21..6a762bf 100644
  # WEBROOT is the location relative to Webserver root
  # should end with a slash.
 -WEBROOT = '/'
+-#LOGIN_URL = WEBROOT + 'auth/login/'
+-#LOGOUT_URL = WEBROOT + 'auth/logout/'
 +WEBROOT = '/dashboard/'
- # LOGIN_URL = WEBROOT + 'auth/login/'
- # LOGOUT_URL = WEBROOT + 'auth/logout/'
++# LOGIN_URL = WEBROOT + 'auth/login/'
++# LOGOUT_URL = WEBROOT + 'auth/logout/'
  #
-@@ -25,7 +25,7 @@ WEBROOT = '/'
+ # LOGIN_REDIRECT_URL can be used as an alternative for
+ # HORIZON_CONFIG.user_home, if user_home is not set.
+@@ -27,7 +27,7 @@ WEBROOT = '/'
  # with the list of host/domain names that the application can serve.
  # For more information see:
  # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
@@ -38,7 +42,7 @@ index 569cf21..6a762bf 100644
  
  # Set SSL proxy settings:
  # For Django 1.4+ pass this header from the proxy after terminating the SSL,
-@@ -101,7 +101,6 @@ HORIZON_CONFIG = {
+@@ -90,7 +90,6 @@ WEBROOT = '/'
  # including on the login form.
  #HORIZON_CONFIG["disable_password_reveal"] = False
  
@@ -46,29 +50,30 @@ index 569cf21..6a762bf 100644
  
  # Set custom secret key:
  # You can either set it to a specific value or you can let horizon generate a
-@@ -113,6 +112,7 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
- # requests routed to the same dashboard instance or you set the same SECRET_KEY
- # for all of them.
- from horizon.utils import secret_key
-+LOCAL_PATH = '/tmp'
- SECRET_KEY = secret_key.generate_or_read_from_file(
-     os.path.join(LOCAL_PATH, '.secret_key_store'))
- 
-@@ -348,7 +348,8 @@ TIME_ZONE = "UTC"
+@@ -351,8 +350,6 @@ TIME_ZONE = "UTC"
+ # OpenStack services are using to determine role based access control in the
  # target installation.
  
- # Path to directory containing policy.json files
+-# Path to directory containing policy.json files
 -#POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
+ 
+ # Map of local copy of service policy files.
+ # Please insure that your identity policy file matches the one being used on
+@@ -364,6 +361,9 @@ TIME_ZONE = "UTC"
+ # policy.v3cloudsample.json
+ # Having matching policy files on the Horizon and Keystone servers is essential
+ # for normal operation. This holds true for all services and their policy files.
 +# POLICY_FILES_PATH = os.path.join(ROOT_PATH, "conf")
 +POLICY_FILES_PATH = '/etc/openstack-dashboard'
- # Map of local copy of service policy files
++# Map of local copy of service policy files
  #POLICY_FILES = {
  #    'identity': 'keystone_policy.json',
+ #    'compute': 'nova_policy.json',
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 06c5b7b..d7d5483 100644
+index 0392340..cbcf28a 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -32,7 +32,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
+@@ -33,7 +33,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \
      '%s: %s' % (category.__name__, message)
  
  ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -77,7 +82,7 @@ index 06c5b7b..d7d5483 100644
  
  if ROOT_PATH not in sys.path:
      sys.path.append(ROOT_PATH)
-@@ -148,6 +148,7 @@ COMPRESS_ENABLED = True
+@@ -153,6 +153,7 @@ COMPRESS_ENABLED = True
  COMPRESS_OUTPUT_DIR = 'dashboard'
  COMPRESS_CSS_HASHING_METHOD = 'hash'
  COMPRESS_PARSER = 'compressor.parser.HtmlParser'

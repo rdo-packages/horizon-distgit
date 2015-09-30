@@ -36,15 +36,11 @@ Source5:    python-django-horizon-logrotate.conf
 
 #
 # patches_base=8.0.0.0rc1
-#Patch0001: 0001-disable-debug-move-web-root.patch
-#Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
-#Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
-#Patch0004: 0004-Configurable-token-hashing.patch
-#Patch0005: 0005-Do-not-call-_assertNotContains-override-in-Django-ne.patch
-#Patch0006: 0006-Use-charset-instead-of-_charset-for-dj18-response.patch
-#Patch0009: 0009-Compatibility-fix-for-pyscss-1.3.4.patch
-#Patch0010: 0010-fix-RCUE-font-scss-for-pyscss-1.3.4.patch
-Patch0011: 0010-Improving-find-static-robustness.patch
+Patch0001: 0001-disable-debug-move-web-root.patch
+Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
+Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
+Patch0004: 0004-fix-credentials-boxes-when-selecting-WebSSO.patch
+
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -474,8 +470,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %doc html
 
 %files -n openstack-dashboard-theme
-#%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
-#%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
+%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
+%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
 * Thu Sep 17 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.1.0b3

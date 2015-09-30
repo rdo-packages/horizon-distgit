@@ -1,16 +1,12 @@
-From 1ecbfd29d9001486a6ba1c0748446c668b1f3e03 Mon Sep 17 00:00:00 2001
+From 458ff877af15a20f05c6757b0dd33df63a22ead9 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
 
 Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
 ---
- .../dashboards/project/images/images/views.py      |   3 +
- .../dashboards/project/instances/views.py          |   3 +
- .../dashboards/project/networks/views.py           |   3 +
  .../dashboards/project/volumes/backups/views.py    |   4 +
  .../dashboards/project/volumes/snapshots/views.py  |   3 +
- .../dashboards/project/volumes/volumes/views.py    |   4 +
  openstack_dashboard/dashboards/theme/__init__.py   |   1 +
  openstack_dashboard/dashboards/theme/dashboard.py  |  30 ++
  .../theme/locale/ja/LC_MESSAGES/django.po          |   3 +
@@ -100,9 +96,10 @@ Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
  .../dashboards/theme/theme_index/urls.py           |   2 +
  .../dashboards/theme/theme_index/views.py          |   0
  openstack_dashboard/enabled/_99_customization.py   |   8 +
- openstack_dashboard/settings.py                    |   2 +-
- .../static/dashboard/scss/_variables.scss          |   2 +-
- 97 files changed, 4505 insertions(+), 2 deletions(-)
+ .../local/local_settings.py.example                |   1 +
+ openstack_dashboard/settings.py                    |   1 -
+ .../static/dashboard/scss/_variables.scss          |  10 +
+ 94 files changed, 4501 insertions(+), 1 deletion(-)
  create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
  create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
  create mode 100644 openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po
@@ -194,50 +191,8 @@ Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
  create mode 100644 openstack_dashboard/enabled/_99_customization.py
  mode change 100644 => 100755 openstack_dashboard/settings.py
 
-diff --git a/openstack_dashboard/dashboards/project/images/images/views.py b/openstack_dashboard/dashboards/project/images/images/views.py
-index 2bf34bd..5b5b36d 100644
---- a/openstack_dashboard/dashboards/project/images/images/views.py
-+++ b/openstack_dashboard/dashboards/project/images/images/views.py
-@@ -94,6 +94,9 @@ class DetailView(tabs.TabView):
-         context["image"] = image
-         context["url"] = self.get_redirect_url()
-         context["actions"] = table.render_row_actions(image)
-+        context["page_title"] = _("Image Details: "
-+                                  "%(image_name)s") % {'image_name':
-+                                                       image.name}
-         return context
- 
-     @staticmethod
-diff --git a/openstack_dashboard/dashboards/project/instances/views.py b/openstack_dashboard/dashboards/project/instances/views.py
-index 674e201..05ad37c 100644
---- a/openstack_dashboard/dashboards/project/instances/views.py
-+++ b/openstack_dashboard/dashboards/project/instances/views.py
-@@ -300,6 +300,9 @@ class DetailView(tabs.TabView):
-         table = project_tables.InstancesTable(self.request)
-         context["url"] = reverse(self.redirect_url)
-         context["actions"] = table.render_row_actions(instance)
-+        context["page_title"] = _("Instance Details: "
-+                                  "%(instance_name)s") % {'instance_name':
-+                                                          instance.name}
-         return context
- 
-     @memoized.memoized_method
-diff --git a/openstack_dashboard/dashboards/project/networks/views.py b/openstack_dashboard/dashboards/project/networks/views.py
-index 5dec3a8..1f4b2a9 100644
---- a/openstack_dashboard/dashboards/project/networks/views.py
-+++ b/openstack_dashboard/dashboards/project/networks/views.py
-@@ -143,6 +143,9 @@ class DetailView(tables.MultiTableView):
-         table = project_tables.NetworksTable(self.request)
-         context["url"] = self.get_redirect_url()
-         context["actions"] = table.render_row_actions(network)
-+        context["page_title"] = _("Network Details: "
-+                                  "%(network_name)s") % {'network_name':
-+                                                         network.name}
-         return context
- 
-     @staticmethod
 diff --git a/openstack_dashboard/dashboards/project/volumes/backups/views.py b/openstack_dashboard/dashboards/project/volumes/backups/views.py
-index c4f9065..09c7f47 100644
+index fcc91ed..4da1951 100644
 --- a/openstack_dashboard/dashboards/project/volumes/backups/views.py
 +++ b/openstack_dashboard/dashboards/project/volumes/backups/views.py
 @@ -60,6 +60,10 @@ class BackupDetailView(tabs.TabView):
@@ -262,21 +217,6 @@ index 6a37c5d..e6749f9 100644
 +        context["page_title"] = _("Volume Snapshot Details: "
 +                                  "%(snapshot_name)s") % {'snapshot_name':
 +                                                          snapshot.name}
-         return context
- 
-     @memoized.memoized_method
-diff --git a/openstack_dashboard/dashboards/project/volumes/volumes/views.py b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-index b5bd7fc..d52f198 100644
---- a/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-+++ b/openstack_dashboard/dashboards/project/volumes/volumes/views.py
-@@ -52,6 +52,10 @@ class DetailView(tabs.TabView):
-         context["volume"] = volume
-         context["url"] = self.get_redirect_url()
-         context["actions"] = table.render_row_actions(volume)
-+        context["page_title"] = _("Volume Details: "
-+                                  "%(volume_name)s") % {'volume_name':
-+                                                        volume.name}
-+
          return context
  
      @memoized.memoized_method
@@ -18600,7 +18540,7 @@ index 0000000..b9cbade
 +}
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss
 new file mode 100755
-index 0000000..78f585b
+index 0000000..c2c8931
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_fonts.scss
 @@ -0,0 +1,52 @@
@@ -18610,53 +18550,52 @@ index 0000000..78f585b
 +  font-family: 'Open Sans';
 +  font-style: normal;
 +  font-weight: 300;
-+  src: '#{$font-path}/OpenSans-Light-webfont.eot';
-+  src: '#{$font-path}/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
-+       '#{$font-path}/OpenSans-Light-webfont.woff') format('woff'),
-+       '#{$font-path}/OpenSans-Light-webfont.ttf') format('truetype'),
-+       '#{$font-path}/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
++  src: ('#{$font-path}/OpenSans-Light-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Light-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Light-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Light-webfont.svg#OpenSansLight') format('svg');
 +}
 +@font-face {
 +  font-family: 'Open Sans';
 +  font-style: normal;
 +  font-weight: 400;
-+  src: '#{$font-path}/OpenSans-Regular-webfont.eot';
-+  src: '#{$font-path}/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-+       '#{$font-path}/OpenSans-Regular-webfont.woff') format('woff'),
-+       '#{$font-path}/OpenSans-Regular-webfont.ttf') format('truetype'),
-+       '#{$font-path}/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
++  src: ('#{$font-path}/OpenSans-Regular-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Regular-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Regular-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
 +}
 +@font-face {
 +  font-family: 'Open Sans';
 +  font-style: normal;
 +  font-weight: 600;
-+  src: '#{$font-path}/OpenSans-Semibold-webfont.eot';
-+  src: '#{$font-path}/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
-+       '#{$font-path}/OpenSans-Semibold-webfont.woff') format('woff'),
-+       '#{$font-path}/OpenSans-Semibold-webfont.ttf') format('truetype'),
-+       '#{$font-path}/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
++  src: ('#{$font-path}/OpenSans-Semibold-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Semibold-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Semibold-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Semibold-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Semibold-webfont.svg#OpenSansSemibold') format('svg');
 +}
 +@font-face {
 +  font-family: 'Open Sans';
 +  font-style: normal;
 +  font-weight: 700;
-+  src: '#{$font-path}/OpenSans-Bold-webfont.eot';
-+  src: '#{$font-path}/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
-+       '#{$font-path}/OpenSans-Bold-webfont.woff') format('woff'),
-+       '#{$font-path}/OpenSans-Bold-webfont.ttf') format('truetype'),
-+       '#{$font-path}/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
++  src: ('#{$font-path}/OpenSans-Bold-webfont.eot');
++  src: ('#{$font-path}/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-Bold-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-Bold-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
 +}
 +@font-face {
 +  font-family: 'Open Sans';
 +  font-style: normal;
 +  font-weight: 800;
-+  src: '#{$font-path}/OpenSans-ExtraBold-webfont.eot';
-+  src: '#{$font-path}/OpenSans-ExtraBold-webfont.eot?#iefix') format('embedded-opentype'),
-+       '#{$font-path}/OpenSans-ExtraBold-webfont.woff') format('woff'),
-+       '#{$font-path}/OpenSans-ExtraBold-webfont.ttf') format('truetype'),
-+       '#{$font-path}/OpenSans-ExtraBold-webfont.svg#OpenSansExtrabold') format('svg');
++  src: ('#{$font-path}/OpenSans-ExtraBold-webfont.eot');
++  src: ('#{$font-path}/OpenSans-ExtraBold-webfont.eot?#iefix') format('embedded-opentype'),
++       ('#{$font-path}/OpenSans-ExtraBold-webfont.woff') format('woff'),
++       ('#{$font-path}/OpenSans-ExtraBold-webfont.ttf') format('truetype'),
++       ('#{$font-path}/OpenSans-ExtraBold-webfont.svg#OpenSansExtrabold') format('svg');
 +}
-\ No newline at end of file
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_icons.scss b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rcue/_icons.scss
 new file mode 100755
 index 0000000..f443db2
@@ -19936,13 +19875,25 @@ index 0000000..272bcbe
 +ADD_EXCEPTIONS = {}
 +# A list of applications to be added to INSTALLED_APPS.
 +ADD_INSTALLED_APPS = ['openstack_dashboard.dashboards.theme']
+diff --git a/openstack_dashboard/local/local_settings.py.example b/openstack_dashboard/local/local_settings.py.example
+index 572889d..1f611a6 100644
+--- a/openstack_dashboard/local/local_settings.py.example
++++ b/openstack_dashboard/local/local_settings.py.example
+@@ -90,6 +90,7 @@ ALLOWED_HOSTS = ['horizon.example.com', 'localhost']
+ # including on the login form.
+ #HORIZON_CONFIG["disable_password_reveal"] = False
+ 
++LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
+ 
+ # Set custom secret key:
+ # You can either set it to a specific value or you can let horizon generate a
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
 old mode 100644
 new mode 100755
-index d7d5483..2539f6f
+index cbcf28a..a1168d2
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
-@@ -121,7 +121,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
+@@ -126,7 +126,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
  )
  
  TEMPLATE_LOADERS = (
@@ -19950,24 +19901,24 @@ index d7d5483..2539f6f
      'django.template.loaders.app_directories.Loader',
      'horizon.loaders.TemplateLoader',
  )
-@@ -137,6 +136,7 @@ STATICFILES_FINDERS = (
- )
- 
- COMPRESS_PRECOMPILERS = (
-+    ('text/less', 'lesscpy {infile}'),
-     ('text/scss', 'django_pyscss.compressor.DjangoScssFilter'),
- )
- 
 diff --git a/openstack_dashboard/static/dashboard/scss/_variables.scss b/openstack_dashboard/static/dashboard/scss/_variables.scss
-index 0349ff5..0c3b890 100644
+index 762fa64..2ed6c08 100644
 --- a/openstack_dashboard/static/dashboard/scss/_variables.scss
 +++ b/openstack_dashboard/static/dashboard/scss/_variables.scss
-@@ -4,7 +4,7 @@ to our variables */
- 
- /* This variable can be used to change the web root of horizon
- default value is already '/' */
--$webroot: "" !default;
+@@ -6,6 +6,16 @@ to our variables */
+    settings.py and is added dynamically to the namespace through
+    horizon/utils/scss_filter.py */
+ $static_url: "/static/" !default;
++/* This variable can be used to change the web root of horizon
++default value is already '/' */
 +$webroot: "/dashboard" !default;
++
++/* Bootstrap variables overrides */
++
++$icon-font-path: "../../bootstrap/fonts/bootstrap/";
++$font-size-base: 13px;
++$modal-md: 732px;
++$gray-light: #cccccc;
  
- /* Bootstrap variables overrides */
  
+ /* Horizon Custom Variables */
