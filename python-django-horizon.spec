@@ -1,7 +1,7 @@
 %global release_series liberty
-%global release_name %{?release_series}-3
+%global release_name %{?release_series}-rc2
 %global service horizon
-%global milestone .0rc1
+%global milestone .0rc2
 
 
 %global with_compression 1
@@ -20,7 +20,7 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-# https://launchpad.net/horizon/liberty/liberty-3/+download/horizon-8.0.0.0b3.tar.gz
+# https://launchpad.net/horizon/liberty/liberty-rc2/+download/horizon-8.0.0.0b3.tar.gz
 Source0:    https://launchpad.net/%{service}/liberty/%{release_name}/+download/%{service}-%{upstream_version}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 
@@ -35,12 +35,11 @@ Source5:    python-django-horizon-logrotate.conf
 
 
 #
-# patches_base=8.0.0.0rc1
+# patches_base=8.0.0.0rc2
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
 Patch0004: 0004-fix-credentials-boxes-when-selecting-WebSSO.patch
-
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -70,7 +69,8 @@ BuildRequires: gettext
 %if 0%{?rhel} == 0
 BuildRequires:   python-django-nose >= 1.2
 BuildRequires:   python-coverage
-BuildRequires:   python-mox
+BuildRequires:   python-mox3
+BuildRequires:   python-mock
 BuildRequires:   python-nose-exclude
 BuildRequires:   python-nose
 BuildRequires:   python-selenium
@@ -462,7 +462,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
 %{_sysconfdir}/logrotate.d/openstack-dashboard
-%config(noreplace) %{_sysconfdir}/logrotate.d/openstack-dashboard
+%config(noreplace) %attr(444,root,root) %{_sysconfdir}/logrotate.d/openstack-dashboard
 %attr(755,root,root) %dir %{_unitdir}/httpd.service.d
 %config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
@@ -474,6 +474,13 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Fri Oct 09 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.1.0rc2
+- rc2
+
+* Wed Sep 30 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.1.0rc1
+- rc1
+- cherry-picking RCUE fixes
+
 * Thu Sep 17 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.1.0b3
 - liberty pre-release
 
