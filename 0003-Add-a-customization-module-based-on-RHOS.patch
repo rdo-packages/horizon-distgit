@@ -1,4 +1,4 @@
-From 458ff877af15a20f05c6757b0dd33df63a22ead9 Mon Sep 17 00:00:00 2001
+From 4787c7f43ab53b94fb5b0eef378f4179f46911af Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
@@ -19890,7 +19890,7 @@ index 572889d..1f611a6 100644
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
 old mode 100644
 new mode 100755
-index cbcf28a..a1168d2
+index 589ca81..7613c94
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -126,7 +126,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
