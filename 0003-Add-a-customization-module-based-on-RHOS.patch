@@ -1,9 +1,73 @@
-From 4787c7f43ab53b94fb5b0eef378f4179f46911af Mon Sep 17 00:00:00 2001
+From 17e15664fe96610ba3bd8c276dbd8c385ec805fb Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Thu, 14 Feb 2013 12:55:54 +0100
 Subject: [PATCH] Add a customization module based on RHOS
 
 Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
+
+fix credentials boxes when selecting WebSSO
+
+Change-Id: Id2cf2c9ef1e0232e5b4c8cb748c22420c42c0544
+Resolves: rhbz#1247804
+Reviewed-on: https://code.engineering.redhat.com/gerrit/57045
+Tested-by: RHOS Jenkins <apevec+rhosci@redhat.com>
+Reviewed-by: Matthias Runge <mrunge@redhat.com>
+Tested-by: Matthias Runge <mrunge@redhat.com>
+(cherry picked from commit 64d54492e46ea6d02a0cc107924cce674f47f98d)
+
+Fix inability to switch region via Switch Region dropdown
+
+Remove class 'hide' that prevented modal login form from showing.
+Add "spinner" before page reload, after submit form.
+
+Related commit: https://review.openstack.org/#/c/130157/
+Related-Bug: #1381413
+
+Resolves: rhbz#1253724
+
+(cherry picked from commit dbf5fe0a2005c546a2f89353fd217405335370f7)
+
+Change-Id: Ib81fc148e1c2c70df2b41309ce83d80a3a28d038
+Reviewed-on: https://code.engineering.redhat.com/gerrit/58445
+Reviewed-by: Matthias Runge <mrunge@redhat.com>
+Tested-by: Matthias Runge <mrunge@redhat.com>
+(cherry picked from commit 193f470770a4b846997ad13b8b06bd4965021012)
+
+make tests pass with RCUE theme
+
+Change-Id: I47a5e75ebc32e0104b763e1031229ac596eb77bc
+
+More theme fixes
+
+Change-Id: Ifba49e7dc6cbf9a009c02aa92d62666ecd05da93
+
+fix region selector for -theme
+
+Change-Id: I7f6234c23d77361bf553f5e7c88aabec272d54ce
+
+Added a hook for redhat openstack access plugin
+
+(cherry picked from commit 2d6c7efe8d6f8201ae6dd3b74a2ef87636ad12f9)
+(cherry picked from commit a5ab1bf015d108ea3629a85676ac7c750a0e8a89)
+
+Resolves: rhbz#1168126
+
+Change-Id: Ie5ecdc26770b5f09bb3aa6c350ca1924cb62e7bf
+Reviewed-on: https://code.engineering.redhat.com/gerrit/37994
+Reviewed-by: Julie Pichon <jpichon@redhat.com>
+Reviewed-by: Dan Varga <dvarga@redhat.com>
+Tested-by: Julie Pichon <jpichon@redhat.com>
+(cherry picked from commit 2e985848ae3680f9f7f24d148381113d32ca2a92)
+Reviewed-on: https://code.engineering.redhat.com/gerrit/49431
+Reviewed-by: Matthias Runge <mrunge@redhat.com>
+Tested-by: Matthias Runge <mrunge@redhat.com>
+
+Add projects switcher, region switcher to RCUE
+
+Resolves: rhbz#1240895
+
+Change-Id: I98ecc48ae67f73dc5f7f0a7490d450796e8e3f8d
+(cherry picked from commit 9b2e4583044aecb71b96594c93112c9b65bdcbdb)
 ---
  .../dashboards/project/volumes/backups/views.py    |   4 +
  .../dashboards/project/volumes/snapshots/views.py  |   3 +
@@ -80,17 +144,22 @@ Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
  .../theme/static/dashboard/scss/rcue/_login.scss   | 137 ++++++
  .../theme/static/dashboard/scss/rcue/_navbar.scss  | 468 +++++++++++++++++++++
  .../static/dashboard/scss/rcue/_variables.scss     | 102 +++++
- .../theme/static/dashboard/scss/rhtheme.scss       |  53 +++
- .../dashboards/theme/templates/_header.html        |  17 +
+ .../theme/static/dashboard/scss/rhtheme.scss       |  64 +++
+ .../dashboards/theme/templates/_header.html        |  43 ++
  .../dashboards/theme/templates/_stylesheets.html   |  10 +
- .../dashboards/theme/templates/auth/_login.html    |  29 ++
- .../dashboards/theme/templates/auth/login.html     |   2 +
- .../dashboards/theme/templates/base.html           |  39 ++
+ .../theme/templates/auth/_description.html         |  13 +
+ .../dashboards/theme/templates/auth/_login.html    |  50 +++
+ .../dashboards/theme/templates/auth/login.html     |  17 +
+ .../dashboards/theme/templates/base.html           |  42 ++
+ .../templates/context_selection/_domain_list.html  |  10 +
+ .../templates/context_selection/_overview.html     |  13 +
+ .../templates/context_selection/_project_list.html |  18 +
+ .../templates/context_selection/_region_list.html  |  20 +
  .../theme/templates/horizon/_nav_list.html         |  13 +
  .../theme/templates/horizon/_subnav_list.html      |  20 +
  .../templates/horizon/common/_region_selector.html |  15 +
  .../theme/templates/horizon/common/_sidebar.html   |  64 +++
- .../dashboards/theme/templates/splash.html         |  24 ++
+ .../dashboards/theme/templates/splash.html         |  34 ++
  .../dashboards/theme/theme_index/__init__.py       |   0
  .../dashboards/theme/theme_index/panel.py          |  29 ++
  .../dashboards/theme/theme_index/urls.py           |   2 +
@@ -99,7 +168,7 @@ Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
  .../local/local_settings.py.example                |   1 +
  openstack_dashboard/settings.py                    |   1 -
  .../static/dashboard/scss/_variables.scss          |  10 +
- 94 files changed, 4501 insertions(+), 1 deletion(-)
+ 99 files changed, 4661 insertions(+), 1 deletion(-)
  create mode 100644 openstack_dashboard/dashboards/theme/__init__.py
  create mode 100644 openstack_dashboard/dashboards/theme/dashboard.py
  create mode 100644 openstack_dashboard/dashboards/theme/locale/ja/LC_MESSAGES/django.po
@@ -176,9 +245,14 @@ Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
  create mode 100755 openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
  create mode 100644 openstack_dashboard/dashboards/theme/templates/_header.html
  create mode 100755 openstack_dashboard/dashboards/theme/templates/_stylesheets.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/auth/_description.html
  create mode 100644 openstack_dashboard/dashboards/theme/templates/auth/_login.html
  create mode 100644 openstack_dashboard/dashboards/theme/templates/auth/login.html
  create mode 100644 openstack_dashboard/dashboards/theme/templates/base.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/context_selection/_domain_list.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/context_selection/_overview.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/context_selection/_project_list.html
+ create mode 100644 openstack_dashboard/dashboards/theme/templates/context_selection/_region_list.html
  create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
  create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/_subnav_list.html
  create mode 100644 openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html
@@ -19461,10 +19535,10 @@ index 0000000..a96f78b
 +$tooltip-max-width:                          220px;
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
 new file mode 100755
-index 0000000..51bc9f0
+index 0000000..4b43ebc
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/static/dashboard/scss/rhtheme.scss
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,64 @@
 +@import "rcue/variables"; 
 +@import "rcue/icons";
 +@import "rcue/fonts";
@@ -19511,6 +19585,17 @@ index 0000000..51bc9f0
 +  }
 +}
 +
++.rhlogin .form-control {
++    border: 0;
++    height: 26px;
++    border-radius: 0px;
++}
++
++.rhlogin .modal-dialog {
++    width: 390px;
++}
++
++
 +.topbar {
 +  background: transparent;
 +  border-bottom: 0;
@@ -19518,16 +19603,41 @@ index 0000000..51bc9f0
 +  margin: 20px 0;
 +  min-width: 0;
 +}
-\ No newline at end of file
 diff --git a/openstack_dashboard/dashboards/theme/templates/_header.html b/openstack_dashboard/dashboards/theme/templates/_header.html
 new file mode 100644
-index 0000000..3a39fc1
+index 0000000..7b35815
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/_header.html
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,43 @@
++{% load horizon %}
 +{% load i18n %}
-+{% load url from future %}
++{% load context_selection %}
 +<ul class="nav pull-right" id="user_info">
++  <li class="dropdown " >
++  <a href="#" class="dropdown-toggle"><span class="rcueicon rcueicon-list"></span>{% trans "Project" %}{{ project_name }}<b class="caret"></b></a>
++  <ul class="dropdown-menu">
++  {% if domain_supported %}
++  {% show_domain_list %}
++  {% endif %}
++  {% show_project_list %}
++  {% if multi_region %}
++  {% show_region_list %}
++  {% endif %}
++  </ul>
++  </li>
++  {% url 'horizon:redhat_access_plugin_openstack:search:index' as plugin_url %}
++  {% if plugin_url %}
++    <li class="dropdown {% if request.horizon.dashboard.slug == "redhat_access_plugin_openstack" %}active{% endif %}">
++    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 10px">Red Hat Access<b class="caret"></b></a>
++    <ul class="dropdown-menu">
++        <li{% if request.horizon.panel.slug == "search" %} class="active"{% endif %}><a href="{% url 'horizon:redhat_access_plugin_openstack:search:index' %}">{% trans "Search" %}</a></li>
++        <li class="divider"></li>
++        <li{% if request.horizon.panel.slug == "logs" %} class="active"{% endif %}><a href="{% url 'horizon:redhat_access_plugin_openstack:logs:index' %}">{% trans "Logs" %}</a></li>
++        <li class="divider"></li>
++        <li{% if request.horizon.panel.slug == "support" %} class="active"{% endif %}><a href="{% url 'horizon:redhat_access_plugin_openstack:support:index' %}">{% trans "Support" %}</a></li>
++    </ul>
++    </li>
++  {% endif %}
 +  {% if HORIZON_CONFIG.help_url %}
 +  <li><a href="{{ HORIZON_CONFIG.help_url }}" target="_new">{% trans "Help" %}</a></li>
 +  {% endif %}
@@ -19558,24 +19668,56 @@ index 0000000..198c227
 +{% endcompress %}
 +
 +<link rel="shortcut icon" href="{{ STATIC_URL }}dashboard/img/rhfavicon.ico"/>
+diff --git a/openstack_dashboard/dashboards/theme/templates/auth/_description.html b/openstack_dashboard/dashboards/theme/templates/auth/_description.html
+new file mode 100644
+index 0000000..76a3c28
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/auth/_description.html
+@@ -0,0 +1,13 @@
++{% load i18n %}
++
++{% comment %}
++  This help text will only show up if websso is enabled
++  because websso introduces new authentication mechanisms.
++{% endcomment %}
++<p id="help_text">
++  {% block websso-help-text %}
++    {% blocktrans %}
++      If you are not sure which authentication method to use, contact your administrator.
++    {% endblocktrans %}
++  {% endblock %}
++</p>
+\ No newline at end of file
 diff --git a/openstack_dashboard/dashboards/theme/templates/auth/_login.html b/openstack_dashboard/dashboards/theme/templates/auth/_login.html
 new file mode 100644
-index 0000000..a0845a8
+index 0000000..f96aa6a
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/auth/_login.html
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,50 @@
 +{% extends "horizon/common/_modal_form.html" %}
 +{% load i18n %}
-+{% load url from future %}
 +
 +{% block modal-header %}{% trans "Log In" %}{% endblock %}
-+{% block modal_class %}rhlogin{% if hide %}modal hide{% endif %}{% endblock %}
++{% block modal_class %}rhlogin {% if hide %}modal{% endif %}{% endblock %}
 +
-+{% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
 +{% block form_action %}{% url 'login' %}{% endblock %}
++{% block ng_controller %}hzLoginController{% endblock %}
++{% block autocomplete %}{{ HORIZON_CONFIG.password_autocomplete }}{% endblock %}
 +
 +{% block modal-body %}
-+  <fieldset>
++
++  {% comment %}
++    These fake fields are required to prevent Chrome v34+ from autofilling form.
++  {% endcomment %}
++  {% if HORIZON_CONFIG.password_autocomplete != "on" %}
++  <div class="fake_credentials" style="display: none">
++    <input type="text" name="fake_email" value="" />
++    <input type="password" name="fake_password" value="" />
++  </div>
++  {%endif%}
++  {% include "auth/_description.html" %}
++
++  <fieldset hz-login-finder>
 +    {% if request.user.is_authenticated and 'next' in request.GET %}
 +    <div class="control-group clearfix error">
 +      <span class="help-inline"><p>{% trans "You don't have permissions to access:" %}</p>
@@ -19584,6 +19726,12 @@ index 0000000..a0845a8
 +        <a href="{% url 'horizon:user_home' %}">{% trans "home page" %}</a></p>
 +      </span>
 +    </div>
++    {% if request.COOKIES.logout_reason %}
++    <div class="form-group clearfix error" id="logout_reason">
++        <span class="help-block alert alert-danger"><p>{{ request.COOKIES.logout_reason }}</p></span>
++    </div>
++    {% endif %}
++
 +    {% endif %}
 +    {% if next %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ next }}" />{% endif %}
 +    {% include "horizon/common/_form_fields.html" %}
@@ -19591,23 +19739,42 @@ index 0000000..a0845a8
 +{% endblock %}
 +
 +{% block modal-footer %}
-+  <button type="submit" class="btn btn-primary btn-large">{% trans "Sign In" %}</button>
++  <button id="loginBtn" type="submit" class="btn btn-primary btn-large">
++    <span ng-show="auth_type==='credentials'">{% trans "Sign In" %}</span>
++    <span ng-hide="auth_type==='credentials'" ng-cloak>{% trans "Connect" %}</span>
++  </button>
 +{% endblock %}
 diff --git a/openstack_dashboard/dashboards/theme/templates/auth/login.html b/openstack_dashboard/dashboards/theme/templates/auth/login.html
 new file mode 100644
-index 0000000..ccfc71e
+index 0000000..5ce49d8
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/auth/login.html
-@@ -0,0 +1,2 @@
+@@ -0,0 +1,17 @@
 +{% extends "splash.html" %}
 +{% load i18n %}
++
++{% block title %}{% trans "Login" %}{% endblock %}
++{% include "horizon/_conf.html" %}
++{% include "horizon/client/side/_script_loader.html" %}
++{% include "horizon/_custom_head_js.html" %}
++{% block body_id %}splash{% endblock %}
++
++{% block content %}
++    {% include 'auth/_login.html' %}
++{% endblock %}
++
++{% block js %}
++    {% include "horizon/_scripts.html" %}
++{% endblock %}
++
 diff --git a/openstack_dashboard/dashboards/theme/templates/base.html b/openstack_dashboard/dashboards/theme/templates/base.html
 new file mode 100644
-index 0000000..f16e443
+index 0000000..d876a2e
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/base.html
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,42 @@
 +{% load branding i18n %}
++{% load context_selection %}
 +<!DOCTYPE html>
 +<html>
 +  <head>
@@ -19622,7 +19789,7 @@ index 0000000..f16e443
 +    {% include "horizon/client_side/_script_loader.html" %}
 +    {% include "horizon/_custom_head_js.html" %}
 +  </head>
-+  <body id="{% block body_id %}{% endblock %}" ng-app='hz'>
++  <body id="{% block body_id %}{% endblock %}" ng-app='horizon.app'>
 +    {% block content %}
 +      <div id="container">
 +        {% block sidebar %}
@@ -19630,7 +19797,9 @@ index 0000000..f16e443
 +        {% endblock %}
 +        <div id='main_content'>
 +          <div class='topbar'>
-+          {% block page_header %}{% endblock %}
++          {% block page_header %}
++          {% include "horizon/common/_page_header.html" with title=page_title %}
++          {% endblock %}
 +          </div>
 +          {% include "horizon/_messages.html" %}
 +          {% block main %}{% endblock %}
@@ -19646,6 +19815,91 @@ index 0000000..f16e443
 +    <div id="modal_wrapper" />
 +  </body>
 +</html>
+diff --git a/openstack_dashboard/dashboards/theme/templates/context_selection/_domain_list.html b/openstack_dashboard/dashboards/theme/templates/context_selection/_domain_list.html
+new file mode 100644
+index 0000000..81e1c52
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/context_selection/_domain_list.html
+@@ -0,0 +1,10 @@
++{% load i18n %}
++{% if domain_supported %}
++  <li class="dropdown-header">{% trans "Domains:" %}</li>
++  <li>
++    <a class="disabled">
++      {{ domain_name }}
++      <span class="fa fa-check"></span>
++    </a>
++  </li>
++{% endif %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/context_selection/_overview.html b/openstack_dashboard/dashboards/theme/templates/context_selection/_overview.html
+new file mode 100644
+index 0000000..ba217aa
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/context_selection/_overview.html
+@@ -0,0 +1,13 @@
++<li class="dropdown">
++<ul class="dropdown-menu">
++    {% if domain_supported %}
++    <li>{{ domain_name }}</li>
++    <li>&middot;</li>
++    {% endif %}
++    <li>{{ project_name }}</li>
++    {% if multi_region %}
++    <strong>&middot;</strong>
++    <span>{{ region_name }}</span>
++    {% endif %}
++  </ul>
++</li>
+diff --git a/openstack_dashboard/dashboards/theme/templates/context_selection/_project_list.html b/openstack_dashboard/dashboards/theme/templates/context_selection/_project_list.html
+new file mode 100644
+index 0000000..88db57d
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/context_selection/_project_list.html
+@@ -0,0 +1,18 @@
++{% load i18n %}
++
++{% with dashboard_url=request.horizon.dashboard.get_absolute_url %}
++<li class="dropdown-header">{% trans "Projects:" %}
++  <ul>
++  {% for project in projects %}
++  <li>
++    <a href="{% url 'switch_tenants' project.id %}?next={{ dashboard_url }}">
++      {{ project.name }}
++      {% if project.enabled and project.id == project_id %}
++      <span class="fa fa-check"></span>
++      {% endif %}
++    </a>
++  </li>
++  {% endfor %}
++  </ul>
++</li>
++{% endwith %}
+diff --git a/openstack_dashboard/dashboards/theme/templates/context_selection/_region_list.html b/openstack_dashboard/dashboards/theme/templates/context_selection/_region_list.html
+new file mode 100644
+index 0000000..b3bfed9
+--- /dev/null
++++ b/openstack_dashboard/dashboards/theme/templates/context_selection/_region_list.html
+@@ -0,0 +1,20 @@
++{% load i18n %}
++
++{% if multi_region %}
++{% with panel_url=request.horizon.panel.get_absolute_url %}
++<li class="dropdown-header">{% trans "Regions:" %}</li>
++  <ul>
++  {% for region in regions %}
++  <li>
++    <a href="{% url 'switch_services_region' region %}?next={{ panel_url }}">
++      {{ region }}
++      {% if region == region_name %}
++      <span class="fa fa-check"></span>
++      {% endif %}
++    </a>
++  </li>
++  {% endfor %}
++  </ul>
++</li>
++{% endwith %}
++{% endif %}
 diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html b/openstack_dashboard/dashboards/theme/templates/horizon/_nav_list.html
 new file mode 100644
 index 0000000..ab97b79
@@ -19693,14 +19947,14 @@ index 0000000..0200e9c
 +{% endfor %}
 diff --git a/openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html b/openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html
 new file mode 100644
-index 0000000..086cb59
+index 0000000..c712001
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/horizon/common/_region_selector.html
 @@ -0,0 +1,15 @@
 +{% load url from future %}
 +{% if regions.support %}
 +  <li id="region_switcher" class="dropdown switcher_bar" tabindex='1'>
-+    <a class="dropdown-toggle" data-toggle="dropdown">
++    <a class="dropdown-toggle">
 +      {{ regions.current.name }}
 +    </a>
 +    <ul id="region_list" class="dropdown-menu topbar-dropdown-menu">
@@ -19784,10 +20038,10 @@ index 0000000..ee06be2
 +</div>
 diff --git a/openstack_dashboard/dashboards/theme/templates/splash.html b/openstack_dashboard/dashboards/theme/templates/splash.html
 new file mode 100644
-index 0000000..4b4e61a
+index 0000000..cf13c9c
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/templates/splash.html
-@@ -0,0 +1,24 @@
+@@ -0,0 +1,34 @@
 +{% load i18n branding %}
 +<!DOCTYPE html>
 +<html lang="en" xml:lang="en" class="login-rcue">
@@ -19795,8 +20049,13 @@ index 0000000..4b4e61a
 +    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
 +    <title>{% trans "Login" %} - {% site_branding %}</title>
 +    {% include "_stylesheets.html" %}
++
++    {% include "horizon/_conf.html" %}
++    {% include "horizon/client_side/_script_loader.html" %}
++    {% include "horizon/_custom_head_js.html" %}
++
 +  </head>
-+  <body id="splash">
++  <body id="splash" ng-app='horizon.app'>
 +    <a href="http://www.redhat.com/" id="redhat">
 +      <img src="/dashboard/static/dashboard/img/logo.svg" alt="Red Hat" />
 +    </a>
@@ -19810,6 +20069,11 @@ index 0000000..4b4e61a
 +        {% include 'auth/_login.html' %}
 +      </div><!--/.row-fluid-->
 +    </div><!--/.container-->
++
++    {% block js %}
++      {% include "horizon/_scripts.html" %}
++    {% endblock %}
++
 +  </body>
 +</html>
 diff --git a/openstack_dashboard/dashboards/theme/theme_index/__init__.py b/openstack_dashboard/dashboards/theme/theme_index/__init__.py

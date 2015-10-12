@@ -12,7 +12,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.0
-Release:    0.1%{?milestone}%{?dist}
+Release:    0.2%{?milestone}%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -39,7 +39,6 @@ Source5:    python-django-horizon-logrotate.conf
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
-Patch0004: 0004-fix-credentials-boxes-when-selecting-WebSSO.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -378,7 +377,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 # don't run tests on rhel
 %if 0%{?rhel} == 0
 # currently fails due to python-oslo-serialization issue
-#./run_tests.sh -N -P
+./run_tests.sh -N -P
 %endif
 
 %post -n openstack-dashboard
@@ -461,7 +460,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
-%{_sysconfdir}/logrotate.d/openstack-dashboard
 %config(noreplace) %attr(444,root,root) %{_sysconfdir}/logrotate.d/openstack-dashboard
 %attr(755,root,root) %dir %{_unitdir}/httpd.service.d
 %config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
@@ -474,6 +472,11 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Oct 12 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.2.0rc2
+- fixing unittests with RCUE theme
+- cherry-picking project switcher back to liberty
+- fixing logrotate-config attributes
+
 * Fri Oct 09 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.1.0rc2
 - rc2
 
