@@ -393,7 +393,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 # don't run tests on rhel
 %if 0%{?rhel} == 0
 # currently fails due to python-oslo-serialization issue
-#./run_tests.sh -N -P
+./run_tests.sh -N -P
 %endif
 
 %post -n openstack-dashboard
