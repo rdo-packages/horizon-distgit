@@ -3,6 +3,8 @@
 %global service horizon
 %global milestone .0rc2
 
+%global rdo 1
+
 
 %global with_compression 1
 
@@ -12,7 +14,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.0
-Release:    0.2%{?milestone}%{?dist}
+Release:    0.3%{?milestone}%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -32,6 +34,9 @@ Source4:    openstack-dashboard-httpd-logging.conf
 
 # logrotate config
 Source5:    python-django-horizon-logrotate.conf
+
+# RDO logo
+Source6:    rdo-logo-white.png
 
 
 #
@@ -299,8 +304,19 @@ ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 
+%if 0%{?rdo} > 0
+cp %{SOURCE6} openstack_dashboard/dashboards/theme/static/img
+rm openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
+sed -i "s/logo.svg/rdo-logo-white.png/" openstack_dashboard/dashboards/theme/templates/splash.html
+
+rm openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
+sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/splash.html
+
+sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+%endif
+
 # get it ready for compressing later in puppet-horizon
-%{__python} manage.py collectstatic --noinput
+%{__python} manage.py collectstatic --noinput --clear
 %{__python} manage.py compress --force
 
 
@@ -428,6 +444,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
+%exclude /usr/share/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
@@ -472,6 +489,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Oct 13 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.3.0rc2
+- remove logos and move -theme config to -theme subpackage
+
 * Mon Oct 12 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.2.0rc2
 - fixing unittests with RCUE theme
 - cherry-picking project switcher back to liberty
