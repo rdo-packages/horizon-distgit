@@ -293,21 +293,17 @@ sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/sp
 rm openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 
 sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
+git add .
+git commit -a -q -m "RDO branding"
 %endif
+# force egginfo regen, pbr will work because patches are managed using git
+rm -rf horizon.egg-info
 
 
 %build
 # compile message strings
 cd horizon && django-admin compilemessages && cd ..
 cd openstack_dashboard && django-admin compilemessages && cd ..
-# Dist tarball is missing .mo files so they're not listed in distributed egg metadata.
-# Removing egg-info and letting PBR regenerate it was working around that issue
-# but PBR cannot regenerate complete SOURCES.txt so some other files wont't get installed.
-# Further reading why not remove upstream egg metadata:
-# https://github.com/emonty/python-oslo-messaging/commit/f632684eb2d582253601e8da7ffdb8e55396e924
-# https://fedorahosted.org/fpc/ticket/488
-echo >> horizon.egg-info/SOURCES.txt
-ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 %{__python} setup.py build
 
 # compress css, js etc.
