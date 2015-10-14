@@ -14,7 +14,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.0
-Release:    0.3%{?milestone}%{?dist}
+Release:    0.4%{?milestone}%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -42,7 +42,7 @@ Source6:    rdo-logo-white.png
 #
 # patches_base=8.0.0.0rc2
 Patch0001: 0001-disable-debug-move-web-root.patch
-Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
+#Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
 
 #
@@ -56,14 +56,12 @@ Requires:   python-django
 
 
 Requires:   pytz
-Requires:   python-lockfile
 Requires:   python-six >= 1.9.0
 Requires:   python-pbr
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
 BuildRequires: python-pbr >= 0.10.8
-BuildRequires: python-lockfile
 BuildRequires: python-eventlet
 BuildRequires: git
 BuildRequires: python-six >= 1.9.0
@@ -260,16 +258,17 @@ git add .
 git commit -a -q -m "%{version} baseline"
 git am %{patches}
 
-# remove unnecessary .mo files
-# they will be generated later during package build
-find . -name "django*.mo" -exec rm -f '{}' \;
-
 # Remove the requirements file so that pbr hooks don't add it
 # to distutils requires_dist config
 rm -rf {test-,}requirements.txt tools/{pip,test}-requires
 
+# fix file access rights
+find openstack_dashboard/dashboards/theme -type f -print -exec chmod 644 '{}' \;
+
+
 # drop config snippet
 cp -p %{SOURCE4} .
+
 
 # customize default settings
 # WAS [PATCH] disable debug, move web root
@@ -287,11 +286,11 @@ sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard
 
 %if 0%{?rdo} > 0
 cp %{SOURCE6} openstack_dashboard/dashboards/theme/static/dashboard/img
-rm openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
 sed -i "s/logo.svg/rdo-logo-white.png/" openstack_dashboard/dashboards/theme/templates/splash.html
+rm openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
 
-rm openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/splash.html
+rm openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 
 sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/horizon/common/_sidebar.html
 %endif
@@ -444,7 +443,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
-%exclude /usr/share/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py*
+%exclude %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.py*
 %{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
