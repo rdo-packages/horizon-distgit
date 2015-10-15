@@ -1,7 +1,7 @@
 %global release_series liberty
-%global release_name %{?release_series}-rc2
+%global release_name 8.0.0
 %global service horizon
-%global milestone .0rc2
+%global milestone 
 
 %global rdo 1
 
@@ -14,7 +14,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.0
-Release:    0.5%{?milestone}%{?dist}
+Release:    1%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -23,7 +23,8 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 # https://launchpad.net/horizon/liberty/liberty-rc2/+download/horizon-8.0.0.0b3.tar.gz
-Source0:    https://launchpad.net/%{service}/liberty/%{release_name}/+download/%{service}-%{upstream_version}.tar.gz
+# https://launchpad.net/horizon/liberty/8.0.0/+download/horizon-8.0.0.tar.gz
+Source0:    https://launchpad.net/%{service}/%{release_series}/%{release_name}/+download/%{service}-%{upstream_version}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # systemd snippet to collect static files and compress on httpd restart
@@ -40,7 +41,7 @@ Source6:    rdo-logo-white.png
 
 
 #
-# patches_base=8.0.0.0rc2
+# patches_base=8.0.0.0
 Patch0001: 0001-disable-debug-move-web-root.patch
 #Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
 Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
@@ -485,6 +486,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Oct 15 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-1
+- rebase to final 8.0.0 release
+
 * Tue Oct 13 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.5.0rc2
 - remove logos and move -theme config to -theme subpackage
 - make it build on el7
