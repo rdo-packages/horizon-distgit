@@ -1,7 +1,5 @@
-%global release_series liberty
-%global release_name 8.0.0
+%global release_name liberty
 %global service horizon
-%global milestone 
 
 %global rdo 1
 
@@ -24,7 +22,7 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 # https://launchpad.net/horizon/liberty/liberty-rc2/+download/horizon-8.0.0.0b3.tar.gz
 # https://launchpad.net/horizon/liberty/8.0.0/+download/horizon-8.0.0.tar.gz
-Source0:    https://launchpad.net/%{service}/%{release_series}/%{release_name}/+download/%{service}-%{upstream_version}.tar.gz
+Source0:    https://launchpad.net/%{service}/%{release_name}/%{version}/+download/%{service}-%{upstream_version}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # systemd snippet to collect static files and compress on httpd restart
