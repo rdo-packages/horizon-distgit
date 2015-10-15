@@ -14,7 +14,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.0
-Release:    0.4%{?milestone}%{?dist}
+Release:    0.5%{?milestone}%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -288,6 +288,7 @@ sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard
 cp %{SOURCE6} openstack_dashboard/dashboards/theme/static/dashboard/img
 sed -i "s/logo.svg/rdo-logo-white.png/" openstack_dashboard/dashboards/theme/templates/splash.html
 rm openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
+rm openstack_dashboard/dashboards/theme/static/dashboard/img/rh-logo.png
 
 sed -i "s/brand.svg/logo.png/" openstack_dashboard/dashboards/theme/templates/splash.html
 rm openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
@@ -484,8 +485,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
-* Tue Oct 13 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.3.0rc2
+* Tue Oct 13 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.5.0rc2
 - remove logos and move -theme config to -theme subpackage
+- make it build on el7
 
 * Mon Oct 12 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-0.2.0rc2
 - fixing unittests with RCUE theme
