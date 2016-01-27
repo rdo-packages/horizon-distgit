@@ -1,3 +1,5 @@
-# UUID                                  	Group Name
-#
-fc240e3d6f92c399272d9cb633eb7ad6ba17d584	horizon-distgit-ptl
+# UUID          Group Name
+6ddfecad023c6f4fa3ac8c4d2583c502ea675a73 	Non-Interactive Users
+bc1fef024604eec3e02b46be7d90fbe847f88f73       	horizon-distgit-core
+fc240e3d6f92c399272d9cb633eb7ad6ba17d584        	horizon-distgit-ptl
+global:Registered-Users		Registered Users
