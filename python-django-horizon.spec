@@ -12,7 +12,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -484,6 +484,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1:8.0.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
 * Thu Oct 15 2015 Matthias Runge <mrunge@redhat.com> - 1:8.0.0-1
 - rebase to final 8.0.0 release
 
