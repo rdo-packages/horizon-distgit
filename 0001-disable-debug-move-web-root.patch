@@ -1,4 +1,4 @@
-From 04df701d70c75dbf922123fc87881d7d4d8c0775 Mon Sep 17 00:00:00 2001
+From af1ebe1ae3889363be995514a9dea19e98122dd5 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
 Date: Fri, 5 Apr 2013 10:07:53 +0200
 Subject: [PATCH] disable debug, move web root
@@ -70,7 +70,7 @@ index e53ee35..572889d 100644
  #    'identity': 'keystone_policy.json',
  #    'compute': 'nova_policy.json',
 diff --git a/openstack_dashboard/settings.py b/openstack_dashboard/settings.py
-index 4ab9d1e..589ca81 100644
+index 5761a91..d4ec05e 100644
 --- a/openstack_dashboard/settings.py
 +++ b/openstack_dashboard/settings.py
 @@ -33,7 +33,7 @@ warnings.formatwarning = lambda message, category, *args, **kwargs: \

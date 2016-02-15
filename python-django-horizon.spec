@@ -11,8 +11,8 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    8.0.0
-Release:    2%{?dist}
+Version:    8.0.1
+Release:    1%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -20,9 +20,7 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-# https://launchpad.net/horizon/liberty/liberty-rc2/+download/horizon-8.0.0.0b3.tar.gz
-# https://launchpad.net/horizon/liberty/8.0.0/+download/horizon-8.0.0.tar.gz
-Source0:    https://launchpad.net/%{service}/%{release_name}/%{version}/+download/%{service}-%{upstream_version}.tar.gz
+Source0:    https://tarballs.openstack.org/%{service}/%{service}-%{upstream_version}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 
 # systemd snippet to collect static files and compress on httpd restart
@@ -37,12 +35,8 @@ Source5:    python-django-horizon-logrotate.conf
 # RDO logo
 Source6:    rdo-logo-white.png
 
-
-#
-# patches_base=8.0.0.0
 Patch0001: 0001-disable-debug-move-web-root.patch
-#Patch0002: 0002-remove-runtime-dep-to-python-pbr.patch
-Patch0003: 0003-Add-a-customization-module-based-on-RHOS.patch
+Patch0002: 0002-Add-a-customization-module-based-on-RHOS.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -484,6 +478,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Feb 15 2016 Alan Pevec <alan.pevec@redhat.com> 1:8.0.1-1
+- Update to 8.0.1
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1:8.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
