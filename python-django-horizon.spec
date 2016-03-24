@@ -1,3 +1,4 @@
+%define milestone .0rc1
 %global release_name kilo
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
@@ -5,15 +6,15 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    XXX
-Release:    XXX
+Version:    9.0.0
+Release:    0.1%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://tarballs.openstack.org/horizon/horizon-master.tar.gz
+Source0:    http://tarballs.openstack.org/horizon/horizon-%{version}%{?milestone}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 Source3:    python-django-horizon-systemd.conf
 
@@ -435,3 +436,5 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Mar 24 2016 RDO <rdo-list@redhat.com> 9.0.0-0.1.0rc1
+- RC1 Rebuild for Mitaka rc1
