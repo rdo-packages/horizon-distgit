@@ -1,4 +1,4 @@
-%define milestone .0rc1
+%define milestone .0rc2
 %global release_name kilo
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
@@ -7,7 +7,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    9.0.0
-Release:    0.1%{?milestone}%{?dist}
+Release:    0.2%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -15,6 +15,10 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    http://tarballs.openstack.org/horizon/horizon-%{version}%{?milestone}.tar.gz
+#
+# patches_base=9.0.0.0rc2
+#
+
 Source2:    openstack-dashboard-httpd-2.4.conf
 Source3:    python-django-horizon-systemd.conf
 
@@ -436,5 +440,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Sat Apr 02 2016 Haikel Guemar <hguemar@fedoraproject.org> 1:9.0.0-0.2.0rc2
+- Update to 9.0.0.0rc2
+
 * Thu Mar 24 2016 RDO <rdo-list@redhat.com> 9.0.0-0.1.0rc1
 - RC1 Rebuild for Mitaka rc1
