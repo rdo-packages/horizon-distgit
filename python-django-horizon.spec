@@ -87,10 +87,10 @@ Requires:   python-django-appconf
 Requires:   python-lesscpy
 
 Requires:   python-glanceclient
-Requires:   python-keystoneclient >= 0.7.0
-Requires:   python-novaclient >= 2.15.0
+Requires:   python-keystoneclient >= 1.6.0
+Requires:   python-novaclient >= 2.29.0
 Requires:   python-neutronclient
-Requires:   python-cinderclient >= 1.0.6
+Requires:   python-cinderclient >= 1.3.1
 Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
@@ -208,7 +208,7 @@ BuildRequires: python-sphinx >= 1.1.3
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
-BuildRequires: python-novaclient >= 2.15.0
+BuildRequires: python-novaclient >= 2.29.0
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
