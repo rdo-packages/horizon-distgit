@@ -1,5 +1,3 @@
-%define milestone .0rc2
-%global release_name kilo
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 Name:       python-django-horizon
@@ -7,7 +5,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    9.0.0
-Release:    0.2%{?milestone}%{?dist}
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -440,6 +438,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Apr  7 2016 Haïkel Guémar <hguemar@fedoraproject.org> - 1:9.0.0-1
+- Upstream 9.0.0
+
 * Sat Apr 02 2016 Haikel Guemar <hguemar@fedoraproject.org> 1:9.0.0-0.2.0rc2
 - Update to 9.0.0.0rc2
 
