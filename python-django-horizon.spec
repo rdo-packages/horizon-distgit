@@ -363,7 +363,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/horizon/contrib
 %{python_sitelib}/horizon/forms
 %{python_sitelib}/horizon/hacking
-%{python_sitelib}/horizon/locale/*.pot
 %{python_sitelib}/horizon/management
 %{python_sitelib}/horizon/static
 %{python_sitelib}/horizon/tables
@@ -408,7 +407,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??/LC_MESSAGES
-%{_datadir}/openstack-dashboard/openstack_dashboard/locale/*.pot
 %{_datadir}/openstack-dashboard/openstack_dashboard/.eslintrc
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
