@@ -123,6 +123,7 @@ Requires:   python-XStatic-termjs
 Requires:   python-XStatic-smart-table
 Requires:   python-XStatic-Angular-lrdragndrop
 Requires:   python-XStatic-Angular-Gettext
+Requires:   python-XStatic-Angular-FileUpload
 Requires:   python-XStatic-Magic-Search
 Requires:   python-XStatic-bootswatch
 Requires:   python-XStatic-roboto-fontface
@@ -171,6 +172,7 @@ BuildRequires: python-XStatic-Bootstrap-SCSS
 BuildRequires: python-XStatic-termjs
 BuildRequires: python-XStatic-smart-table
 BuildRequires: python-XStatic-Angular-lrdragndrop
+BuildRequires: python-XStatic-Angular-FileUpload
 BuildRequires: python-XStatic-Magic-Search
 BuildRequires: python-XStatic-Angular-Gettext
 BuildRequires: python-XStatic-bootswatch
@@ -247,8 +249,6 @@ sed -i "/^COMPRESS_PARSER = .*/a COMPRESS_OFFLINE = True" openstack_dashboard/se
 
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
-
-
 
 %build
 # compile message strings
