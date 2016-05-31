@@ -373,6 +373,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/horizon/utils
 %{python_sitelib}/horizon/workflows
 %{python_sitelib}/horizon/karma.conf.js
+%{python_sitelib}/horizon/middleware
 %{python_sitelib}/*.egg-info
 
 %files -n openstack-dashboard -f dashboard.lang
