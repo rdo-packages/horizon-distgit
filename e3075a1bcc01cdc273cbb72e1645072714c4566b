@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_a8610ed5",
+        "filename": "python-django-horizon-systemd.conf",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2016-05-31T10:48:02Z",
+      "side": 1,
+      "message": "This part is not explained in the commit message",
+      "revId": "e3075a1bcc01cdc273cbb72e1645072714c4566b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
