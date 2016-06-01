@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_cbb55c32",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2016-06-01T21:15:39Z",
+      "side": 1,
+      "message": "Added manually, you can use cherry-pick -x to automate it.\nWe\u0027re following openstack upstream backporting rules:\nhttp://docs.openstack.org/project-team-guide/stable-branches.html#proposing-fixes",
+      "revId": "032fdc83ad58d894517fd3c804d0a889187f058d",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
