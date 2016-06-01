@@ -82,7 +82,7 @@ Requires:   httpd
 Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
 Requires:   python-django-openstack-auth >= 1.1.7
-Requires:   python-django-compressor >= 1.4
+Requires:   python-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-lesscpy
 
