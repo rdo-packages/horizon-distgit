@@ -311,13 +311,10 @@ ln -s ../../../../../%{_sysconfdir}/openstack-dashboard/local_settings %{buildro
 
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %{buildroot}%{_sysconfdir}/openstack-dashboard
 
-%find_lang django
-%find_lang djangojs
+%find_lang django --all-name
 
 grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
 grep "\/site-packages\/horizon" django.lang > horizon.lang
-
-cat djangojs.lang >> horizon.lang
 
 # copy static files to %{_datadir}/openstack-dashboard/static
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
