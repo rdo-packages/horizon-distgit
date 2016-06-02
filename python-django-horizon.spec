@@ -35,16 +35,12 @@ Requires:   python-django
 
 
 Requires:   pytz
-Requires:   python-lockfile
 Requires:   python-six >= 1.9.0
 Requires:   python-pbr
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
-BuildRequires: python-d2to1
 BuildRequires: python-pbr >= 0.7.0
-BuildRequires: python-lockfile
-BuildRequires: python-eventlet
 BuildRequires: git
 BuildRequires: python-six >= 1.9.0
 BuildRequires: gettext
@@ -59,7 +55,6 @@ BuildRequires:   python-nose
 BuildRequires:   python-selenium
 %endif
 BuildRequires:   python-netaddr
-BuildRequires:   python-kombu
 BuildRequires:   python-anyjson
 BuildRequires:   python-iso8601
 
