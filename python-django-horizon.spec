@@ -315,9 +315,9 @@ mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %
 %find_lang djangojs
 
 grep "\/usr\/share\/openstack-dashboard" django.lang > dashboard.lang
+grep "\/usr\/share\/openstack-dashboard" djangojs.lang > dashboard.lang
 grep "\/site-packages\/horizon" django.lang > horizon.lang
-
-cat djangojs.lang >> horizon.lang
+grep "\/site-packages\/horizon" djangojs.lang >> horizon.lang
 
 # copy static files to %{_datadir}/openstack-dashboard/static
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
