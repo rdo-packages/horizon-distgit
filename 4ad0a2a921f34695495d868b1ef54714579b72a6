@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ab8dda7_672b5283",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 127
+      },
+      "writtenOn": "2016-06-02T14:44:43Z",
+      "side": 0,
+      "message": "do we need a deprecates entry so we don\u0027t leave dangling subpackages laying around after an upgrade?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 37
+      },
+      "revId": "4ad0a2a921f34695495d868b1ef54714579b72a6",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
