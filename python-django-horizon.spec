@@ -350,7 +350,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{systemd_postun}
 
 %files -f horizon.lang
-%doc LICENSE README.rst openstack-dashboard-httpd-logging.conf
+%doc README.rst openstack-dashboard-httpd-logging.conf
+%license LICENSE
 %dir %{python_sitelib}/horizon
 %{python_sitelib}/horizon/*.py*
 %{python_sitelib}/horizon/browsers
@@ -372,6 +373,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/*.egg-info
 
 %files -n openstack-dashboard -f dashboard.lang
+%license LICENSE
 %dir %{_datadir}/openstack-dashboard/
 %{_datadir}/openstack-dashboard/*.py*
 %{_datadir}/openstack-dashboard/static
@@ -423,6 +425,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 
 %files doc
 %doc html
+%license LICENSE
 
 %files -n openstack-dashboard-theme
 #%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
