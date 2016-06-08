@@ -46,6 +46,23 @@
       "revId": "4ad0a2a921f34695495d868b1ef54714579b72a6",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5c1566_d9c49361",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2016-06-08T07:29:41Z",
+      "side": 0,
+      "message": "But until replacement is ready, this dep will block upgrades where -theme is installed, so we need replacement first?",
+      "revId": "4ad0a2a921f34695495d868b1ef54714579b72a6",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
