@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da5c1566_39a14faa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2016-06-08T07:29:17Z",
+      "side": 1,
+      "message": "Future plan is missing, and for upgrades reason we need replacement first.",
+      "revId": "96c936df20d8118cc6d265bfe4f543e71a516a2a",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
