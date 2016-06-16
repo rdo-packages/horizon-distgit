@@ -12,7 +12,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    8.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Summary:    Django application for talking to Openstack
 
@@ -37,6 +37,7 @@ Source6:    rdo-logo-white.png
 
 Patch0001: 0001-disable-debug-move-web-root.patch
 Patch0002: 0002-Add-a-customization-module-based-on-RHOS.patch
+Patch0003: 0003-Escape-angularjs-templating-in-unsafe-HTML.patch
 
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
@@ -478,6 +479,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Jun 16 2016 Haïkel Guémar <hguemar@fedoraproject.org> - 1:8.0.1-2
+- Fix CVE-2016-4428 (Escape Angular.js templating in unsafe HTML)
+
 * Mon Feb 15 2016 Alan Pevec <alan.pevec@redhat.com> 1:8.0.1-1
 - Update to 8.0.1
 

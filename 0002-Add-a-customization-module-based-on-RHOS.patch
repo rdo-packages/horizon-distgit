@@ -1,13 +1,10 @@
-From 0451d7ca4418fbc11d2395be9598f36386d3340f Mon Sep 17 00:00:00 2001
+From 09812d7e260fcdab5365193b87f62237c3c17205 Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Thu, 14 Feb 2013 12:55:54 +0100
+Date: Wed, 9 Mar 2016 11:48:09 +0000
 Subject: [PATCH] Add a customization module based on RHOS
-
-Change-Id: I8622ffc8e31cf553315077070b2a696de1bd5081
 
 fix credentials boxes when selecting WebSSO
 
-Change-Id: Id2cf2c9ef1e0232e5b4c8cb748c22420c42c0544
 Resolves: rhbz#1247804
 Reviewed-on: https://code.engineering.redhat.com/gerrit/57045
 Tested-by: RHOS Jenkins <apevec+rhosci@redhat.com>
@@ -27,7 +24,6 @@ Resolves: rhbz#1253724
 
 (cherry picked from commit dbf5fe0a2005c546a2f89353fd217405335370f7)
 
-Change-Id: Ib81fc148e1c2c70df2b41309ce83d80a3a28d038
 Reviewed-on: https://code.engineering.redhat.com/gerrit/58445
 Reviewed-by: Matthias Runge <mrunge@redhat.com>
 Tested-by: Matthias Runge <mrunge@redhat.com>
@@ -35,15 +31,9 @@ Tested-by: Matthias Runge <mrunge@redhat.com>
 
 make tests pass with RCUE theme
 
-Change-Id: I47a5e75ebc32e0104b763e1031229ac596eb77bc
-
 More theme fixes
 
-Change-Id: Ifba49e7dc6cbf9a009c02aa92d62666ecd05da93
-
 fix region selector for -theme
-
-Change-Id: I7f6234c23d77361bf553f5e7c88aabec272d54ce
 
 Added a hook for redhat openstack access plugin
 
@@ -52,7 +42,6 @@ Added a hook for redhat openstack access plugin
 
 Resolves: rhbz#1168126
 
-Change-Id: Ie5ecdc26770b5f09bb3aa6c350ca1924cb62e7bf
 Reviewed-on: https://code.engineering.redhat.com/gerrit/37994
 Reviewed-by: Julie Pichon <jpichon@redhat.com>
 Reviewed-by: Dan Varga <dvarga@redhat.com>
@@ -66,8 +55,9 @@ Add projects switcher, region switcher to RCUE
 
 Resolves: rhbz#1240895
 
-Change-Id: I98ecc48ae67f73dc5f7f0a7490d450796e8e3f8d
 (cherry picked from commit 9b2e4583044aecb71b96594c93112c9b65bdcbdb)
+
+Change-Id: I3a3e9af0186a75d776dc3aee5e28ea9cfcd80cef
 ---
  .../dashboards/project/volumes/backups/views.py    |   4 +
  .../dashboards/project/volumes/snapshots/views.py  |   3 +
@@ -15112,7 +15102,7 @@ HcmV?d00001
 
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg
 new file mode 100644
-index 0000000..0d22e55
+index 0000000..d58ffc9
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/static/dashboard/fonts/logo.svg
 @@ -0,0 +1,94 @@
@@ -17126,7 +17116,7 @@ HcmV?d00001
 
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg b/openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 new file mode 100644
-index 0000000..2f3bc05
+index 0000000..bbb4965
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/static/dashboard/img/brand.svg
 @@ -0,0 +1,213 @@
@@ -17345,7 +17335,7 @@ index 0000000..2f3bc05
 +</svg>
 diff --git a/openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg b/openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
 new file mode 100644
-index 0000000..0d22e55
+index 0000000..d58ffc9
 --- /dev/null
 +++ b/openstack_dashboard/dashboards/theme/static/dashboard/img/logo.svg
 @@ -0,0 +1,94 @@

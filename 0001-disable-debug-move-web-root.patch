@@ -1,9 +1,11 @@
-From af1ebe1ae3889363be995514a9dea19e98122dd5 Mon Sep 17 00:00:00 2001
+From 95c06752a2a2264e824aebdf2a9235b688dbd6bc Mon Sep 17 00:00:00 2001
 From: Matthias Runge <mrunge@redhat.com>
-Date: Fri, 5 Apr 2013 10:07:53 +0200
+Date: Wed, 9 Mar 2016 11:47:58 +0000
 Subject: [PATCH] disable debug, move web root
 
 move RBAC policy files and checks to /etc/openstack-dashboard
+
+Change-Id: I28eb631994b61a4cb8de75c1c6984d7994b85559
 ---
  openstack_dashboard/local/local_settings.py.example | 16 ++++++++--------
  openstack_dashboard/settings.py                     |  3 ++-
