@@ -98,8 +98,9 @@ Requires:   python-django-pyscss >= 2.0.2
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular >= 1:1.3.7
-Requires:   python-XStatic-Angular-Mock
 Requires:   python-XStatic-Angular-Bootstrap
+Requires:   python-XStatic-Angular-Mock
+Requires:   python-XStatic-Angular-Schema-Form
 Requires:   python-XStatic-D3
 Requires:   python-XStatic-Font-Awesome
 Requires:   python-XStatic-Hogan
@@ -123,6 +124,8 @@ Requires:   python-XStatic-Magic-Search
 Requires:   python-XStatic-bootswatch
 Requires:   python-XStatic-roboto-fontface
 Requires:   python-XStatic-mdi
+Requires:   python-XStatic-objectpath
+Requires:   python-XStatic-tv4
 
 Requires:   python-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
@@ -148,8 +151,9 @@ BuildRequires: python-django-pyscss >= 2.0.2
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
 BuildRequires: python-XStatic-Angular >= 1:1.3.7
-BuildRequires: python-XStatic-Angular-Mock
 BuildRequires: python-XStatic-Angular-Bootstrap
+BuildRequires: python-XStatic-Angular-Mock
+BuildRequires: python-XStatic-Angular-Schema-Form
 BuildRequires: python-XStatic-D3
 BuildRequires: python-XStatic-Font-Awesome
 BuildRequires: python-XStatic-Hogan
@@ -173,6 +177,8 @@ BuildRequires: python-XStatic-Angular-Gettext
 BuildRequires: python-XStatic-bootswatch
 BuildRequires: python-XStatic-roboto-fontface
 BuildRequires: python-XStatic-mdi
+BuildRequires: python-XStatic-objectpath
+BuildRequires: python-XStatic-tv4
 # bootstrap-scss requires at least python-scss >= 1.2.1
 BuildRequires: python-scss >= 1.3.4
 BuildRequires: fontawesome-fonts-web >= 4.1.0
