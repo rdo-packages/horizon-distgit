@@ -318,7 +318,7 @@ grep "\/site-packages\/horizon" django.lang > horizon.lang
 # copy static files to %{_datadir}/openstack-dashboard/static
 mkdir -p %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a openstack_dashboard/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
-cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static 
+cp -a horizon/static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 cp -a static/* %{buildroot}%{_datadir}/openstack-dashboard/static
 
 # create /var/run/openstack-dashboard/ and own it
