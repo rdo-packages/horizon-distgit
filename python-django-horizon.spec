@@ -1,4 +1,3 @@
-%global release_name kilo
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 Name:       python-django-horizon
