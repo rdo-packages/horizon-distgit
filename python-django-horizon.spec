@@ -98,7 +98,6 @@ Requires:   python-troveclient >= 1.0.0
 Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
-Requires:   python-eventlet
 Requires:   python-django-pyscss >= 2.0.2
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
