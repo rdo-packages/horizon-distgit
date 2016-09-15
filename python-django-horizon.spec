@@ -75,16 +75,16 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
-Requires:   python-django-openstack-auth >= 1.1.7
+Requires:   python-django-openstack-auth >= 2.3.0
 Requires:   python-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-lesscpy
 
 Requires:   python-glanceclient
-Requires:   python-keystoneclient >= 1.6.0
+Requires:   python-keystoneclient >= 1:1.7.0
 Requires:   python-novaclient >= 2.29.0
 Requires:   python-neutronclient
-Requires:   python-cinderclient >= 1.3.1
+Requires:   python-cinderclient >= 1.6.0
 Requires:   python-swiftclient
 Requires:   python-heatclient
 Requires:   python-ceilometerclient
