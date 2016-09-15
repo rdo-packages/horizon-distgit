@@ -1,11 +1,12 @@
+%global milestone .0b3
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    XXX
-Release:    XXX
+Version:    10.0.0
+Release:    0.1%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -433,3 +434,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Thu Sep 15 2016 Haikel Guemar <hguemar@fedoraproject.org> 1:10.0.0-0.1
+- Update to 10.0.0.0b3
+
