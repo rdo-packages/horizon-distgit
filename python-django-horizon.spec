@@ -12,7 +12,7 @@ Group:      Development/Libraries
 # Code in horizon/horizon/utils taken from django which is BSD
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
-Source0:    http://tarballs.openstack.org/horizon/horizon-master.tar.gz
+Source0:    http://tarballs.openstack.org/horizon/horizon-%{upstream_version}.tar.gz
 Source2:    openstack-dashboard-httpd-2.4.conf
 Source3:    python-django-horizon-systemd.conf
 
