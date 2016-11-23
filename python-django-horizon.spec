@@ -413,7 +413,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %attr(0750, apache, apache) %{_var}/log/horizon
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/ceilometer_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
