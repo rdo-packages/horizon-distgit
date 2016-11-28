@@ -92,6 +92,8 @@ Requires:   python-troveclient >= 1.0.0
 Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
+Requires:   python-osprofiler >= 1.4.0
+Requires:   python-pymongo >= 3.0.2
 Requires:   python-django-pyscss >= 2.0.2
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
