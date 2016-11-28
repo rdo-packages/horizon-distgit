@@ -30,7 +30,7 @@ Source5:    python-django-horizon-logrotate.conf
 BuildArch:  noarch
 
 BuildRequires:   python-django
-Requires:   python-django
+Requires:        python-django
 
 
 Requires:   pytz
@@ -92,6 +92,7 @@ Requires:   python-troveclient >= 1.0.0
 Requires:   python-saharaclient
 Requires:   python-netaddr
 Requires:   python-oslo-config
+Requires:   python-osprofiler >= 1.4.0
 Requires:   python-django-pyscss >= 2.0.2
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
