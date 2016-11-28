@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5adbc538_14ca574f",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2016-11-28T20:21:19Z",
+      "side": 1,
+      "message": "it\u0027s better to keep unrelated whitespace changes in separate commit",
+      "revId": "0e70b652cc8ddda129d391af27da816959755426",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5adbc538_34c75347",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2016-11-28T20:21:19Z",
+      "side": 1,
+      "message": "upstream commit also adds pymongo in requirements.txt ?",
+      "revId": "0e70b652cc8ddda129d391af27da816959755426",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
