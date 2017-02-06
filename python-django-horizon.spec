@@ -75,18 +75,19 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
-Requires:   python-django-openstack-auth >= 2.3.0
+Requires:   python-django-openstack-auth >= 3.1.0
 Requires:   python-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-lesscpy
 
-Requires:   python-glanceclient
-Requires:   python-keystoneclient >= 1:1.7.0
-Requires:   python-novaclient >= 2.29.0
-Requires:   python-neutronclient
+Requires:   python-iso8601
+Requires:   python-glanceclient >= 1:2.5.0
+Requires:   python-keystoneclient >= 1:3.8.0
+Requires:   python-novaclient >= 1:6.0.0
+Requires:   python-neutronclient >= 5.1.0
 Requires:   python-cinderclient >= 1.6.0
-Requires:   python-swiftclient
-Requires:   python-heatclient
+Requires:   python-swiftclient >= 3.2.0
+Requires:   python-heatclient >= 1.6.1
 Requires:   python-ceilometerclient
 Requires:   python-troveclient >= 1.0.0
 Requires:   python-saharaclient
@@ -122,7 +123,7 @@ Requires:   python-XStatic-Angular-Gettext
 Requires:   python-XStatic-Angular-FileUpload
 Requires:   python-XStatic-Magic-Search
 Requires:   python-XStatic-bootswatch
-Requires:   python-XStatic-roboto-fontface
+Requires:   python-XStatic-roboto-fontface >= 0.5.0.0
 Requires:   python-XStatic-mdi
 Requires:   python-XStatic-objectpath
 Requires:   python-XStatic-tv4
@@ -130,17 +131,19 @@ Requires:   python-XStatic-tv4
 Requires:   python-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
 
-Requires:   python-oslo-concurrency
-Requires:   python-oslo-config
-Requires:   python-oslo-i18n
-Requires:   python-oslo-serialization
-Requires:   python-oslo-utils
-Requires:   python-oslo-policy
+Requires:   python-oslo-concurrency >= 3.8.0
+Requires:   python-oslo-config >= 2:3.14.0
+Requires:   python-oslo-i18n >= 2.1.0
+Requires:   python-oslo-serialization >= 1.10.0
+Requires:   python-oslo-utils >= 3.18.0
+Requires:   python-oslo-policy >= 1.17.0
 Requires:   python-babel
 Requires:   python-pint
 
 Requires:   openssl
 Requires:   logrotate
+
+Requires:   PyYAML >= 3.10
 
 BuildRequires: python-django-openstack-auth >= 1.1.7
 BuildRequires: python-django-compressor >= 2.0
@@ -211,7 +214,7 @@ BuildRequires: python-sphinx >= 1.1.3
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
-BuildRequires: python-novaclient >= 2.29.0
+BuildRequires: python-novaclient >= 1:6.0.0
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
