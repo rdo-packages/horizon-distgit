@@ -1,0 +1,44 @@
+From a98d9b8ac920aab1dbce29f07ceee2e327590a82 Mon Sep 17 00:00:00 2001
+From: David Moreau-Simard <dms@redhat.com>
+Date: Mon, 6 Feb 2017 09:16:27 -0500
+Subject: [PATCH] Set files to an empty list instead of None
+
+When iterating across the list of all files, we're not expecting
+a None value and this generates a TypeError stack trace.
+Use empty lists instead.
+
+Change-Id: I8cb9a7e608f18a4c44c848d2f3a3d533f75bfaa6
+Closes-Bug: #1662180
+---
+ openstack_dashboard/utils/settings.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/openstack_dashboard/utils/settings.py b/openstack_dashboard/utils/settings.py
+index 041901c..a7ae5e8 100644
+--- a/openstack_dashboard/utils/settings.py
++++ b/openstack_dashboard/utils/settings.py
+@@ -188,9 +188,9 @@ BASE_XSTATIC_MODULES = [
+         'angular-route.js'
+     ]),
+     ('xstatic.pkg.angular_bootstrap', ['angular-bootstrap.js']),
+-    ('xstatic.pkg.angular_gettext', None),
+-    ('xstatic.pkg.angular_lrdragndrop', None),
+-    ('xstatic.pkg.angular_smart_table', None),
++    ('xstatic.pkg.angular_gettext', []),
++    ('xstatic.pkg.angular_lrdragndrop', []),
++    ('xstatic.pkg.angular_smart_table', []),
+     ('xstatic.pkg.angular_fileupload', ['ng-file-upload-all.js']),
+     ('xstatic.pkg.d3', ['d3.js']),
+     ('xstatic.pkg.jquery_quicksearch', ['jquery.quicksearch.js']),
+@@ -201,7 +201,7 @@ BASE_XSTATIC_MODULES = [
+     ('xstatic.pkg.bootstrap_datepicker', ['bootstrap-datepicker.js']),
+     ('xstatic.pkg.hogan', ['hogan.js']),
+     ('xstatic.pkg.rickshaw', ['rickshaw.js']),
+-    ('xstatic.pkg.jsencrypt', None),
++    ('xstatic.pkg.jsencrypt', []),
+     ('xstatic.pkg.objectpath', ['ObjectPath.js']),
+     ('xstatic.pkg.tv4', ['tv4.js']),
+     ('xstatic.pkg.angular_schema_form', ['schema-form.js']),
+-- 
+1.9.1
+

@@ -23,6 +23,8 @@ Source4:    openstack-dashboard-httpd-logging.conf
 Source5:    python-django-horizon-logrotate.conf
 
 
+Patch0001:  0001-PATCH-Set-files-to-an-empty-list-instead-of-None.patch
+
 #
 # BuildArch needs to be located below patches in the spec file. Don't ask!
 #
