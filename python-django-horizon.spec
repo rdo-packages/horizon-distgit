@@ -1,4 +1,3 @@
-%global milestone .0rc2
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 Name:       python-django-horizon
@@ -6,7 +5,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    11.0.0
-Release:    0.2%{?milestone}%{?dist}
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -14,10 +13,6 @@ Group:      Development/Libraries
 License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    https://tarballs.openstack.org/horizon/horizon-%{upstream_version}.tar.gz
-#
-# patches_base=11.0.0.0rc2
-#
-
 Source2:    openstack-dashboard-httpd-2.4.conf
 Source3:    python-django-horizon-systemd.conf
 
@@ -442,6 +437,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Wed Feb 22 2017 Alfredo Moralejo <amoralej@redhat.com> 1:11.0.0-1
+- Update to 11.0.0
+
 * Fri Feb 17 2017 Alfredo Moralejo <amoralej@redhat.com> 1:11.0.0-0.2.0rc2
 - Update to 11.0.0.0rc2
 
