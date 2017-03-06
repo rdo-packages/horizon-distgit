@@ -96,6 +96,7 @@ Requires:   python-oslo-config
 Requires:   python-osprofiler >= 1.4.0
 Requires:   python-pymongo >= 3.0.2
 Requires:   python-django-pyscss >= 2.0.2
+Requires:   python-semantic_version
 Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular >= 1:1.3.7
