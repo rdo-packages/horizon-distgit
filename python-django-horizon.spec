@@ -5,7 +5,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    11.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -437,6 +437,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Wed Mar 15 2017 Michele Baldessari <michele@acksyn.org> - 1:11.0.1-2
+- Reduce logging at startup (LP#1672765)
+
 * Mon Mar 13 2017 Alfredo Moralejo <amoralej@redhat.com> 1:11.0.1-1
 - Update to 11.0.1
 
