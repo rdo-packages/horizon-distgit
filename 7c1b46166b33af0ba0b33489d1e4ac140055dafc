@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9aa7fdbe_2cc1ea2e",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2017-06-10T16:57:17Z",
+      "side": 1,
+      "message": "remove me",
+      "revId": "7c1b46166b33af0ba0b33489d1e4ac140055dafc",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
