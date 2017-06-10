@@ -213,6 +213,7 @@ Requires:   %{name} = %{epoch}:%{version}-%{release}
 BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
+BuildRequires: python-openstackdocstheme
 BuildRequires: python-glanceclient
 BuildRequires: python-keystoneclient
 BuildRequires: python-novaclient >= 1:6.0.0
