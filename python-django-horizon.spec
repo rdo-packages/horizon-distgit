@@ -224,7 +224,7 @@ BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
 BuildRequires: python-troveclient >= 1.0.0
 BuildRequires: python-saharaclient
-BuildRequires: python-oslo-sphinx
+BuildRequires: python-openstackdocstheme
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
