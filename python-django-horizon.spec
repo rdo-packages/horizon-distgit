@@ -151,6 +151,7 @@ BuildRequires: python-django-compressor >= 2.0
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-oslo-config
+BuildRequires: python-semantic_version
 BuildRequires: python-django-pyscss >= 2.0.2
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
@@ -224,7 +225,6 @@ BuildRequires: python-heatclient
 BuildRequires: python-ceilometerclient
 BuildRequires: python-troveclient >= 1.0.0
 BuildRequires: python-saharaclient
-BuildRequires: python-oslo-sphinx
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -271,6 +271,9 @@ ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 %{__python} setup.py build
 
 # compress css, js etc.
+# XXX workaround for https://bugs.launchpad.net/horizon/+bug/1701765
+sed -i 's/\$cursor-disabled/pointer/' openstack_dashboard/static/dashboard/scss/components/_spinners.scss
+
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # get it ready for compressing later in puppet-horizon
 %{__python} manage.py collectstatic --noinput --clear
