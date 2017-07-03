@@ -256,6 +256,9 @@ sed -i "/^COMPRESS_PARSER = .*/a COMPRESS_OFFLINE = True" openstack_dashboard/se
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
 
+# XXX workaround for https://bugs.launchpad.net/horizon/+bug/1701765
+sed -i 's/\$cursor-disabled/pointer/' openstack_dashboard/static/dashboard/scss/components/_spinners.scss
+
 %build
 # compile message strings
 cd horizon && django-admin compilemessages && cd ..
@@ -271,9 +274,6 @@ ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
 %{__python} setup.py build
 
 # compress css, js etc.
-# XXX workaround for https://bugs.launchpad.net/horizon/+bug/1701765
-sed -i 's/\$cursor-disabled/pointer/' openstack_dashboard/static/dashboard/scss/components/_spinners.scss
-
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # get it ready for compressing later in puppet-horizon
 %{__python} manage.py collectstatic --noinput --clear
