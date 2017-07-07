@@ -340,7 +340,7 @@ mkdir -p %{buildroot}%{_var}/log/horizon
 # place logrotate config:
 mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
 cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
-
+chmod 644 %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %check
 # don't run tests on rhel
