@@ -256,6 +256,9 @@ sed -i "/^COMPRESS_PARSER = .*/a COMPRESS_OFFLINE = True" openstack_dashboard/se
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
 
+# XXX workaround for https://bugs.launchpad.net/horizon/+bug/1701765
+sed -i 's/\$cursor-disabled/pointer/' openstack_dashboard/static/dashboard/scss/components/_datepicker.scss
+
 %build
 # compile message strings
 cd horizon && django-admin compilemessages && cd ..
