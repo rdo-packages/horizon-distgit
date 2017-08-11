@@ -45,14 +45,12 @@ BuildRequires: python-six >= 1.9.0
 BuildRequires: gettext
 
 # for checks:
-%if 0%{?rhel} == 0
-BuildRequires:   python-django-nose >= 1.2
-BuildRequires:   python-coverage
+BuildRequires:   python-django-nose
 BuildRequires:   python-mox3
 BuildRequires:   python-nose-exclude
 BuildRequires:   python-nose
 BuildRequires:   python-selenium
-%endif
+BuildRequires:   python-osprofiler
 BuildRequires:   python-netaddr
 BuildRequires:   python-anyjson
 BuildRequires:   python-iso8601
@@ -329,11 +327,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 
 %check
-# don't run tests on rhel
-%if 0%{?rhel} == 0
-# since rawhide has django-1.7 now, tests fail
-#./run_tests.sh -N -P
-%endif
+%{__python2} manage.py test horizon --settings=horizon.test.settings --ignore-files="(test_hacking|firefox_binary|webdriver|pull_catalog)"
 
 %post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
