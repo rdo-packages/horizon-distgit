@@ -47,7 +47,6 @@ BuildRequires: gettext
 # for checks:
 %if 0%{?rhel} == 0
 BuildRequires:   python-django-nose >= 1.2
-BuildRequires:   python-coverage
 BuildRequires:   python-mox3
 BuildRequires:   python-nose-exclude
 BuildRequires:   python-nose
@@ -330,10 +329,10 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %check
 # don't run tests on rhel
-%if 0%{?rhel} == 0
-# since rawhide has django-1.7 now, tests fail
+#%if 0%{?rhel} == 0
+# FIXME tests have been moved to tox, needs fixing
 #./run_tests.sh -N -P
-%endif
+#%endif
 
 %post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
