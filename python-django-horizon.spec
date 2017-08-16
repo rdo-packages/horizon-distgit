@@ -39,7 +39,7 @@ Requires:   python-pbr
 
 BuildRequires: python2-devel
 BuildRequires: python-setuptools
-BuildRequires: python-pbr >= 0.7.0
+BuildRequires: python-pbr >= 2.0.0
 BuildRequires: git
 BuildRequires: python-six >= 1.9.0
 BuildRequires: gettext
@@ -75,24 +75,21 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
-Requires:   python-django-openstack-auth >= 3.1.0
+Requires:   python-django-openstack-auth >= 3.5.0
 Requires:   python-django-compressor >= 2.0
 Requires:   python-django-appconf
+Requires:   python-django-babel
 Requires:   python-lesscpy
 
 Requires:   python-iso8601
-Requires:   python-glanceclient >= 1:2.5.0
+Requires:   python-glanceclient >= 1:2.8.0
 Requires:   python-keystoneclient >= 1:3.8.0
-Requires:   python-novaclient >= 1:6.0.0
-Requires:   python-neutronclient >= 5.1.0
-Requires:   python-cinderclient >= 1.6.0
+Requires:   python-novaclient >= 1:9.0.0
+Requires:   python-neutronclient >= 6.3.0
+Requires:   python-cinderclient >= 3.1.0
 Requires:   python-swiftclient >= 3.2.0
 Requires:   python-heatclient >= 1.6.1
-Requires:   python-ceilometerclient
-Requires:   python-troveclient >= 1.0.0
-Requires:   python-saharaclient
 Requires:   python-netaddr
-Requires:   python-oslo-config
 Requires:   python-osprofiler >= 1.4.0
 Requires:   python-pymongo >= 3.0.2
 Requires:   python-django-pyscss >= 2.0.2
@@ -101,7 +98,6 @@ Requires:   python-XStatic
 Requires:   python-XStatic-jQuery
 Requires:   python-XStatic-Angular >= 1:1.3.7
 Requires:   python-XStatic-Angular-Bootstrap
-Requires:   python-XStatic-Angular-Mock
 Requires:   python-XStatic-Angular-Schema-Form
 Requires:   python-XStatic-D3
 Requires:   python-XStatic-Font-Awesome
@@ -111,7 +107,6 @@ Requires:   python-XStatic-JQuery-TableSorter
 Requires:   python-XStatic-JQuery-quicksearch
 Requires:   python-XStatic-JSEncrypt
 Requires:   python-XStatic-Jasmine
-Requires:   python-XStatic-QUnit
 Requires:   python-XStatic-Rickshaw
 Requires:   python-XStatic-Spin
 Requires:   python-XStatic-jquery-ui
@@ -133,12 +128,13 @@ Requires:   python-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
 
 Requires:   python-oslo-concurrency >= 3.8.0
-Requires:   python-oslo-config >= 2:3.14.0
+Requires:   python-oslo-config >= 2:4.0.0
 Requires:   python-oslo-i18n >= 2.1.0
 Requires:   python-oslo-serialization >= 1.10.0
-Requires:   python-oslo-utils >= 3.18.0
-Requires:   python-oslo-policy >= 1.17.0
+Requires:   python-oslo-utils >= 3.20.0
+Requires:   python-oslo-policy >= 1.23.0
 Requires:   python-babel
+Requires:   python-futurist
 Requires:   python-pint
 
 Requires:   openssl
@@ -146,18 +142,16 @@ Requires:   logrotate
 
 Requires:   PyYAML >= 3.10
 
-BuildRequires: python-django-openstack-auth >= 1.1.7
+BuildRequires: python-django-openstack-auth >= 3.5.0
 BuildRequires: python-django-compressor >= 2.0
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
-BuildRequires: python-oslo-config
 BuildRequires: python-semantic_version
 BuildRequires: python-django-pyscss >= 2.0.2
 BuildRequires: python-XStatic
 BuildRequires: python-XStatic-jQuery
 BuildRequires: python-XStatic-Angular >= 1:1.3.7
 BuildRequires: python-XStatic-Angular-Bootstrap
-BuildRequires: python-XStatic-Angular-Mock
 BuildRequires: python-XStatic-Angular-Schema-Form
 BuildRequires: python-XStatic-D3
 BuildRequires: python-XStatic-Font-Awesome
@@ -167,7 +161,6 @@ BuildRequires: python-XStatic-JQuery-TableSorter
 BuildRequires: python-XStatic-JQuery-quicksearch
 BuildRequires: python-XStatic-JSEncrypt
 BuildRequires: python-XStatic-Jasmine
-BuildRequires: python-XStatic-QUnit
 BuildRequires: python-XStatic-Rickshaw
 BuildRequires: python-XStatic-Spin
 BuildRequires: python-XStatic-jquery-ui
@@ -222,9 +215,6 @@ BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
 BuildRequires: python-heatclient
-BuildRequires: python-ceilometerclient
-BuildRequires: python-troveclient >= 1.0.0
-BuildRequires: python-saharaclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
