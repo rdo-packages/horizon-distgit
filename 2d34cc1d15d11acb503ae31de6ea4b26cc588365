@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_043f9526",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2017-08-17T15:17:25Z",
+      "side": 1,
+      "message": "I think it\u0027s better to specify permissions here using %attr(0644, root, root)",
+      "revId": "2d34cc1d15d11acb503ae31de6ea4b26cc588365",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
