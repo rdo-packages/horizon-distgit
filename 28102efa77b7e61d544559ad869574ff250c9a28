@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_0ef6ccd7",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 80
+      },
+      "writtenOn": "2017-08-22T20:09:14Z",
+      "side": 1,
+      "message": "could you please remove this line here, the comment doesn\u0027t really fit anymore.",
+      "revId": "28102efa77b7e61d544559ad869574ff250c9a28",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a890539_ae269866",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 80
+      },
+      "writtenOn": "2017-08-22T20:09:14Z",
+      "side": 1,
+      "message": "test run is launched via tox now. Since https://github.com/openstack/horizon/commit/6529cd1eb8aef16b7ded96779c684644ed5a9fe0 there is no run_tests.sh anymore.",
+      "revId": "28102efa77b7e61d544559ad869574ff250c9a28",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
