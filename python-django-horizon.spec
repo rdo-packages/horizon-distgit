@@ -1,4 +1,11 @@
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
+%global rhosp 0
+
+%if 0%{?rhosp} == 0
+%global with_translation_extraction_support 1
+%else
+%global with_translation_extraction_support 0
+%endif
 
 Name:       python-django-horizon
 # Liberty semver reset
@@ -81,7 +88,6 @@ Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
 Requires:   python-django-compressor >= 2.0
 Requires:   python-django-appconf
-Requires:   python-django-babel
 Requires:   python-lesscpy
 
 Requires:   python-iso8601
@@ -144,6 +150,10 @@ Requires:   openssl
 Requires:   logrotate
 
 Requires:   PyYAML >= 3.10
+
+%if 0%{?with_translation_extraction_support} == 1
+Requires:   python-django-babel
+%endif
 
 BuildRequires: python-django-compressor >= 2.0
 BuildRequires: python-django-appconf
