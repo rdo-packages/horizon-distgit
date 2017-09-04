@@ -16,6 +16,24 @@
       "revId": "a0f80f0fba0fb0d44a2dd8bd80aa1254a70c6f6f",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a890539_33103e01",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 237
+      },
+      "writtenOn": "2017-09-04T18:05:30Z",
+      "side": 1,
+      "message": "I didn\u0027t plan more changes.",
+      "parentUuid": "5a890539_33cbdea6",
+      "revId": "a0f80f0fba0fb0d44a2dd8bd80aa1254a70c6f6f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
