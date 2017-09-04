@@ -1,0 +1,9 @@
+Code-Review+2: Matthias Runge <mrunge@redhat.com>
+Code-Review+2: Radomir Dopieralski <openstack@sheep.art.pl>
+Workflow+1: Radomir Dopieralski <openstack@sheep.art.pl>
+Verified+2: Jenkins CI <admin@rpmfactory.beta.rdoproject.org>
+Submitted-by: Jenkins CI <admin@rpmfactory.beta.rdoproject.org>
+Submitted-at: Mon, 04 Sep 2017 17:43:11 +0000
+Reviewed-on: https://review.rdoproject.org/r/8464
+Project: openstack/horizon-distgit
+Branch: refs/heads/rpm-master
