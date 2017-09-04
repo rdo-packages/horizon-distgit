@@ -5,7 +5,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    12.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -167,7 +167,7 @@ BuildRequires: python-XStatic-Rickshaw
 BuildRequires: python-XStatic-Spin
 BuildRequires: python-XStatic-jquery-ui
 BuildRequires: python-XStatic-Bootstrap-Datepicker
-BuildRequires: python-XStatic-Bootstrap-SCSS
+BuildRequires: python-XStatic-Bootstrap-SCSS >= 3.3.7.1
 BuildRequires: python-XStatic-termjs
 BuildRequires: python-XStatic-smart-table
 BuildRequires: python-XStatic-Angular-lrdragndrop
@@ -430,6 +430,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Oct 04 2017 Radomir Dopieralski <rdopiera@redhat.com> 1:12.0.0-2
+- Require at least 3.3.7.1 version of XStatic-bootstrap-SCSS package
+
 * Wed Aug 30 2017 rdo-trunk <javier.pena@redhat.com> 1:12.0.0-1
 - Update to 12.0.0
 
