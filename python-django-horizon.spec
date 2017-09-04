@@ -109,7 +109,7 @@ Requires:   python-XStatic-Rickshaw
 Requires:   python-XStatic-Spin
 Requires:   python-XStatic-jquery-ui
 Requires:   python-XStatic-Bootstrap-Datepicker
-Requires:   python-XStatic-Bootstrap-SCSS
+Requires:   python-XStatic-Bootstrap-SCSS >= 3.3.7.1
 Requires:   python-XStatic-termjs
 Requires:   python-XStatic-smart-table
 Requires:   python-XStatic-Angular-lrdragndrop
