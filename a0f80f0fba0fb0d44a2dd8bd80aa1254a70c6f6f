@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_33cbdea6",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2017-09-04T17:37:19Z",
+      "side": 1,
+      "message": "If you plan to add include more changes in the rebuild, keep NVR bump as a separate patch at the end, to avoid unnecessary interim rebuilds.\n(CBS automation builds new build for each NVR bump in the spec on *-rdo branches)",
+      "revId": "a0f80f0fba0fb0d44a2dd8bd80aa1254a70c6f6f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
