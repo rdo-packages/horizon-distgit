@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a890539_f326b6b9",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 85
+      },
+      "writtenOn": "2017-09-04T17:01:42Z",
+      "side": 1,
+      "message": "buildroot gets latest version automatically\nyou want to change _runtime_ dep in line 116",
+      "revId": "82ad927d0706554e07433a2f51bb702d33b13a59",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
