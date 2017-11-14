@@ -57,6 +57,12 @@ BuildRequires:   python-iso8601
 
 # additional provides to be consistent with other django packages
 Provides: django-horizon = %{epoch}:%{version}-%{release}
+Obsoletes: python-django-openstack-auth < 3.5.1-1
+Obsoletes: python2-django-openstack-auth < 3.5.1-1
+# (TODO) remove following provides once the requirements have been fixed
+# in all dashboard plugins
+Provides: python-django-openstack-auth = %{epoch}:%{version}-%{release}
+Provides: python2-django-openstack-auth = %{epoch}:%{version}-%{release}
 
 %description
 Horizon is a Django application for providing Openstack UI components.
@@ -73,7 +79,6 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
-Requires:   python-django-openstack-auth >= 3.5.0
 Requires:   python-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-django-babel
@@ -82,6 +87,7 @@ Requires:   python-lesscpy
 Requires:   python-iso8601
 Requires:   python-glanceclient >= 1:2.8.0
 Requires:   python-keystoneclient >= 1:3.8.0
+Requires:   python-keystoneauth1 >= 3.2.0
 Requires:   python-novaclient >= 1:9.0.0
 Requires:   python-neutronclient >= 6.3.0
 Requires:   python-cinderclient >= 3.1.0
@@ -140,7 +146,6 @@ Requires:   logrotate
 
 Requires:   PyYAML >= 3.10
 
-BuildRequires: python-django-openstack-auth >= 3.5.0
 BuildRequires: python-django-compressor >= 2.0
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
@@ -360,6 +365,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{python_sitelib}/horizon/workflows
 %{python_sitelib}/horizon/karma.conf.js
 %{python_sitelib}/horizon/middleware
+%{python_sitelib}/openstack_auth
 %{python_sitelib}/*.egg-info
 
 %files -n openstack-dashboard -f dashboard.lang
