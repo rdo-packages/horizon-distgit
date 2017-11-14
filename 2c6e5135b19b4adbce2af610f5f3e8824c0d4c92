@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da86d52c_fd7dcfb2",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2017-11-14T09:36:30Z",
+      "side": 1,
+      "message": "Missing Provides/Obsoletes to make this backwards compatible.",
+      "revId": "2c6e5135b19b4adbce2af610f5f3e8824c0d4c92",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da86d52c_dd800b8e",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2017-11-14T09:36:30Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this. Current python2-django-openstack-auth package installs openstack_auth in regular site-packages location:\n\nrpm -qlp https://trunk.rdoproject.org/centos7-master/current/python2-django-openstack-auth-3.5.1-0.20171109174243.1fa9ae2.el7.centos.noarch.rpm",
+      "revId": "2c6e5135b19b4adbce2af610f5f3e8824c0d4c92",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
