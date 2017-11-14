@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da86d52c_182631bb",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 113
+      },
+      "writtenOn": "2017-11-14T10:55:49Z",
+      "side": 1,
+      "message": "I would suggest that we create a new subpackage for this, and call it python-django-openstack-auth. This would provide a much more seamless transition.",
+      "revId": "793b96b71fe02a1ffb9dd7236845fb13d409aeba",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
