@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "da86d52c_c392ea9e",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 113
+      },
+      "writtenOn": "2017-11-14T15:43:56Z",
+      "side": 1,
+      "message": "rpmlint complaints if we do Obsoletes: without Provides:\n\nI\u0027d just provide/obsolete both packages, with \u003c 3.5.1-1 as you mentioned, together with the deps fixes in the depending packages.",
+      "parentUuid": "da86d52c_43527a14",
+      "revId": "793b96b71fe02a1ffb9dd7236845fb13d409aeba",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da86d52c_63577e03",
         "filename": "python-django-horizon.spec",
         "patchSetId": 3
