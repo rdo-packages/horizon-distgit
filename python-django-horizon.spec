@@ -4,8 +4,8 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    12.0.0
-Release:    2%{?dist}
+Version:    12.0.1
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -430,6 +430,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Tue Nov 21 2017 RDO <dev@lists.rdoproject.org> 1:12.0.1-1
+- Update to 12.0.1
+
 * Mon Oct 04 2017 Radomir Dopieralski <rdopiera@redhat.com> 1:12.0.0-2
 - Require at least 3.3.7.1 version of XStatic-bootstrap-SCSS package
 
