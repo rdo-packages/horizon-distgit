@@ -92,7 +92,6 @@ Requires:   python-novaclient >= 1:9.0.0
 Requires:   python-neutronclient >= 6.3.0
 Requires:   python-cinderclient >= 3.1.0
 Requires:   python-swiftclient >= 3.2.0
-Requires:   python-heatclient >= 1.6.1
 Requires:   python-netaddr
 Requires:   python-osprofiler >= 1.4.0
 Requires:   python-pymongo >= 3.0.2
@@ -217,7 +216,6 @@ BuildRequires: python-novaclient >= 1:6.0.0
 BuildRequires: python-neutronclient
 BuildRequires: python-cinderclient
 BuildRequires: python-swiftclient
-BuildRequires: python-heatclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -413,7 +411,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/heat_policy.json
 %config(noreplace) %attr(0644, root, root) %{_sysconfdir}/logrotate.d/openstack-dashboard
 %attr(755,root,root) %dir %{_unitdir}/httpd.service.d
 %config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
