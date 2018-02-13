@@ -287,6 +287,15 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
 
+%pre
+if [ -d %{_sysconfdir}/openstack-dashboard/local_settings.d ]; then
+    rm -f %{_sysconfdir}/openstack-dashboard/local_settings.d
+    mkdir -p %{_sysconfdir}/openstack-dashboard/local_settings.d
+    mv %{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d/* %{_sysconfdir}/openstack-dashboard/local_settings.d
+    rmdir %{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
+    ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings.d %{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
+fi
+
 %install
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
@@ -314,6 +323,11 @@ find %{buildroot} -name djangojs.po -exec rm '{}' \;
 # Move config to /etc, symlink it back to /usr/share
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s ../../../../../%{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
+
+mkdir -p %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings.d
+mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d/* %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings.d
+rmdir %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
+ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings.d %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
 
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %{buildroot}%{_sysconfdir}/openstack-dashboard
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/cinder_policy.d %{buildroot}%{_sysconfdir}/openstack-dashboard
@@ -414,6 +428,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/.eslintrc
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
+%dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings.d/
+%{_sysconfdir}/openstack-dashboard/local_settings.d/*.example
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.d/
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_var}/log/horizon
