@@ -36,31 +36,31 @@ Source5:    python-django-horizon-logrotate.conf
 
 BuildArch:  noarch
 
-BuildRequires:   python-django
-Requires:   python-django
+BuildRequires:   python2-django
+Requires:   python2-django
 
 
-Requires:   pytz
-Requires:   python-six >= 1.9.0
-Requires:   python-pbr
+Requires:   python2-pytz
+Requires:   python2-six >= 1.10.0
+Requires:   python2-pbr
 
 BuildRequires: python2-devel
-BuildRequires: python-setuptools
-BuildRequires: python-pbr >= 2.0.0
+BuildRequires: python2-setuptools
+BuildRequires: python2-pbr >= 2.0.0
 BuildRequires: git
-BuildRequires: python-six >= 1.9.0
+BuildRequires: python2-six >= 1.10.0
 BuildRequires: gettext
 
 # for checks:
-BuildRequires:   python-django-nose
-BuildRequires:   python-mox3
+BuildRequires:   python2-django-nose
+BuildRequires:   python2-mox3
 BuildRequires:   python-nose-exclude
-BuildRequires:   python-nose
+BuildRequires:   python2-nose
 BuildRequires:   python-selenium
-BuildRequires:   python-osprofiler
-BuildRequires:   python-netaddr
+BuildRequires:   python2-osprofiler
+BuildRequires:   python2-netaddr
 BuildRequires:   python-anyjson
-BuildRequires:   python-iso8601
+BuildRequires:   python2-iso8601
 
 # additional provides to be consistent with other django packages
 Provides: django-horizon = %{epoch}:%{version}-%{release}
@@ -86,64 +86,65 @@ Group:      Applications/System
 Requires:   httpd
 Requires:   mod_wsgi
 Requires:   %{name} = %{epoch}:%{version}-%{release}
-Requires:   python-django-compressor >= 2.0
+Requires:   python2-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-lesscpy
 
-Requires:   python-iso8601
-Requires:   python-glanceclient >= 1:2.8.0
-Requires:   python-keystoneclient >= 1:3.8.0
-Requires:   python-keystoneauth1 >= 3.2.0
-Requires:   python-novaclient >= 1:9.0.0
-Requires:   python-neutronclient >= 6.3.0
-Requires:   python-cinderclient >= 3.1.0
-Requires:   python-swiftclient >= 3.2.0
-Requires:   python-netaddr
-Requires:   python-osprofiler >= 1.4.0
+Requires:   python2-iso8601
+Requires:   python2-glanceclient >= 1:2.8.0
+Requires:   python2-keystoneclient >= 1:3.8.0
+Requires:   python2-keystoneauth1 >= 3.3.0
+Requires:   python2-novaclient >= 1:9.1.0
+Requires:   python2-neutronclient >= 6.7.0
+Requires:   python2-cinderclient >= 3.3.0
+Requires:   python2-swiftclient >= 3.2.0
+Requires:   python2-netaddr
+Requires:   python2-osprofiler >= 1.4.0
 Requires:   python-pymongo >= 3.0.2
-Requires:   python-django-pyscss >= 2.0.2
+Requires:   python2-django-pyscss >= 2.0.2
 Requires:   python-semantic_version
-Requires:   python-XStatic
+Requires:   python2-XStatic
 Requires:   python-XStatic-jQuery
-Requires:   python-XStatic-Angular >= 1:1.3.7
-Requires:   python-XStatic-Angular-Bootstrap
-Requires:   python-XStatic-Angular-Schema-Form
-Requires:   python-XStatic-D3
-Requires:   python-XStatic-Font-Awesome
+Requires:   python2-XStatic-Angular >= 1:1.5.8.0
+Requires:   python2-XStatic-Angular-Bootstrap
+Requires:   python2-XStatic-Angular-Schema-Form
+Requires:   python2-XStatic-D3
+Requires:   python2-XStatic-Font-Awesome
 Requires:   python-XStatic-Hogan
 Requires:   python-XStatic-JQuery-Migrate
 Requires:   python-XStatic-JQuery-TableSorter
 Requires:   python-XStatic-JQuery-quicksearch
-Requires:   python-XStatic-JSEncrypt
-Requires:   python-XStatic-Jasmine
+Requires:   python2-XStatic-JSEncrypt
+Requires:   python2-XStatic-Jasmine
 Requires:   python-XStatic-Rickshaw
 Requires:   python-XStatic-Spin
 Requires:   python-XStatic-jquery-ui
 Requires:   python-XStatic-Bootstrap-Datepicker
-Requires:   python-XStatic-Bootstrap-SCSS >= 3.3.7.1
-Requires:   python-XStatic-termjs
-Requires:   python-XStatic-smart-table
+Requires:   python2-XStatic-Bootstrap-SCSS >= 3.3.7.1
+Requires:   python2-XStatic-termjs
+Requires:   python2-XStatic-smart-table
 Requires:   python-XStatic-Angular-lrdragndrop
-Requires:   python-XStatic-Angular-Gettext
-Requires:   python-XStatic-Angular-FileUpload
+Requires:   python2-XStatic-Angular-Gettext
+Requires:   python2-XStatic-Angular-FileUpload
 Requires:   python-XStatic-Magic-Search
-Requires:   python-XStatic-bootswatch
-Requires:   python-XStatic-roboto-fontface >= 0.5.0.0
-Requires:   python-XStatic-mdi
-Requires:   python-XStatic-objectpath
-Requires:   python-XStatic-tv4
+Requires:   python2-XStatic-bootswatch
+Requires:   python2-XStatic-roboto-fontface >= 0.5.0.0
+Requires:   python2-XStatic-mdi
+Requires:   python2-XStatic-objectpath
+Requires:   python2-XStatic-tv4
+Requires:   python-semantic-version >= 2.3.1
 
-Requires:   python-scss >= 1.3.4
+Requires:   python2-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
 
-Requires:   python-oslo-concurrency >= 3.8.0
-Requires:   python-oslo-config >= 2:4.0.0
-Requires:   python-oslo-i18n >= 2.1.0
-Requires:   python-oslo-serialization >= 1.10.0
-Requires:   python-oslo-utils >= 3.20.0
-Requires:   python-oslo-policy >= 1.23.0
-Requires:   python-babel
-Requires:   python-futurist
+Requires:   python2-oslo-concurrency >= 3.25.0
+Requires:   python2-oslo-config >= 2:5.1.0
+Requires:   python2-oslo-i18n >= 3.15.3
+Requires:   python2-oslo-serialization >= 2.18.0
+Requires:   python2-oslo-utils >= 3.33.0
+Requires:   python2-oslo-policy >= 1.30.0
+Requires:   python2-babel
+Requires:   python2-futurist
 Requires:   python-pint
 
 Requires:   openssl
@@ -152,53 +153,53 @@ Requires:   logrotate
 Requires:   PyYAML >= 3.10
 
 %if 0%{?with_translation_extraction_support} == 1
-Requires:   python-django-babel
+Requires:   python2-django-babel
 %endif
 
-BuildRequires: python-django-compressor >= 2.0
+BuildRequires: python2-django-compressor >= 2.0
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
 BuildRequires: python-semantic_version
-BuildRequires: python-django-pyscss >= 2.0.2
-BuildRequires: python-XStatic
+BuildRequires: python2-django-pyscss >= 2.0.2
+BuildRequires: python2-XStatic
 BuildRequires: python-XStatic-jQuery
-BuildRequires: python-XStatic-Angular >= 1:1.3.7
-BuildRequires: python-XStatic-Angular-Bootstrap
-BuildRequires: python-XStatic-Angular-Schema-Form
-BuildRequires: python-XStatic-D3
-BuildRequires: python-XStatic-Font-Awesome
+BuildRequires: python2-XStatic-Angular >= 1:1.5.8.0
+BuildRequires: python2-XStatic-Angular-Bootstrap
+BuildRequires: python2-XStatic-Angular-Schema-Form
+BuildRequires: python2-XStatic-D3
+BuildRequires: python2-XStatic-Font-Awesome
 BuildRequires: python-XStatic-Hogan
 BuildRequires: python-XStatic-JQuery-Migrate
 BuildRequires: python-XStatic-JQuery-TableSorter
 BuildRequires: python-XStatic-JQuery-quicksearch
-BuildRequires: python-XStatic-JSEncrypt
-BuildRequires: python-XStatic-Jasmine
+BuildRequires: python2-XStatic-JSEncrypt
+BuildRequires: python2-XStatic-Jasmine
 BuildRequires: python-XStatic-Rickshaw
 BuildRequires: python-XStatic-Spin
 BuildRequires: python-XStatic-jquery-ui
 BuildRequires: python-XStatic-Bootstrap-Datepicker
-BuildRequires: python-XStatic-Bootstrap-SCSS
-BuildRequires: python-XStatic-termjs
-BuildRequires: python-XStatic-smart-table
+BuildRequires: python2-XStatic-Bootstrap-SCSS
+BuildRequires: python2-XStatic-termjs
+BuildRequires: python2-XStatic-smart-table
 BuildRequires: python-XStatic-Angular-lrdragndrop
-BuildRequires: python-XStatic-Angular-FileUpload
+BuildRequires: python2-XStatic-Angular-FileUpload
 BuildRequires: python-XStatic-Magic-Search
-BuildRequires: python-XStatic-Angular-Gettext
-BuildRequires: python-XStatic-bootswatch
-BuildRequires: python-XStatic-roboto-fontface
-BuildRequires: python-XStatic-mdi
-BuildRequires: python-XStatic-objectpath
-BuildRequires: python-XStatic-tv4
-# bootstrap-scss requires at least python-scss >= 1.2.1
-BuildRequires: python-scss >= 1.3.4
+BuildRequires: python2-XStatic-Angular-Gettext
+BuildRequires: python2-XStatic-bootswatch
+BuildRequires: python2-XStatic-roboto-fontface
+BuildRequires: python2-XStatic-mdi
+BuildRequires: python2-XStatic-objectpath
+BuildRequires: python2-XStatic-tv4
+# bootstrap-scss requires at least python2-scss >= 1.2.1
+BuildRequires: python2-scss >= 1.3.4
 BuildRequires: fontawesome-fonts-web >= 4.1.0
-BuildRequires: python-oslo-concurrency
-BuildRequires: python-oslo-config
-BuildRequires: python-oslo-i18n
-BuildRequires: python-oslo-serialization
-BuildRequires: python-oslo-utils
-BuildRequires: python-oslo-policy
-BuildRequires: python-babel
+BuildRequires: python2-oslo-concurrency
+BuildRequires: python2-oslo-config
+BuildRequires: python2-oslo-i18n
+BuildRequires: python2-oslo-serialization
+BuildRequires: python2-oslo-utils
+BuildRequires: python2-oslo-policy
+BuildRequires: python2-babel
 BuildRequires: python-pint
 
 BuildRequires: pytz
@@ -219,13 +220,13 @@ Requires:   %{name} = %{epoch}:%{version}-%{release}
 BuildRequires: python-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
-BuildRequires: python-openstackdocstheme
-BuildRequires: python-glanceclient
-BuildRequires: python-keystoneclient
-BuildRequires: python-novaclient >= 1:6.0.0
-BuildRequires: python-neutronclient
-BuildRequires: python-cinderclient
-BuildRequires: python-swiftclient
+BuildRequires: python2-openstackdocstheme
+BuildRequires: python2-glanceclient
+BuildRequires: python2-keystoneclient
+BuildRequires: python2-novaclient >= 1:9.1.0
+BuildRequires: python2-neutronclient
+BuildRequires: python2-cinderclient
+BuildRequires: python2-swiftclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
