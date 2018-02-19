@@ -90,6 +90,8 @@ Requires:   python2-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-lesscpy
 
+Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
+
 Requires:   python2-iso8601
 Requires:   python2-glanceclient >= 1:2.8.0
 Requires:   python2-keystoneclient >= 1:3.8.0
