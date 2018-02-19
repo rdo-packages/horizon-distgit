@@ -90,6 +90,7 @@ Requires:   python2-django-compressor >= 2.0
 Requires:   python-django-appconf
 Requires:   python-lesscpy
 
+<<<<<<< HEAD
 Requires:   python2-iso8601
 Requires:   python2-glanceclient >= 1:2.8.0
 Requires:   python2-keystoneclient >= 1:3.8.0
@@ -100,6 +101,22 @@ Requires:   python2-cinderclient >= 3.3.0
 Requires:   python2-swiftclient >= 3.2.0
 Requires:   python2-netaddr
 Requires:   python2-osprofiler >= 1.4.0
+=======
+%if 0%{?rhosp} != 0
+Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
+%endif
+
+Requires:   python-iso8601
+Requires:   python-glanceclient >= 1:2.8.0
+Requires:   python-keystoneclient >= 1:3.8.0
+Requires:   python-keystoneauth1 >= 3.2.0
+Requires:   python-novaclient >= 1:9.0.0
+Requires:   python-neutronclient >= 6.3.0
+Requires:   python-cinderclient >= 3.1.0
+Requires:   python-swiftclient >= 3.2.0
+Requires:   python-netaddr
+Requires:   python-osprofiler >= 1.4.0
+>>>>>>> 69af4e4... Add downstream-only dependency on the downstream theme
 Requires:   python-pymongo >= 3.0.2
 Requires:   python2-django-pyscss >= 2.0.2
 Requires:   python-semantic_version
