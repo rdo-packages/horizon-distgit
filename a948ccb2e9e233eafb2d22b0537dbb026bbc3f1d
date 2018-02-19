@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aaa499b_d6f6d3d6",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2018-02-19T20:05:07Z",
+      "side": 1,
+      "message": "This package exist in upstream RDO also (in fact it\u0027s a subpackage of this spec), does this dependency is only needed in downstream?",
+      "range": {
+        "startLine": 94,
+        "startChar": 12,
+        "endLine": 94,
+        "endChar": 37
+      },
+      "revId": "a948ccb2e9e233eafb2d22b0537dbb026bbc3f1d",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
