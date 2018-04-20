@@ -64,8 +64,8 @@ BuildRequires:   python-iso8601
 
 # additional provides to be consistent with other django packages
 Provides: django-horizon = %{epoch}:%{version}-%{release}
-Obsoletes: python-django-openstack-auth < 3.5.1-1
-Obsoletes: python2-django-openstack-auth < 3.5.1-1
+Obsoletes: python-django-openstack-auth < 4.0.0-1
+Obsoletes: python2-django-openstack-auth < 4.0.0-1
 # (TODO) remove following provides once the requirements have been fixed
 # in all dashboard plugins
 Provides: python-django-openstack-auth = %{epoch}:%{version}-%{release}
