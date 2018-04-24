@@ -281,6 +281,7 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 
 
 # build docs
+export PYTHONPATH=.
 sphinx-build -b html doc/source html
 
 # undo hack
