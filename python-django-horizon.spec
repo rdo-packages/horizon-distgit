@@ -61,6 +61,7 @@ BuildRequires:   python-osprofiler
 BuildRequires:   python-netaddr
 BuildRequires:   python-anyjson
 BuildRequires:   python-iso8601
+BuildRequires:   python-pep8
 
 # additional provides to be consistent with other django packages
 Provides: django-horizon = %{epoch}:%{version}-%{release}
@@ -344,7 +345,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
 cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %check
-%{__python2} manage.py test horizon --settings=horizon.test.settings --ignore-files="(test_checks|firefox_binary|webdriver|pull_catalog)"
+%{__python2} manage.py test horizon --settings=horizon.test.settings
 
 %post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
