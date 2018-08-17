@@ -95,14 +95,14 @@ Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
 
 Requires:   python2-iso8601
 Requires:   python2-glanceclient >= 1:2.8.0
-Requires:   python2-keystoneclient >= 1:3.8.0
-Requires:   python2-keystoneauth1 >= 3.3.0
+Requires:   python2-keystoneclient >= 1:3.15.0
+Requires:   python2-keystoneauth1 >= 3.4.0
 Requires:   python2-novaclient >= 1:9.1.0
-Requires:   python2-neutronclient >= 6.3.0
+Requires:   python2-neutronclient >= 6.7.0
 Requires:   python2-cinderclient >= 3.3.0
 Requires:   python2-swiftclient >= 3.2.0
 Requires:   python2-netaddr
-Requires:   python2-osprofiler >= 1.4.0
+Requires:   python2-osprofiler >= 2.3.0
 Requires:   python-pymongo >= 3.0.2
 Requires:   python2-django-pyscss >= 2.0.2
 Requires:   python-semantic_version
@@ -139,8 +139,8 @@ Requires:   python2-XStatic-tv4
 Requires:   python2-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
 
-Requires:   python2-oslo-concurrency >= 3.24.0
-Requires:   python2-oslo-config >= 2:5.1.0
+Requires:   python2-oslo-concurrency >= 3.26.0
+Requires:   python2-oslo-config >= 2:5.2.0
 Requires:   python2-oslo-i18n >= 3.15.3
 Requires:   python2-oslo-serialization >= 2.18.0
 Requires:   python2-oslo-utils >= 3.33.0
@@ -225,7 +225,7 @@ BuildRequires: python-sphinx >= 1.1.3
 BuildRequires: python2-openstackdocstheme
 BuildRequires: python2-glanceclient
 BuildRequires: python2-keystoneclient
-BuildRequires: python2-novaclient >= 1:6.0.0
+BuildRequires: python2-novaclient >= 1:9.1.0
 BuildRequires: python2-neutronclient
 BuildRequires: python2-cinderclient
 BuildRequires: python2-swiftclient
@@ -242,9 +242,6 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 
 %prep
 %autosetup -n horizon-%{upstream_version} -S git
-
-# drop config snippet
-cp -p %{SOURCE4} .
 
 # customize default settings
 # WAS [PATCH] disable debug, move web root
@@ -299,6 +296,9 @@ install -m 0644 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/httpd/conf.d/opensta
 install -d -m 755 %{buildroot}%{_datadir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sharedstatedir}/openstack-dashboard
 install -d -m 755 %{buildroot}%{_sysconfdir}/openstack-dashboard
+
+# drop config snippet
+install -m 0644 -D -p %{SOURCE4} .
 
 # create directory for systemd snippet
 mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
