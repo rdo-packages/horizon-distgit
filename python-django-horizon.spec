@@ -95,14 +95,14 @@ Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
 
 Requires:   python2-iso8601
 Requires:   python2-glanceclient >= 1:2.8.0
-Requires:   python2-keystoneclient >= 1:3.8.0
-Requires:   python2-keystoneauth1 >= 3.3.0
+Requires:   python2-keystoneclient >= 1:3.15.0
+Requires:   python2-keystoneauth1 >= 3.4.0
 Requires:   python2-novaclient >= 1:9.1.0
-Requires:   python2-neutronclient >= 6.3.0
+Requires:   python2-neutronclient >= 6.7.0
 Requires:   python2-cinderclient >= 3.3.0
 Requires:   python2-swiftclient >= 3.2.0
 Requires:   python2-netaddr
-Requires:   python2-osprofiler >= 1.4.0
+Requires:   python2-osprofiler >= 2.3.0
 Requires:   python-pymongo >= 3.0.2
 Requires:   python2-django-pyscss >= 2.0.2
 Requires:   python-semantic_version
@@ -139,8 +139,8 @@ Requires:   python2-XStatic-tv4
 Requires:   python2-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
 
-Requires:   python2-oslo-concurrency >= 3.24.0
-Requires:   python2-oslo-config >= 2:5.1.0
+Requires:   python2-oslo-concurrency >= 3.26.0
+Requires:   python2-oslo-config >= 2:5.2.0
 Requires:   python2-oslo-i18n >= 3.15.3
 Requires:   python2-oslo-serialization >= 2.18.0
 Requires:   python2-oslo-utils >= 3.33.0
@@ -165,7 +165,7 @@ BuildRequires: python-semantic_version
 BuildRequires: python2-django-pyscss >= 2.0.2
 BuildRequires: python2-XStatic
 BuildRequires: python-XStatic-jQuery
-BuildRequires: python2-XStatic-Angular >= 1:1.5.8.0
+BuildRequires: python2-XStatic-Angular >= 1.5.8.0
 BuildRequires: python2-XStatic-Angular-Bootstrap
 BuildRequires: python2-XStatic-Angular-Schema-Form
 BuildRequires: python2-XStatic-D3
@@ -225,7 +225,7 @@ BuildRequires: python-sphinx >= 1.1.3
 BuildRequires: python2-openstackdocstheme
 BuildRequires: python2-glanceclient
 BuildRequires: python2-keystoneclient
-BuildRequires: python2-novaclient >= 1:6.0.0
+BuildRequires: python2-novaclient >= 1:9.1.0
 BuildRequires: python2-neutronclient
 BuildRequires: python2-cinderclient
 BuildRequires: python2-swiftclient
@@ -359,7 +359,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{systemd_postun}
 
 %files -f horizon.lang
-%doc README.rst openstack-dashboard-httpd-logging.conf
+%doc README.rst
+%attr(0644, -, -) %doc openstack-dashboard-httpd-logging.conf
 %license LICENSE
 %dir %{python_sitelib}/horizon
 %{python_sitelib}/horizon/*.py*
