@@ -1,0 +1,9 @@
+Code-Review+2: Alfredo Moralejo <amoralej@redhat.com>
+Code-Review+2: Matthias Runge <mrunge@redhat.com>
+Workflow+1: Matthias Runge <mrunge@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Fri, 17 Aug 2018 20:07:51 +0000
+Reviewed-on: https://review.rdoproject.org/r/15578
+Project: openstack/horizon-distgit
+Branch: refs/heads/rpm-master
