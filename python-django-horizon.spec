@@ -309,6 +309,7 @@ cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
 mv %{buildroot}%{python_sitelib}/openstack_dashboard \
    %{buildroot}%{_datadir}/openstack-dashboard
 cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
+cp openstack_dashboard/wsgi.py %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/
 rm -rf %{buildroot}%{python_sitelib}/openstack_dashboard
 
 # remove unnecessary .po files
