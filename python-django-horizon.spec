@@ -233,12 +233,14 @@ BuildRequires: python2-swiftclient
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
 
+%if 0%{rhosp} == 0
 %package -n openstack-dashboard-theme
 Summary: OpenStack web user interface reference implementation theme module
 Requires: openstack-dashboard = %{epoch}:%{version}-%{release}
 
 %description -n openstack-dashboard-theme
 Customization module for OpenStack Dashboard to provide a branded logo.
+%endif
 
 %prep
 %autosetup -n horizon-%{upstream_version} -S git
@@ -438,8 +440,10 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %doc html
 %license LICENSE
 
+%if 0%{rhosp} == 0
 %files -n openstack-dashboard-theme
 #%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
+%endif
 
 %changelog
