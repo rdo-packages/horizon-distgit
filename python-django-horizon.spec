@@ -135,6 +135,7 @@ Requires:   python2-XStatic-roboto-fontface >= 0.5.0.0
 Requires:   python2-XStatic-mdi
 Requires:   python2-XStatic-objectpath
 Requires:   python2-XStatic-tv4
+Requires:   python2-django-debreach
 
 Requires:   python2-scss >= 1.3.4
 Requires:   fontawesome-fonts-web >= 4.1.0
@@ -158,6 +159,7 @@ Requires:   PyYAML >= 3.10
 Requires:   python-django-babel
 %endif
 
+BuildRequires: python2-django-debreach
 BuildRequires: python2-django-compressor >= 2.0
 BuildRequires: python-django-appconf
 BuildRequires: python-lesscpy
