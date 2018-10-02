@@ -340,6 +340,9 @@ sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard
 # Fix manage.py shebang
 sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python%{pyver}/' manage.py
 
+# Fix python executable depending on python version
+sed -i 's/\/usr\/bin\/python /\/usr\/bin\/python%{pyver} /g' %{SOURCE3}
+
 %build
 # compile message strings
 cd horizon && django-admin compilemessages && cd ..
