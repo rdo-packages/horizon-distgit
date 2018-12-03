@@ -11,7 +11,7 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    14.0.1
+Version:    14.0.2
 Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
@@ -445,6 +445,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+* Mon Dec 03 2018 RDO <dev@lists.rdoproject.org> 1:14.0.2-1
+- Update to 14.0.2
+
 * Mon Oct 22 2018 RDO <dev@lists.rdoproject.org> 1:14.0.1-1
 - Update to 14.0.1
 
