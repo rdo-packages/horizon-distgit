@@ -83,6 +83,8 @@ BuildRequires:   python%{pyver}-mox3
 BuildRequires:   python%{pyver}-nose
 BuildRequires:   python%{pyver}-osprofiler
 BuildRequires:   python%{pyver}-iso8601
+BuildRequires:   python%{pyver}-pycodestyle
+BuildRequires:   python%{pyver}-mock
 
 # Handle python2 exception
 %if %{pyver} == 2
