@@ -20,6 +20,8 @@
 %global with_translation_extraction_support 0
 %endif
 
+%global with_doc 1
+
 Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
@@ -285,7 +287,12 @@ BuildRequires: python%{pyver}-XStatic-Angular-lrdragndrop
 BuildRequires: python%{pyver}-XStatic-Magic-Search
 BuildRequires: python%{pyver}-pint
 %endif
-
+BuildRequires: python%{pyver}-glanceclient
+BuildRequires: python%{pyver}-keystoneclient
+BuildRequires: python%{pyver}-novaclient >= 1:9.1.0
+BuildRequires: python%{pyver}-neutronclient
+BuildRequires: python%{pyver}-cinderclient
+BuildRequires: python%{pyver}-swiftclient
 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
@@ -293,7 +300,7 @@ provides a reference implementation using the Django Horizon project,
 mostly consisting of JavaScript and CSS to tie it altogether as a standalone
 site.
 
-
+%if 0%{?with_doc}
 %package doc
 Summary:    Documentation for Django Horizon
 Group:      Documentation
@@ -303,15 +310,10 @@ BuildRequires: python%{pyver}-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
 BuildRequires: python%{pyver}-openstackdocstheme
-BuildRequires: python%{pyver}-glanceclient
-BuildRequires: python%{pyver}-keystoneclient
-BuildRequires: python%{pyver}-novaclient >= 1:9.1.0
-BuildRequires: python%{pyver}-neutronclient
-BuildRequires: python%{pyver}-cinderclient
-BuildRequires: python%{pyver}-swiftclient
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
+%endif
 
 %package -n openstack-dashboard-theme
 Summary: OpenStack web user interface reference implementation theme module
@@ -363,16 +365,16 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 %{pyver_bin} manage.py collectstatic --noinput --clear
 %{pyver_bin} manage.py compress --force
 
-
+%if 0%{?with_doc}
 # build docs
 export PYTHONPATH=.
 sphinx-build-%{pyver} -b html doc/source html
-
+# Fix hidden-file-or-dir warnings
+rm -fr html/.doctrees html/.buildinfo
+%endif
 # undo hack
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 
-# Fix hidden-file-or-dir warnings
-rm -fr html/.doctrees html/.buildinfo
 
 %install
 %{pyver_install}
@@ -527,9 +529,11 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %attr(755,root,root) %dir %{_unitdir}/httpd.service.d
 %config(noreplace) %{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
+%if 0%{?with_doc}
 %files doc
 %doc html
 %license LICENSE
+%endif
 
 %files -n openstack-dashboard-theme
 #%{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/theme
