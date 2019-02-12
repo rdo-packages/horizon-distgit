@@ -542,3 +542,4 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 #%{_datadir}/openstack-dashboard/openstack_dashboard/enabled/_99_customization.*
 
 %changelog
+# REMOVEME: error caused by commit http://git.openstack.org/cgit/openstack/horizon/commit/?id=c3d3d2885318f5e9ca54e7c96bb6512f771a136e
