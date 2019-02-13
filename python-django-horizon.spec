@@ -195,6 +195,7 @@ Requires:   python-XStatic-Angular-lrdragndrop
 Requires:   python-XStatic-Magic-Search
 Requires:   python-pint
 Requires:   PyYAML >= 3.10
+Requires:   python-memcached
 %else
 Requires:   python%{pyver}-mod_wsgi
 Requires:   python%{pyver}-django-appconf
@@ -214,6 +215,7 @@ Requires:   python%{pyver}-XStatic-Angular-lrdragndrop
 Requires:   python%{pyver}-XStatic-Magic-Search
 Requires:   python%{pyver}-pint
 Requires:   python%{pyver}-PyYAML >= 3.10
+Requires:   python%{pyver}-memcached
 %endif
 
 %if 0%{?with_translation_extraction_support} == 1
@@ -272,6 +274,7 @@ BuildRequires: python-XStatic-Bootstrap-Datepicker
 BuildRequires: python-XStatic-Angular-lrdragndrop
 BuildRequires: python-XStatic-Magic-Search
 BuildRequires: python-pint
+BuildRequires: python-memcached
 %else
 BuildRequires: python%{pyver}-django-appconf
 BuildRequires: python%{pyver}-lesscpy
@@ -288,6 +291,7 @@ BuildRequires: python%{pyver}-XStatic-Bootstrap-Datepicker
 BuildRequires: python%{pyver}-XStatic-Angular-lrdragndrop
 BuildRequires: python%{pyver}-XStatic-Magic-Search
 BuildRequires: python%{pyver}-pint
+BuildRequires: python%{pyver}-memcached
 %endif
 BuildRequires: python%{pyver}-glanceclient
 BuildRequires: python%{pyver}-keystoneclient
