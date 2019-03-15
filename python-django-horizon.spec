@@ -168,6 +168,8 @@ Requires:   python%{pyver}-oslo-config >= 2:5.2.0
 Requires:   python%{pyver}-oslo-i18n >= 3.15.3
 Requires:   python%{pyver}-oslo-serialization >= 2.18.0
 Requires:   python%{pyver}-oslo-utils >= 3.33.0
+Requires:   python%{pyver}-oslo-upgradecheck >= 0.1.1
+Requires:   python%{pyver}-requests >= 2.14.2
 Requires:   python%{pyver}-oslo-policy >= 1.30.0
 Requires:   python%{pyver}-babel
 Requires:   python%{pyver}-futurist
