@@ -127,7 +127,13 @@ Requires:   httpd
 Requires:   python%{pyver}-django-horizon = %{epoch}:%{version}-%{release}
 Requires:   python%{pyver}-django-compressor >= 2.0
 
+%if 0%{rhosp} == 0
 Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
+%else
+%{lua: ver = rpm.expand("%version"); x, y = string.find(ver, "%.");
+maj = string.sub(ver, 1, x-1); rpm.define("version_major " .. maj .. ".0.0");}
+Requires:   openstack-dashboard-theme >= %{epoch}:%{version_major}
+%endif
 
 Requires:   python%{pyver}-iso8601
 Requires:   python%{pyver}-glanceclient >= 1:2.8.0
