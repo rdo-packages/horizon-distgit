@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28751a3d_da3d3565",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2019-05-17T07:26:02Z",
+      "side": 1,
+      "message": "This Requires should also be conditional or is openstack-dashboard-theme provided by some other package in osp?",
+      "range": {
+        "startLine": 132,
+        "startChar": 12,
+        "endLine": 132,
+        "endChar": 37
+      },
+      "revId": "f975a7171de340b044c9e22ee3493e5c261e19a5",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
+    }
+  ]
+}
