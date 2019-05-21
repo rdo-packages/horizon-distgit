@@ -14,7 +14,7 @@
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 %global rhosp 0
 
-%if 0%{?rhosp} == 0
+%if 0%{?rhosp} == 0 && %{rhel} < 8
 %global with_translation_extraction_support 1
 %else
 %global with_translation_extraction_support 0
