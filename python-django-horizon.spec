@@ -355,6 +355,11 @@ sed -i "/^COMPRESS_PARSER = .*/a COMPRESS_OFFLINE = True" openstack_dashboard/se
 # set COMPRESS_OFFLINE=True
 sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard/settings.py
 
+# Set help_url
+%if 0%{?rhosp}
+sed -i "s;'help_url': \"https://docs.openstack.org/\";'help_url': \"https://access.redhat.com/documentation/en/red-hat-openstack-platform/\";" openstack_dashboard/settings.py
+%endif
+
 # Fix manage.py shebang
 sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python%{pyver}/' manage.py
 
