@@ -141,7 +141,7 @@ Requires:   python%{pyver}-keystoneclient >= 1:3.15.0
 Requires:   python%{pyver}-keystoneauth1 >= 3.4.0
 Requires:   python%{pyver}-novaclient >= 1:9.1.0
 Requires:   python%{pyver}-neutronclient >= 6.7.0
-Requires:   python%{pyver}-cinderclient >= 3.3.0
+Requires:   python%{pyver}-cinderclient >= 4.0.1
 Requires:   python%{pyver}-swiftclient >= 3.2.0
 Requires:   python%{pyver}-netaddr
 Requires:   python%{pyver}-osprofiler >= 2.3.0
