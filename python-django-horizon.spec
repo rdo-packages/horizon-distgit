@@ -1,4 +1,4 @@
-%global milestone .0rc1
+%global milestone .0rc2
 # Macros for py2/py3 compatibility
 %if 0%{?fedora} || 0%{?rhel} > 7
 %global pyver %{python3_pkgversion}
@@ -28,7 +28,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    16.0.0
-Release:    0.1%{?milestone}%{?dist}
+Release:    0.2%{?milestone}%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -37,7 +37,7 @@ License:    ASL 2.0 and BSD
 URL:        http://horizon.openstack.org/
 Source0:    https://tarballs.openstack.org/horizon/horizon-%{upstream_version}.tar.gz
 #
-# patches_base=16.0.0.0rc1
+# patches_base=16.0.0.0rc2
 #
 
 Source2:    openstack-dashboard-httpd-2.4.conf
@@ -578,6 +578,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Fri Oct 11 2019 RDO <dev@lists.rdoproject.org> 1:16.0.0-0.2.0rc1
+- Update to 16.0.0.0rc2
+
 * Mon Sep 30 2019 RDO <dev@lists.rdoproject.org> 1:16.0.0-0.1.0rc1
 - Update to 16.0.0.0rc1
 
