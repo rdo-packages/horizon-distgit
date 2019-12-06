@@ -94,13 +94,11 @@ BuildRequires:   python-nose-exclude
 BuildRequires:   python-selenium
 BuildRequires:   python-netaddr
 BuildRequires:   python-anyjson
-BuildRequires:   python-pep8
 %else
 BuildRequires:   python%{pyver}-nose-exclude
 BuildRequires:   python%{pyver}-selenium
 BuildRequires:   python%{pyver}-netaddr
 BuildRequires:   python%{pyver}-anyjson
-BuildRequires:   python%{pyver}-pep8
 %endif
 
 
