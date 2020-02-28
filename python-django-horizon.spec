@@ -458,6 +458,8 @@ mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
 cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 
 %check
+# NOTE(jpena): we do not want to run hacking tests in check
+rm horizon/test/unit/hacking/test_checks.py
 %{pyver_bin} manage.py test horizon --settings=horizon.test.settings
 
 %post -n openstack-dashboard
