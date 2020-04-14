@@ -305,6 +305,7 @@ BuildRequires: python%{pyver}-novaclient >= 1:9.1.0
 BuildRequires: python%{pyver}-neutronclient
 BuildRequires: python%{pyver}-cinderclient
 BuildRequires: python%{pyver}-swiftclient
+BuildRequires: python%{pyver}-pytest
 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
