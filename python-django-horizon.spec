@@ -574,3 +574,4 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 
 %changelog
 
+# REMOVEME: error caused by commit http://git.openstack.org/cgit/openstack/horizon/commit/?id=cbe10335023700752f8832b23d06b386266cee04
