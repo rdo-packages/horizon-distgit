@@ -1,15 +1,3 @@
-# Macros for py2/py3 compatibility
-%if 0%{?fedora} || 0%{?rhel} > 7
-%global pyver %{python3_pkgversion}
-%else
-%global pyver 2
-%endif
-
-%global pyver_bin python%{pyver}
-%global pyver_sitelib %python%{pyver}_sitelib
-%global pyver_install %py%{pyver}_install
-%global pyver_build %py%{pyver}_build
-# End of macros for py2/py3 compatibility
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 %global rhosp 0
@@ -58,46 +46,38 @@ configuring users, accounts, quotas, flavors, etc.) and end user
 operations (start/stop/delete instances, create/restore snapshots, view
 instance VNC console, etc.)
 
-%package -n     python%{pyver}-django-horizon
+%package -n     python3-django-horizon
 Summary:    Django application for talking to Openstack
-%{?python_provide:%python_provide python%{pyver}-django-horizon}
+%{?python_provide:%python_provide python3-django-horizon}
 
-BuildRequires:   python%{pyver}-django
-Requires:   python%{pyver}-django
+BuildRequires:   python3-django
+Requires:   python3-django
 
 
-Requires:   python%{pyver}-pytz
-Requires:   python%{pyver}-six >= 1.10.0
-Requires:   python%{pyver}-pbr
+Requires:   python3-pytz
+Requires:   python3-six >= 1.10.0
+Requires:   python3-pbr
 
-BuildRequires: python%{pyver}-devel
-BuildRequires: python%{pyver}-setuptools
-BuildRequires: python%{pyver}-pbr >= 2.0.0
+BuildRequires: python3-devel
+BuildRequires: python3-setuptools
+BuildRequires: python3-pbr >= 2.0.0
 BuildRequires: git
-BuildRequires: python%{pyver}-six >= 1.10.0
+BuildRequires: python3-six >= 1.10.0
 BuildRequires: gettext
 
 # for checks:
-BuildRequires:   python%{pyver}-django-nose
-BuildRequires:   python%{pyver}-mox3
-BuildRequires:   python%{pyver}-nose
-BuildRequires:   python%{pyver}-osprofiler
-BuildRequires:   python%{pyver}-iso8601
-BuildRequires:   python%{pyver}-pycodestyle
-BuildRequires:   python%{pyver}-mock
+BuildRequires:   python3-django-nose
+BuildRequires:   python3-mox3
+BuildRequires:   python3-nose
+BuildRequires:   python3-osprofiler
+BuildRequires:   python3-iso8601
+BuildRequires:   python3-pycodestyle
+BuildRequires:   python3-mock
 
-# Handle python2 exception
-%if %{pyver} == 2
-BuildRequires:   python-nose-exclude
-BuildRequires:   python-selenium
-BuildRequires:   python-netaddr
-BuildRequires:   python-anyjson
-%else
-BuildRequires:   python%{pyver}-nose-exclude
-BuildRequires:   python%{pyver}-selenium
-BuildRequires:   python%{pyver}-netaddr
-BuildRequires:   python%{pyver}-anyjson
-%endif
+BuildRequires:   python3-nose-exclude
+BuildRequires:   python3-selenium
+BuildRequires:   python3-netaddr
+BuildRequires:   python3-anyjson
 
 
 # additional provides to be consistent with other django packages
@@ -109,7 +89,7 @@ Obsoletes: python2-django-openstack-auth < 4.0.0-1
 Provides: python-django-openstack-auth = %{epoch}:%{version}-%{release}
 Provides: python2-django-openstack-auth = %{epoch}:%{version}-%{release}
 
-%description -n python%{pyver}-django-horizon
+%description -n python3-django-horizon
 Horizon is a Django application for providing Openstack UI components.
 It allows performing site administrator (viewing account resource usage,
 configuring users, accounts, quotas, flavors, etc.) and end user
@@ -122,8 +102,8 @@ Summary:    Openstack web user interface reference implementation
 Group:      Applications/System
 
 Requires:   httpd
-Requires:   python%{pyver}-django-horizon = %{epoch}:%{version}-%{release}
-Requires:   python%{pyver}-django-compressor >= 2.0
+Requires:   python3-django-horizon = %{epoch}:%{version}-%{release}
+Requires:   python3-django-compressor >= 2.0
 
 %if 0%{rhosp} == 0
 Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
@@ -133,179 +113,136 @@ maj = string.sub(ver, 1, x-1); rpm.define("version_major " .. maj .. ".0.0");}
 Requires:   openstack-dashboard-theme >= %{epoch}:%{version_major}
 %endif
 
-Requires:   python%{pyver}-iso8601
-Requires:   python%{pyver}-glanceclient >= 1:2.8.0
-Requires:   python%{pyver}-keystoneclient >= 1:3.15.0
-Requires:   python%{pyver}-keystoneauth1 >= 3.4.0
-Requires:   python%{pyver}-novaclient >= 1:9.1.0
-Requires:   python%{pyver}-neutronclient >= 6.7.0
-Requires:   python%{pyver}-cinderclient >= 4.0.1
-Requires:   python%{pyver}-swiftclient >= 3.2.0
-Requires:   python%{pyver}-netaddr
-Requires:   python%{pyver}-osprofiler >= 2.3.0
-Requires:   python%{pyver}-django-pyscss >= 2.0.2
-Requires:   python%{pyver}-XStatic
-Requires:   python%{pyver}-XStatic-Angular >= 1:1.5.8.0
-Requires:   python%{pyver}-XStatic-Angular-Bootstrap
-Requires:   python%{pyver}-XStatic-Angular-Schema-Form
-Requires:   python%{pyver}-XStatic-D3
-Requires:   python%{pyver}-XStatic-Font-Awesome
-Requires:   python%{pyver}-XStatic-JSEncrypt
-Requires:   python%{pyver}-XStatic-Jasmine
-Requires:   python%{pyver}-XStatic-Bootstrap-SCSS >= 3.3.7.1
-Requires:   python%{pyver}-XStatic-termjs
-Requires:   python%{pyver}-XStatic-smart-table
-Requires:   python%{pyver}-XStatic-Angular-Gettext
-Requires:   python%{pyver}-XStatic-Angular-FileUpload
-Requires:   python%{pyver}-XStatic-bootswatch
-Requires:   python%{pyver}-XStatic-roboto-fontface >= 0.5.0.0
-Requires:   python%{pyver}-XStatic-mdi
-Requires:   python%{pyver}-XStatic-objectpath
-Requires:   python%{pyver}-XStatic-tv4
-Requires:   python%{pyver}-django-debreach
+Requires:   python3-iso8601
+Requires:   python3-glanceclient >= 1:2.8.0
+Requires:   python3-keystoneclient >= 1:3.15.0
+Requires:   python3-keystoneauth1 >= 3.4.0
+Requires:   python3-novaclient >= 1:9.1.0
+Requires:   python3-neutronclient >= 6.7.0
+Requires:   python3-cinderclient >= 4.0.1
+Requires:   python3-swiftclient >= 3.2.0
+Requires:   python3-netaddr
+Requires:   python3-osprofiler >= 2.3.0
+Requires:   python3-django-pyscss >= 2.0.2
+Requires:   python3-XStatic
+Requires:   python3-XStatic-Angular >= 1:1.5.8.0
+Requires:   python3-XStatic-Angular-Bootstrap
+Requires:   python3-XStatic-Angular-Schema-Form
+Requires:   python3-XStatic-D3
+Requires:   python3-XStatic-Font-Awesome
+Requires:   python3-XStatic-JSEncrypt
+Requires:   python3-XStatic-Jasmine
+Requires:   python3-XStatic-Bootstrap-SCSS >= 3.3.7.1
+Requires:   python3-XStatic-termjs
+Requires:   python3-XStatic-smart-table
+Requires:   python3-XStatic-Angular-Gettext
+Requires:   python3-XStatic-Angular-FileUpload
+Requires:   python3-XStatic-bootswatch
+Requires:   python3-XStatic-roboto-fontface >= 0.5.0.0
+Requires:   python3-XStatic-mdi
+Requires:   python3-XStatic-objectpath
+Requires:   python3-XStatic-tv4
+Requires:   python3-django-debreach
 
-Requires:   python%{pyver}-scss >= 1.3.4
+Requires:   python3-scss >= 1.3.5
 Requires:   fontawesome-fonts-web >= 4.1.0
 
-Requires:   python%{pyver}-oslo-concurrency >= 3.26.0
-Requires:   python%{pyver}-oslo-config >= 2:5.2.0
-Requires:   python%{pyver}-oslo-i18n >= 3.15.3
-Requires:   python%{pyver}-oslo-serialization >= 2.18.0
-Requires:   python%{pyver}-oslo-utils >= 3.33.0
-Requires:   python%{pyver}-oslo-upgradecheck >= 0.1.1
-Requires:   python%{pyver}-requests >= 2.14.2
-Requires:   python%{pyver}-oslo-policy >= 1.30.0
-Requires:   python%{pyver}-babel
-Requires:   python%{pyver}-futurist
+Requires:   python3-oslo-concurrency >= 3.26.0
+Requires:   python3-oslo-config >= 2:5.2.0
+Requires:   python3-oslo-i18n >= 3.15.3
+Requires:   python3-oslo-serialization >= 2.18.0
+Requires:   python3-oslo-utils >= 3.33.0
+Requires:   python3-oslo-upgradecheck >= 0.1.1
+Requires:   python3-requests >= 2.14.2
+Requires:   python3-oslo-policy >= 1.30.0
+Requires:   python3-babel
+Requires:   python3-futurist
 
 Requires:   openssl
 Requires:   logrotate
 
-# Handle python2 exception
-%if %{pyver} == 2
-Requires:   mod_wsgi
-Requires:   python-django-appconf
-Requires:   python-lesscpy
-Requires:   python-pymongo >= 3.0.2
-Requires:   python-semantic_version
-Requires:   python-XStatic-jQuery
-Requires:   python-XStatic-Hogan
-Requires:   python-XStatic-JQuery-Migrate
-Requires:   python-XStatic-JQuery-TableSorter
-Requires:   python-XStatic-JQuery-quicksearch
-Requires:   python-XStatic-Rickshaw
-Requires:   python-XStatic-Spin
-Requires:   python-XStatic-jquery-ui
-Requires:   python-XStatic-Bootstrap-Datepicker
-Requires:   python-XStatic-Angular-lrdragndrop
-Requires:   python-XStatic-Magic-Search
-Requires:   python-pint
-Requires:   PyYAML >= 3.10
-Requires:   python-memcached
-%else
-Requires:   python%{pyver}-mod_wsgi
-Requires:   python%{pyver}-django-appconf
-Requires:   python%{pyver}-lesscpy
-Requires:   python%{pyver}-pymongo >= 3.0.2
-Requires:   python%{pyver}-semantic_version
-Requires:   python%{pyver}-XStatic-jQuery
-Requires:   python%{pyver}-XStatic-Hogan
-Requires:   python%{pyver}-XStatic-JQuery-Migrate
-Requires:   python%{pyver}-XStatic-JQuery-TableSorter
-Requires:   python%{pyver}-XStatic-JQuery-quicksearch
-Requires:   python%{pyver}-XStatic-Rickshaw
-Requires:   python%{pyver}-XStatic-Spin
-Requires:   python%{pyver}-XStatic-jquery-ui
-Requires:   python%{pyver}-XStatic-Bootstrap-Datepicker
-Requires:   python%{pyver}-XStatic-Angular-lrdragndrop
-Requires:   python%{pyver}-XStatic-Magic-Search
-Requires:   python%{pyver}-pint
-Requires:   python%{pyver}-PyYAML >= 3.10
-Requires:   python%{pyver}-memcached
-%endif
+Requires:   python3-mod_wsgi
+Requires:   python3-django-appconf
+Requires:   python3-lesscpy
+Requires:   python3-pymongo >= 3.0.2
+Requires:   python3-semantic_version
+Requires:   python3-XStatic-jQuery
+Requires:   python3-XStatic-Hogan
+Requires:   python3-XStatic-JQuery-Migrate
+Requires:   python3-XStatic-JQuery-TableSorter
+Requires:   python3-XStatic-JQuery-quicksearch
+Requires:   python3-XStatic-Rickshaw
+Requires:   python3-XStatic-Spin
+Requires:   python3-XStatic-jquery-ui
+Requires:   python3-XStatic-Bootstrap-Datepicker
+Requires:   python3-XStatic-Angular-lrdragndrop
+Requires:   python3-XStatic-Magic-Search
+Requires:   python3-pint
+Requires:   python3-PyYAML >= 3.10
+Requires:   python3-memcached
 
 %if 0%{?with_translation_extraction_support} == 1
-Requires:   python%{pyver}-django-babel
+Requires:   python3-django-babel
 %endif
 
-BuildRequires: python%{pyver}-django-debreach
-BuildRequires: python%{pyver}-django-compressor >= 2.0
-BuildRequires: python%{pyver}-django-pyscss >= 2.0.2
-BuildRequires: python%{pyver}-XStatic
-BuildRequires: python%{pyver}-XStatic-Angular >= 1:1.5.8.0
-BuildRequires: python%{pyver}-XStatic-Angular-Bootstrap
-BuildRequires: python%{pyver}-XStatic-Angular-Schema-Form
-BuildRequires: python%{pyver}-XStatic-D3
-BuildRequires: python%{pyver}-XStatic-Font-Awesome
-BuildRequires: python%{pyver}-XStatic-JSEncrypt
-BuildRequires: python%{pyver}-XStatic-Jasmine
-BuildRequires: python%{pyver}-XStatic-Bootstrap-SCSS
-BuildRequires: python%{pyver}-XStatic-termjs
-BuildRequires: python%{pyver}-XStatic-smart-table
-BuildRequires: python%{pyver}-XStatic-Angular-FileUpload
-BuildRequires: python%{pyver}-XStatic-Angular-Gettext
-BuildRequires: python%{pyver}-XStatic-bootswatch
-BuildRequires: python%{pyver}-XStatic-roboto-fontface
-BuildRequires: python%{pyver}-XStatic-mdi
-BuildRequires: python%{pyver}-XStatic-objectpath
-BuildRequires: python%{pyver}-XStatic-tv4
+BuildRequires: python3-django-debreach
+BuildRequires: python3-django-compressor >= 2.0
+BuildRequires: python3-django-pyscss >= 2.0.2
+BuildRequires: python3-XStatic
+BuildRequires: python3-XStatic-Angular >= 1:1.5.8.0
+BuildRequires: python3-XStatic-Angular-Bootstrap
+BuildRequires: python3-XStatic-Angular-Schema-Form
+BuildRequires: python3-XStatic-D3
+BuildRequires: python3-XStatic-Font-Awesome
+BuildRequires: python3-XStatic-JSEncrypt
+BuildRequires: python3-XStatic-Jasmine
+BuildRequires: python3-XStatic-Bootstrap-SCSS
+BuildRequires: python3-XStatic-termjs
+BuildRequires: python3-XStatic-smart-table
+BuildRequires: python3-XStatic-Angular-FileUpload
+BuildRequires: python3-XStatic-Angular-Gettext
+BuildRequires: python3-XStatic-bootswatch
+BuildRequires: python3-XStatic-roboto-fontface
+BuildRequires: python3-XStatic-mdi
+BuildRequires: python3-XStatic-objectpath
+BuildRequires: python3-XStatic-tv4
 # bootstrap-scss requires at least python-scss >= 1.2.1
-BuildRequires: python%{pyver}-scss >= 1.3.4
+BuildRequires: python3-scss >= 1.3.5
 BuildRequires: fontawesome-fonts-web >= 4.1.0
-BuildRequires: python%{pyver}-oslo-concurrency
-BuildRequires: python%{pyver}-oslo-config
-BuildRequires: python%{pyver}-oslo-i18n
-BuildRequires: python%{pyver}-oslo-serialization
-BuildRequires: python%{pyver}-oslo-utils
-BuildRequires: python%{pyver}-oslo-policy
-BuildRequires: python%{pyver}-babel
+BuildRequires: python3-oslo-concurrency
+BuildRequires: python3-oslo-config
+BuildRequires: python3-oslo-i18n
+BuildRequires: python3-oslo-serialization
+BuildRequires: python3-oslo-utils
+BuildRequires: python3-oslo-policy
+BuildRequires: python3-babel
 
-BuildRequires: python%{pyver}-pytz
+BuildRequires: python3-pytz
 BuildRequires: systemd
 
-# Handle python2 exception
-%if %{pyver} == 2
-BuildRequires: python-django-appconf
-BuildRequires: python-lesscpy
-BuildRequires: python-semantic_version
-BuildRequires: python-XStatic-jQuery
-BuildRequires: python-XStatic-Hogan
-BuildRequires: python-XStatic-JQuery-Migrate
-BuildRequires: python-XStatic-JQuery-TableSorter
-BuildRequires: python-XStatic-JQuery-quicksearch
-BuildRequires: python-XStatic-Rickshaw
-BuildRequires: python-XStatic-Spin
-BuildRequires: python-XStatic-jquery-ui
-BuildRequires: python-XStatic-Bootstrap-Datepicker
-BuildRequires: python-XStatic-Angular-lrdragndrop
-BuildRequires: python-XStatic-Magic-Search
-BuildRequires: python-pint
-BuildRequires: python-memcached
-%else
-BuildRequires: python%{pyver}-django-appconf
-BuildRequires: python%{pyver}-lesscpy
-BuildRequires: python%{pyver}-semantic_version
-BuildRequires: python%{pyver}-XStatic-jQuery
-BuildRequires: python%{pyver}-XStatic-Hogan
-BuildRequires: python%{pyver}-XStatic-JQuery-Migrate
-BuildRequires: python%{pyver}-XStatic-JQuery-TableSorter
-BuildRequires: python%{pyver}-XStatic-JQuery-quicksearch
-BuildRequires: python%{pyver}-XStatic-Rickshaw
-BuildRequires: python%{pyver}-XStatic-Spin
-BuildRequires: python%{pyver}-XStatic-jquery-ui
-BuildRequires: python%{pyver}-XStatic-Bootstrap-Datepicker
-BuildRequires: python%{pyver}-XStatic-Angular-lrdragndrop
-BuildRequires: python%{pyver}-XStatic-Magic-Search
-BuildRequires: python%{pyver}-pint
-BuildRequires: python%{pyver}-memcached
-%endif
-BuildRequires: python%{pyver}-glanceclient
-BuildRequires: python%{pyver}-keystoneclient
-BuildRequires: python%{pyver}-novaclient >= 1:9.1.0
-BuildRequires: python%{pyver}-neutronclient
-BuildRequires: python%{pyver}-cinderclient
-BuildRequires: python%{pyver}-swiftclient
-BuildRequires: python%{pyver}-pytest
+BuildRequires: python3-django-appconf
+BuildRequires: python3-lesscpy
+BuildRequires: python3-semantic_version
+BuildRequires: python3-XStatic-jQuery
+BuildRequires: python3-XStatic-Hogan
+BuildRequires: python3-XStatic-JQuery-Migrate
+BuildRequires: python3-XStatic-JQuery-TableSorter
+BuildRequires: python3-XStatic-JQuery-quicksearch
+BuildRequires: python3-XStatic-Rickshaw
+BuildRequires: python3-XStatic-Spin
+BuildRequires: python3-XStatic-jquery-ui
+BuildRequires: python3-XStatic-Bootstrap-Datepicker
+BuildRequires: python3-XStatic-Angular-lrdragndrop
+BuildRequires: python3-XStatic-Magic-Search
+BuildRequires: python3-pint
+BuildRequires: python3-memcached
+BuildRequires: python3-glanceclient
+BuildRequires: python3-keystoneclient
+BuildRequires: python3-novaclient >= 1:9.1.0
+BuildRequires: python3-neutronclient
+BuildRequires: python3-cinderclient
+BuildRequires: python3-swiftclient
+BuildRequires: python3-pytest
 
 %description -n openstack-dashboard
 Openstack Dashboard is a web user interface for Openstack. The package
@@ -318,11 +255,11 @@ site.
 Summary:    Documentation for Django Horizon
 Group:      Documentation
 
-Requires:   python%{pyver}-django-horizon = %{epoch}:%{version}-%{release}
-BuildRequires: python%{pyver}-sphinx >= 1.1.3
+Requires:   python3-django-horizon = %{epoch}:%{version}-%{release}
+BuildRequires: python3-sphinx >= 1.1.3
 
 # Doc building basically means we have to mirror Requires:
-BuildRequires: python%{pyver}-openstackdocstheme
+BuildRequires: python3-openstackdocstheme
 
 %description doc
 Documentation for the Django Horizon application for talking with Openstack
@@ -360,10 +297,10 @@ sed -i "s;'help_url': \"https://docs.openstack.org/\";'help_url': \"https://acce
 %endif
 
 # Fix manage.py shebang
-sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python%{pyver}/' manage.py
+sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python3/' manage.py
 
 # Fix python executable depending on python version
-sed -i 's/\/usr\/bin\/python /\/usr\/bin\/python%{pyver} /g' %{SOURCE3}
+sed -i 's/\/usr\/bin\/python /\/usr\/bin\/python3 /g' %{SOURCE3}
 
 %build
 # compile message strings
@@ -377,18 +314,18 @@ cd openstack_dashboard && django-admin compilemessages && cd ..
 # https://fedorahosted.org/fpc/ticket/488
 echo >> horizon.egg-info/SOURCES.txt
 ls */locale/*/LC_MESSAGES/django*mo >> horizon.egg-info/SOURCES.txt
-%{pyver_build}
+%{py3_build}
 
 # compress css, js etc.
 cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py
 # get it ready for compressing later in puppet-horizon
-%{pyver_bin} manage.py collectstatic --noinput --clear
-%{pyver_bin} manage.py compress --force
+%{__python3} manage.py collectstatic --noinput --clear
+%{__python3} manage.py compress --force
 
 %if 0%{?with_doc}
 # build docs
 export PYTHONPATH=.
-sphinx-build-%{pyver} -b html doc/source html
+sphinx-build -b html doc/source html
 # Fix hidden-file-or-dir warnings
 rm -fr html/.doctrees html/.buildinfo
 %endif
@@ -397,7 +334,7 @@ cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local
 
 
 %install
-%{pyver_install}
+%{py3_install}
 
 # drop httpd-conf snippet
 install -m 0644 -D -p %{SOURCE2} %{buildroot}%{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
@@ -414,10 +351,10 @@ cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
 
 # Copy everything to /usr/share
-mv %{buildroot}%{pyver_sitelib}/openstack_dashboard \
+mv %{buildroot}%{python3_sitelib}/openstack_dashboard \
    %{buildroot}%{_datadir}/openstack-dashboard
 cp manage.py %{buildroot}%{_datadir}/openstack-dashboard
-rm -rf %{buildroot}%{pyver_sitelib}/openstack_dashboard
+rm -rf %{buildroot}%{python3_sitelib}/openstack_dashboard
 
 # remove unnecessary .po files
 find %{buildroot} -name django.po -exec rm '{}' \;
@@ -461,7 +398,7 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 %check
 # NOTE(jpena): we do not want to run hacking tests in check
 rm horizon/test/unit/hacking/test_checks.py
-%{pyver_bin} manage.py test horizon --settings=horizon.test.settings
+%{__python3} manage.py test horizon --settings=horizon.test.settings
 
 %post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
@@ -474,32 +411,30 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 # update systemd unit files
 %{systemd_postun}
 
-%files -n python%{pyver}-django-horizon -f horizon.lang
+%files -n python3-django-horizon -f horizon.lang
 %doc README.rst openstack-dashboard-httpd-logging.conf
 %license LICENSE
-%dir %{pyver_sitelib}/horizon
-%{pyver_sitelib}/horizon/*.py*
-%{pyver_sitelib}/horizon/browsers
-%{pyver_sitelib}/horizon/conf
-%{pyver_sitelib}/horizon/contrib
-%{pyver_sitelib}/horizon/forms
-%{pyver_sitelib}/horizon/hacking
-%{pyver_sitelib}/horizon/management
-%{pyver_sitelib}/horizon/static
-%{pyver_sitelib}/horizon/tables
-%{pyver_sitelib}/horizon/tabs
-%{pyver_sitelib}/horizon/templates
-%{pyver_sitelib}/horizon/templatetags
-%{pyver_sitelib}/horizon/test
-%{pyver_sitelib}/horizon/utils
-%{pyver_sitelib}/horizon/workflows
-%{pyver_sitelib}/horizon/karma.conf.js
-%{pyver_sitelib}/horizon/middleware
-%{pyver_sitelib}/openstack_auth
-%{pyver_sitelib}/*.egg-info
-%if %{pyver} == 3
-%{pyver_sitelib}/horizon/__pycache__
-%endif
+%dir %{python3_sitelib}/horizon
+%{python3_sitelib}/horizon/*.py*
+%{python3_sitelib}/horizon/browsers
+%{python3_sitelib}/horizon/conf
+%{python3_sitelib}/horizon/contrib
+%{python3_sitelib}/horizon/forms
+%{python3_sitelib}/horizon/hacking
+%{python3_sitelib}/horizon/management
+%{python3_sitelib}/horizon/static
+%{python3_sitelib}/horizon/tables
+%{python3_sitelib}/horizon/tabs
+%{python3_sitelib}/horizon/templates
+%{python3_sitelib}/horizon/templatetags
+%{python3_sitelib}/horizon/test
+%{python3_sitelib}/horizon/utils
+%{python3_sitelib}/horizon/workflows
+%{python3_sitelib}/horizon/karma.conf.js
+%{python3_sitelib}/horizon/middleware
+%{python3_sitelib}/openstack_auth
+%{python3_sitelib}/*.egg-info
+%{python3_sitelib}/horizon/__pycache__
 
 %files -n openstack-dashboard -f dashboard.lang
 %license LICENSE
@@ -541,10 +476,8 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %{_datadir}/openstack-dashboard/openstack_dashboard/.eslintrc
-%if %{pyver} == 3
 %{_datadir}/openstack-dashboard/openstack_dashboard/__pycache__
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__pycache__
-%endif
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
