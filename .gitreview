@@ -2,4 +2,4 @@
 host=review.rdoproject.org
 port=29418
 project=openstack/horizon-distgit
-defaultbranch=rpm-master
+defaultbranch=ussuri-rdo
