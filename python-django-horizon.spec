@@ -55,14 +55,12 @@ Requires:   python3-django
 
 
 Requires:   python3-pytz
-Requires:   python3-six >= 1.10.0
 Requires:   python3-pbr
 
 BuildRequires: python3-devel
 BuildRequires: python3-setuptools
 BuildRequires: python3-pbr >= 2.0.0
 BuildRequires: git
-BuildRequires: python3-six >= 1.10.0
 BuildRequires: gettext
 
 # for checks:
@@ -144,7 +142,7 @@ Requires:   python3-XStatic-objectpath
 Requires:   python3-XStatic-tv4
 Requires:   python3-django-debreach
 
-Requires:   python3-scss >= 1.3.5
+Requires:   python3-scss >= 1.3.7
 Requires:   fontawesome-fonts-web >= 4.1.0
 
 Requires:   python3-oslo-concurrency >= 3.26.0
