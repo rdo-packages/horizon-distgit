@@ -1,3 +1,5 @@
+%{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
+%global sources_gpg_sign 0x2426b928085a020d8a90d0d879ab7008d0896c8a
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 %global rhosp 0
@@ -15,7 +17,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    18.6.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -31,6 +33,11 @@ Source4:    openstack-dashboard-httpd-logging.conf
 
 # logrotate config
 Source5:    python-django-horizon-logrotate.conf
+# Required for tarball sources verification
+%if 0%{?sources_gpg} == 1
+Source101:        https://tarballs.openstack.org/horizon/horizon-%{upstream_version}.tar.gz.asc
+Source102:        https://releases.openstack.org/_static/%{sources_gpg_sign}.txt
+%endif
 
 
 #
@@ -38,6 +45,12 @@ Source5:    python-django-horizon-logrotate.conf
 #
 
 BuildArch:  noarch
+
+# Required for tarball sources verification
+%if 0%{?sources_gpg} == 1
+BuildRequires:  /usr/bin/gpgv2
+BuildRequires:  openstack-macros
+%endif
 
 %description
 Horizon is a Django application for providing Openstack UI components.
@@ -273,6 +286,10 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %endif
 
 %prep
+# Required for tarball sources verification
+%if 0%{?sources_gpg} == 1
+%{gpgverify}  --keyring=%{SOURCE102} --signature=%{SOURCE101} --data=%{SOURCE0}
+%endif
 %autosetup -n horizon-%{upstream_version} -S git
 
 # customize default settings
@@ -505,6 +522,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Wed Oct 21 2020 Joel Capitao <jcapitao@redhat.com> 1:18.6.1-2
+- Enable sources tarball validation using GPG signature.
+
 * Fri Oct 09 2020 RDO <dev@lists.rdoproject.org> 1:18.6.1-1
 - Update to 18.6.1
 
