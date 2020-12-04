@@ -477,7 +477,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/test
 %{_datadir}/openstack-dashboard/openstack_dashboard/usage
 %{_datadir}/openstack-dashboard/openstack_dashboard/utils
-%{_datadir}/openstack-dashboard/openstack_dashboard/wsgi
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??
