@@ -16,8 +16,8 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    18.6.1
-Release:    2%{?dist}
+Version:    18.6.2
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -522,6 +522,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Tue Feb 16 2021 RDO <dev@lists.rdoproject.org> 1:18.6.2-1
+- Update to 18.6.2
+
 * Wed Oct 21 2020 Joel Capitao <jcapitao@redhat.com> 1:18.6.1-2
 - Enable sources tarball validation using GPG signature.
 
