@@ -119,8 +119,9 @@ Requires:   python3-django-compressor >= 2.0
 %if 0%{rhosp} == 0
 Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
 %else
-%{lua: ver = rpm.expand("%version"); x, y = string.find(ver, "%.");
-maj = string.sub(ver, 1, x-1); rpm.define("version_major " .. maj .. ".0.0");}
+%{lua: ver = rpm.expand("%version");
+if ver == "XXX" then rpm.define("version_major " .. "%{version}"); else x, y = string.find(ver, "%.");
+maj = string.sub(ver, 1, x-1); rpm.define("version_major " .. maj .. ".0.0"); end}
 Requires:   openstack-dashboard-theme >= %{epoch}:%{version_major}
 %endif
 
@@ -424,7 +425,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 
 %postun
 # update systemd unit files
-%{systemd_postun}
+systemctl daemon-reload >/dev/null 2>&1 || :
 
 %files -n python3-django-horizon -f horizon.lang
 %doc README.rst openstack-dashboard-httpd-logging.conf
