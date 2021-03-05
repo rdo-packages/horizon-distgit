@@ -163,10 +163,10 @@ Requires:   python3-oslo-concurrency >= 3.26.0
 Requires:   python3-oslo-config >= 2:5.2.0
 Requires:   python3-oslo-i18n >= 3.15.3
 Requires:   python3-oslo-serialization >= 2.18.0
-Requires:   python3-oslo-utils >= 3.33.0
+Requires:   python3-oslo-utils >= 3.40.0
 Requires:   python3-oslo-upgradecheck >= 0.1.1
 Requires:   python3-requests >= 2.14.2
-Requires:   python3-oslo-policy >= 1.30.0
+Requires:   python3-oslo-policy >= 3.2.0
 Requires:   python3-babel
 Requires:   python3-futurist
 
@@ -387,7 +387,8 @@ rmdir %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/loca
 ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings.d %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
 %endif
 
-mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.json %{buildroot}%{_sysconfdir}/openstack-dashboard
+mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/default_policies %{buildroot}%{_sysconfdir}/openstack-dashboard
+mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.yaml %{buildroot}%{_sysconfdir}/openstack-dashboard
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/nova_policy.d %{buildroot}%{_sysconfdir}/openstack-dashboard
 
 %find_lang django --all-name
@@ -499,11 +500,12 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %attr(0750, apache, apache) %{_var}/log/horizon
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.json
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.json
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.json
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.json
-%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.json
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/default_policies/*.yaml
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.yaml
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/keystone_policy.yaml
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.yaml
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/glance_policy.yaml
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/neutron_policy.yaml
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/nova_policy.d/api-extensions.yaml
 %config(noreplace) %attr(0644, root, root) %{_sysconfdir}/logrotate.d/openstack-dashboard
 %attr(755,root,root) %dir %{_unitdir}/httpd.service.d
