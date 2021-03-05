@@ -1,0 +1,9 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Workflow+1: Matthias Runge <mrunge@matthias-runge.de>
+Code-Review+2: Matthias Runge <mrunge@matthias-runge.de>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Fri, 05 Mar 2021 11:02:52 +0000
+Reviewed-on: https://review.rdoproject.org/r/32175
+Project: openstack/horizon-distgit
+Branch: refs/heads/rpm-master
