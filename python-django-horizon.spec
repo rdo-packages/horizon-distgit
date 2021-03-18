@@ -127,11 +127,11 @@ Requires:   openstack-dashboard-theme >= %{epoch}:%{version_major}
 
 Requires:   python3-iso8601
 Requires:   python3-glanceclient >= 1:2.8.0
-Requires:   python3-keystoneclient >= 1:3.15.0
+Requires:   python3-keystoneclient >= 1:3.22.0
 Requires:   python3-keystoneauth1 >= 3.4.0
 Requires:   python3-novaclient >= 1:9.1.0
 Requires:   python3-neutronclient >= 6.7.0
-Requires:   python3-cinderclient >= 4.0.1
+Requires:   python3-cinderclient >= 5.0.0
 Requires:   python3-swiftclient >= 3.2.0
 Requires:   python3-netaddr
 Requires:   python3-osprofiler >= 2.3.0
@@ -177,7 +177,7 @@ Requires:   python3-mod_wsgi
 Requires:   python3-django-appconf
 Requires:   python3-lesscpy
 Requires:   python3-pymongo >= 3.0.2
-Requires:   python3-semantic_version
+Requires:   python3-semantic_version >= 2.3.1
 Requires:   python3-XStatic-jQuery
 Requires:   python3-XStatic-Hogan
 Requires:   python3-XStatic-JQuery-Migrate
@@ -189,9 +189,9 @@ Requires:   python3-XStatic-jquery-ui
 Requires:   python3-XStatic-Bootstrap-Datepicker
 Requires:   python3-XStatic-Angular-lrdragndrop
 Requires:   python3-XStatic-Magic-Search
-Requires:   python3-pint
-Requires:   python3-PyYAML >= 3.10
+Requires:   python3-yaml >= 3.12
 Requires:   python3-memcached
+Requires:   python3-debtcollector >= 1.2.0
 
 %if 0%{?with_translation_extraction_support} == 1
 Requires:   python3-django-babel
