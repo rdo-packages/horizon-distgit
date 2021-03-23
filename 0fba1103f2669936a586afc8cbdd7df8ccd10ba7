@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2cce46c3_256e8a7b",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 403
+      },
+      "writtenOn": "2021-03-23T06:28:47Z",
+      "side": 1,
+      "message": "this also got replaced with enmerkar, may be good to involve horizon folks in this and update as follow up? https://github.com/openstack/horizon/commit/5a1ab92d0a0b547cb4eb04cb43a5b25476531dfa#diff-4d7c51b1efe9043e44439a949dfd92e5827321b34082903477fd04876edb7552",
+      "range": {
+        "startLine": 197,
+        "startChar": 12,
+        "endLine": 197,
+        "endChar": 32
+      },
+      "revId": "0fba1103f2669936a586afc8cbdd7df8ccd10ba7",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
+    }
+  ]
+}
