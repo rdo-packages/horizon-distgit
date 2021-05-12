@@ -292,6 +292,8 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %{gpgverify}  --keyring=%{SOURCE102} --signature=%{SOURCE101} --data=%{SOURCE0}
 %endif
 %autosetup -n horizon-%{upstream_version} -S git
+# Let RPM handle the dependencies
+rm -f {,test-}requirements.txt
 
 # customize default settings
 # WAS [PATCH] disable debug, move web root
