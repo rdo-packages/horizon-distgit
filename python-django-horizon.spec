@@ -170,7 +170,6 @@ Requires:   logrotate
 Requires:   python3-mod_wsgi
 Requires:   python3-django-appconf
 Requires:   python3-lesscpy
-Requires:   python3-pymongo >= 3.0.2
 Requires:   python3-semantic_version >= 2.3.1
 Requires:   python3-XStatic-jQuery
 Requires:   python3-XStatic-Hogan
