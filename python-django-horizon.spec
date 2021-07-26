@@ -371,8 +371,8 @@ find %{buildroot} -name djangojs.po -exec rm '{}' \;
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
-%if 0%{?rhosp}
 mkdir -p %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings.d
+%if 0%{?rhosp}
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d/* %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings.d
 rmdir %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
 ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings.d %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
@@ -476,9 +476,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??/LC_MESSAGES
+%dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings.d/
 
 %if 0%{?rhosp}
-%dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings.d/
 %{_sysconfdir}/openstack-dashboard/local_settings.d/*.example
 %endif
 
