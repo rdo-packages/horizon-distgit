@@ -57,8 +57,8 @@ instance VNC console, etc.)
 Summary:    Django application for talking to Openstack
 %{?python_provide:%python_provide python3-django-horizon}
 
-BuildRequires:   python3-django
-Requires:   python3-django
+BuildRequires:   python3-django < 3.0.0
+Requires:   python3-django < 3.0.0
 
 
 Requires:   python3-pytz
