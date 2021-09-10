@@ -63,6 +63,7 @@ Requires:   python3-django < 3.0.0
 
 Requires:   python3-pytz
 Requires:   python3-pbr
+Requires:   python3-pymongo >= 3.0.2
 
 BuildRequires: python3-devel
 BuildRequires: python3-setuptools
@@ -122,10 +123,10 @@ Requires:   openstack-dashboard-theme >= %{epoch}:%{version_major}
 Requires:   python3-iso8601
 Requires:   python3-glanceclient >= 1:2.8.0
 Requires:   python3-keystoneclient >= 1:3.22.0
-Requires:   python3-keystoneauth1 >= 3.4.0
+Requires:   python3-keystoneauth1 >= 4.3.1
 Requires:   python3-novaclient >= 1:9.1.0
 Requires:   python3-neutronclient >= 6.7.0
-Requires:   python3-cinderclient >= 5.0.0
+Requires:   python3-cinderclient >= 8.0.0
 Requires:   python3-swiftclient >= 3.2.0
 Requires:   python3-netaddr
 Requires:   python3-osprofiler >= 2.3.0
@@ -155,11 +156,11 @@ Requires:   fontawesome-fonts-web >= 4.1.0
 
 Requires:   python3-oslo-concurrency >= 3.26.0
 Requires:   python3-oslo-config >= 2:5.2.0
-Requires:   python3-oslo-i18n >= 3.15.3
+Requires:   python3-oslo-i18n >= 5.0.1
 Requires:   python3-oslo-serialization >= 2.18.0
-Requires:   python3-oslo-utils >= 3.40.0
+Requires:   python3-oslo-utils >= 4.8.0
 Requires:   python3-oslo-upgradecheck >= 0.1.1
-Requires:   python3-requests >= 2.14.2
+Requires:   python3-requests >= 2.25.1
 Requires:   python3-oslo-policy >= 3.2.0
 Requires:   python3-babel
 Requires:   python3-futurist
