@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bf7eb698_509cecf0",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2021-09-15T08:07:14Z",
+      "side": 1,
+      "message": "i\u0027m not sure we want to add pymongo, we don\u0027t support mongo backend in rdo.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 1
+      },
+      "revId": "df6444e7a51dd3aa68417265f27ea0486b6c6315",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
+    }
+  ]
+}
