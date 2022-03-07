@@ -57,8 +57,8 @@ instance VNC console, etc.)
 Summary:    Django application for talking to Openstack
 %{?python_provide:%python_provide python3-django-horizon}
 
-BuildRequires:   python3-django < 3.0.0
-Requires:   python3-django < 3.0.0
+BuildRequires:   python3-django >= 3.2
+Requires:   python3-django >= 3.2
 
 
 Requires:   python3-pytz
@@ -108,7 +108,7 @@ Group:      Applications/System
 
 Requires:   httpd
 Requires:   python3-django-horizon = %{epoch}:%{version}-%{release}
-Requires:   python3-django-compressor >= 2.0
+Requires:   python3-django-compressor >= 2.4.1
 
 %if 0%{rhosp} == 0
 Requires:   openstack-dashboard-theme >= %{epoch}:%{version}-%{release}
@@ -187,7 +187,7 @@ Requires:   python3-memcached
 Requires:   python3-debtcollector >= 1.2.0
 
 BuildRequires: python3-django-debreach
-BuildRequires: python3-django-compressor >= 2.0
+BuildRequires: python3-django-compressor >= 2.4.1
 BuildRequires: python3-django-pyscss >= 2.0.2
 BuildRequires: python3-XStatic
 BuildRequires: python3-XStatic-Angular >= 1:1.5.8.0
