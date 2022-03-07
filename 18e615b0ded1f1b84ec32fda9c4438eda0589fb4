@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "18e615b0ded1f1b84ec32fda9c4438eda0589fb4",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "655bb138_a6ae948e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19
+      },
+      "writtenOn": "2022-03-07T14:28:27Z",
+      "side": 1,
+      "message": "recheck vexxhost support said it was fixed",
+      "revId": "18e615b0ded1f1b84ec32fda9c4438eda0589fb4",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
