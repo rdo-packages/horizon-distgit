@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f34e1721_2d82f7d6",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 757
+      },
+      "writtenOn": "2022-03-17T07:24:46Z",
+      "side": 1,
+      "message": "I wanted to have this change separated (django vs django-compressor), to unblock FTBFS",
+      "parentUuid": "55123876_54ae9639",
+      "range": {
+        "startLine": 111,
+        "startChar": 41,
+        "endLine": 111,
+        "endChar": 44
+      },
+      "revId": "9a5770a41e4659908197dd87bc7ae38a7353a731",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12193677_5e2bcd36",
         "filename": "python-django-horizon.spec",
         "patchSetId": 4
