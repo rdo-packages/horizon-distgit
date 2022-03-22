@@ -11,7 +11,7 @@ Name:       python-django-horizon
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
 Version:    19.2.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -172,7 +172,7 @@ Requires:   python3-django-appconf
 Requires:   python3-lesscpy
 Requires:   python3-pymongo >= 3.0.2
 Requires:   python3-semantic_version >= 2.3.1
-Requires:   python3-XStatic-jQuery
+Requires:   python3-XStatic-jQuery == 1.12.4.1
 Requires:   python3-XStatic-Hogan
 Requires:   python3-XStatic-JQuery-Migrate
 Requires:   python3-XStatic-JQuery-TableSorter
@@ -517,6 +517,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Tue Mar 22 2022 Radomir Dopieralski <rdopiera@redhat.com> 1:19.2.0-2
+- Pin Python-XStatic-jQuery to version 1.12.4.1
+
 * Mon Apr 12 2021 RDO <dev@lists.rdoproject.org> 1:19.2.0-1
 - Update to 19.2.0
 
