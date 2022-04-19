@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x01527a34f0d0080f8a5db8d6eb6c5df21b4b6363
+%global sources_gpg_sign 0xa63ea142678138d1bb15f2e303bdfd64dd164087
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 %global rhosp 0
@@ -16,7 +16,7 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    18.6.3
+Version:    18.6.4
 Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
@@ -291,6 +291,8 @@ Customization module for OpenStack Dashboard to provide a branded logo.
 %{gpgverify}  --keyring=%{SOURCE102} --signature=%{SOURCE101} --data=%{SOURCE0}
 %endif
 %autosetup -n horizon-%{upstream_version} -S git
+# Let RPM handle the dependencies
+rm -f {,test-}requirements.txt
 
 # customize default settings
 # WAS [PATCH] disable debug, move web root
@@ -522,6 +524,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Tue Apr 19 2022 RDO <dev@lists.rdoproject.org> 1:18.6.4-1
+- Update to 18.6.4
+
 * Wed Jan 26 2022 RDO <dev@lists.rdoproject.org> 1:18.6.3-1
 - Update to 18.6.3
 
