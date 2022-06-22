@@ -72,7 +72,6 @@ BuildRequires: gettext
 
 # for checks:
 BuildRequires:   python3-django-nose
-BuildRequires:   python3-mox3
 BuildRequires:   python3-nose
 BuildRequires:   python3-osprofiler
 BuildRequires:   python3-iso8601
