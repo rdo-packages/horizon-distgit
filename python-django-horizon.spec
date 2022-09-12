@@ -127,7 +127,7 @@ Requires:   python3-neutronclient >= 6.7.0
 Requires:   python3-cinderclient >= 8.0.0
 Requires:   python3-swiftclient >= 3.2.0
 Requires:   python3-netaddr
-Requires:   python3-osprofiler >= 2.3.0
+Requires:   python3-osprofiler >= 3.4.2
 Requires:   python3-django-pyscss >= 2.0.2
 Requires:   python3-XStatic
 Requires:   python3-XStatic-Angular >= 1:1.5.8.0
@@ -149,17 +149,18 @@ Requires:   python3-XStatic-objectpath
 Requires:   python3-XStatic-tv4
 Requires:   python3-django-debreach
 
+# version python3-scss >= 1.4.0 is required, but not available
 Requires:   python3-scss >= 1.3.7
 Requires:   fontawesome-fonts-web >= 4.1.0
 
-Requires:   python3-oslo-concurrency >= 3.26.0
-Requires:   python3-oslo-config >= 2:5.2.0
-Requires:   python3-oslo-i18n >= 5.0.1
-Requires:   python3-oslo-serialization >= 2.18.0
-Requires:   python3-oslo-utils >= 4.8.0
-Requires:   python3-oslo-upgradecheck >= 0.1.1
+Requires:   python3-oslo-concurrency >= 4.5.0
+Requires:   python3-oslo-config >= 8.8.0
+Requires:   python3-oslo-i18n >= 5.1.0
+Requires:   python3-oslo-serialization >= 4.3.0
+Requires:   python3-oslo-utils >= 4.12.0
+Requires:   python3-oslo-upgradecheck >= 1.5.0
 Requires:   python3-requests >= 2.25.1
-Requires:   python3-oslo-policy >= 3.2.0
+Requires:   python3-oslo-policy >= 3.11.0
 Requires:   python3-babel
 Requires:   python3-futurist
 
@@ -181,6 +182,7 @@ Requires:   python3-XStatic-jquery-ui
 Requires:   python3-XStatic-Bootstrap-Datepicker
 Requires:   python3-XStatic-Angular-lrdragndrop
 Requires:   python3-XStatic-Magic-Search
+# python3-yaml >= 6.0 is required, but not available
 Requires:   python3-yaml >= 3.12
 Requires:   python3-memcached
 Requires:   python3-debtcollector >= 1.2.0
