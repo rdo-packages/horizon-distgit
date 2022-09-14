@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3284154e_d2a1e7cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 757
+      },
+      "writtenOn": "2022-09-14T07:48:44Z",
+      "side": 1,
+      "message": "nothing provides python3-scss \u003e\u003d 1.4.0\nnothing provides python3-yaml \u003e\u003d 6.0 ",
+      "revId": "7cc8047a8e44d8e56af9c21df262787363f15782",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
