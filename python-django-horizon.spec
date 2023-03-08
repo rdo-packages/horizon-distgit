@@ -123,7 +123,7 @@ Requires:   python3-glanceclient >= 1:2.8.0
 Requires:   python3-keystoneclient >= 1:3.22.0
 Requires:   python3-keystoneauth1 >= 4.3.1
 Requires:   python3-novaclient >= 1:9.1.0
-Requires:   python3-neutronclient >= 6.7.0
+Requires:   python3-neutronclient >= 8.1.0
 Requires:   python3-cinderclient >= 8.0.0
 Requires:   python3-swiftclient >= 3.2.0
 Requires:   python3-netaddr
@@ -149,8 +149,7 @@ Requires:   python3-XStatic-objectpath
 Requires:   python3-XStatic-tv4
 Requires:   python3-django-debreach
 
-# version python3-scss >= 1.4.0 is required, but not available
-Requires:   python3-scss >= 1.3.7
+Requires:   python3-scss >= 1.4.0
 Requires:   fontawesome-fonts-web >= 4.1.0
 
 Requires:   python3-oslo-concurrency >= 4.5.0
