@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "663ce224_eaba27eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 141
+      },
+      "writtenOn": "2023-03-14T13:08:48Z",
+      "side": 1,
+      "message": "The lack of this package probably blocks all horizon plugins",
+      "revId": "7dacfc12730b37a9e7fbbed2e70d44ad3e25429e",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
