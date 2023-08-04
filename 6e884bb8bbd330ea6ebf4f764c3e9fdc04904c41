@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f2d669b_ee863607",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2023-08-04T08:47:16Z",
+      "side": 1,
+      "message": "WRT deps:\n\n- We should exclude pymongo (we don\u0027t support mongo long time ago).\n- I think we should get memcached and mod_wsgi\n\n\nAlso check if XStatic-Magic-Search has been really removed.\n\nI think we need manual byte compilation https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/#_manual_byte_compilation for the dashboard module which is not installed in the default sitepackages location \n\n",
+      "revId": "6e884bb8bbd330ea6ebf4f764c3e9fdc04904c41",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
