@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ccee722_9f0eb17e",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 12
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2023-08-08T08:07:49Z",
+      "side": 0,
+      "message": "i think we should clean all the obsoletes and provides to python- and python2-, not only the obsoletes on python2",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 72
+      },
+      "revId": "1f6d1796ef9fe47fd15ac04d52e1b9c0377f66fd",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
