@@ -303,11 +303,6 @@ sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard
 sed -i "s;'help_url': \"https://docs.openstack.org/\";'help_url': \"https://access.redhat.com/documentation/en/red-hat-openstack-platform/\";" openstack_dashboard/settings.py
 %endif
 
-# Fix manage.py shebang
-sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python3/' manage.py
-
-# Fix python executable depending on python version
-sed -i 's/\/usr\/bin\/python /\/usr\/bin\/python3 /g' %{SOURCE3}
 
 %build
 # compile message strings
@@ -356,6 +351,8 @@ install -m 0644 -D -p %{SOURCE4} .
 mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
 cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
+# Fix shebang of manage.py if needed
+%py3_shebang_fix manage.py
 
 # Copy everything to /usr/share
 mv %{buildroot}%{python3_sitelib}/openstack_dashboard \
