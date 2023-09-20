@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5df6cb01_f3804d37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 128
+      },
+      "writtenOn": "2023-09-20T08:39:05Z",
+      "side": 1,
+      "message": "fix in https://review.rdoproject.org/r/c/openstack/horizon-distgit/+/50108",
+      "revId": "00fd5107bd2c689b5a8751fea1d4f082c62dbec3",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
