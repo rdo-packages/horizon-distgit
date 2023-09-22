@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0x2426b928085a020d8a90d0d879ab7008d0896c8a
+%global sources_gpg_sign 0x815AFEC729392386480E076DCC0DFE2D21C023C9
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some runtime reqs from automatic generator
@@ -18,8 +18,8 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    XXX
-Release:    XXX
+Version:    23.3.0
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -159,11 +159,6 @@ sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard
 sed -i "s;'help_url': \"https://docs.openstack.org/\";'help_url': \"https://access.redhat.com/documentation/en/red-hat-openstack-platform/\";" openstack_dashboard/settings.py
 %endif
 
-# Fix manage.py shebang
-sed -i 's/\/usr\/bin\/env python/\/usr\/bin\/env python3/' manage.py
-
-# Fix python executable depending on python version
-sed -i 's/\/usr\/bin\/python /\/usr\/bin\/python3 /g' %{SOURCE3}
 
 sed -i /^[[:space:]]*-c{env:.*_CONSTRAINTS_FILE.*/d tox.ini
 sed -i "s/^deps = -c{env:.*_CONSTRAINTS_FILE.*/deps =/" tox.ini
@@ -243,6 +238,8 @@ install -m 0644 -D -p %{SOURCE4} .
 mkdir -p %{buildroot}%{_unitdir}/httpd.service.d/
 cp %{SOURCE3} %{buildroot}%{_unitdir}/httpd.service.d/openstack-dashboard.conf
 
+# Fix shebang of manage.py if needed
+%py3_shebang_fix manage.py
 
 # Copy everything to /usr/share
 mv %{buildroot}%{python3_sitelib}/openstack_dashboard \
@@ -404,4 +401,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Fri Sep 22 2023 RDO <dev@lists.rdoproject.org> 1:23.3.0-1
+- Update to 23.3.0
+
 
