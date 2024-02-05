@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5258947_4b592505",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 635
+      },
+      "writtenOn": "2024-02-05T11:17:58Z",
+      "side": 1,
+      "message": "it needs a Django update, I\u0027m working on it",
+      "revId": "b8e09c132bcc067bce3ff7263e74ea5cb3665bbd",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
