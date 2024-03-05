@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0xa63ea142678138d1bb15f2e303bdfd64dd164087
+%global sources_gpg_sign 0x2ef3fe0ec2b075ab7458b5f8b702b20b13df2318
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 %global rhosp 0
@@ -10,7 +10,7 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    23.0.0
+Version:    23.0.1
 Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
@@ -514,6 +514,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Tue Mar 05 2024 RDO <dev@lists.rdoproject.org> 1:23.0.1-1
+- Update to 23.0.1
+
 * Tue Sep 20 2022 RDO <dev@lists.rdoproject.org> 1:23.0.0-1
 - Update to 23.0.0
 
