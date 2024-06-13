@@ -3,7 +3,7 @@
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some runtime reqs from automatic generator
-%global excluded_reqs enmerkar pymongo
+%global excluded_reqs enmerkar pymongo tzdata
 # we are excluding some BRs from automatic generator
 %global excluded_brs doc8 bandit pre-commit hacking flake8-import-order bashate nodeenv pytest-django pytest-html xvfbwrapper
 # Exclude sphinx from BRs if docs are disabled
