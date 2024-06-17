@@ -368,12 +368,10 @@ find %{buildroot} -name djangojs.po -exec rm '{}' \;
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py.example %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings
 ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.py
 
-%if 0%{?rhosp}
 mkdir -p %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings.d
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d/* %{buildroot}%{_sysconfdir}/openstack-dashboard/local_settings.d
 rmdir %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
 ln -s ../../../../..%{_sysconfdir}/openstack-dashboard/local_settings.d %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d
-%endif
 
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/default_policies %{buildroot}%{_sysconfdir}/openstack-dashboard
 mv %{buildroot}%{_datadir}/openstack-dashboard/openstack_dashboard/conf/*.yaml %{buildroot}%{_sysconfdir}/openstack-dashboard
@@ -405,12 +403,32 @@ cp -a %{SOURCE5} %{buildroot}%{_sysconfdir}/logrotate.d/openstack-dashboard
 rm horizon/test/unit/hacking/test_checks.py
 %{__python3} manage.py test horizon --settings=horizon.test.settings
 
+%pretrans -n openstack-dashboard -p <lua>
+path = "%{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d"
+st = posix.stat(path)
+if st and st.type == "directory" then
+  status = os.rename(path, path .. ".rpmmoved")
+  if not status then
+    suffix = 0
+    while not status do
+      suffix = suffix + 1
+      status = os.rename(path .. ".rpmmoved", path .. ".rpmmoved." .. suffix)
+    end
+    os.rename(path, path .. ".rpmmoved")
+  end
+end
+
 %post -n openstack-dashboard
 # ugly hack to set a unique SECRET_KEY
 sed -i "/^from horizon.utils import secret_key$/d" /etc/openstack-dashboard/local_settings
 sed -i "/^SECRET_KEY.*$/{N;s/^.*$/SECRET_KEY='`openssl rand -hex 10`'/}" /etc/openstack-dashboard/local_settings
 # reload systemd unit files
 systemctl daemon-reload >/dev/null 2>&1 || :
+
+%if 0%{rhosp} == 0
+%preun -n openstack-dashboard
+rm -rf %{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d.rpmmoved/ >/dev/null 2>&1 || :
+%endif
 
 %postun
 # update systemd unit files
@@ -459,6 +477,7 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
+%ghost %{_datadir}/openstack-dashboard/openstack_dashboard/local/local_settings.d.rpmmoved/
 %{_datadir}/openstack-dashboard/openstack_dashboard/management
 %{_datadir}/openstack-dashboard/openstack_dashboard/static
 %{_datadir}/openstack-dashboard/openstack_dashboard/templates
@@ -474,20 +493,17 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??/LC_MESSAGES
 %dir %{_datadir}/openstack-dashboard/openstack_dashboard/locale/??_??/LC_MESSAGES
 
-%if 0%{?rhosp}
-%dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings.d/
-%{_sysconfdir}/openstack-dashboard/local_settings.d/*.example
-%endif
-
 %{_datadir}/openstack-dashboard/openstack_dashboard/.eslintrc
 %{_datadir}/openstack-dashboard/openstack_dashboard/__pycache__
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__pycache__
 
 %dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard
+%dir %attr(0750, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings.d
 %dir %attr(0750, apache, apache) %{_sharedstatedir}/openstack-dashboard
 %dir %attr(0750, apache, apache) %{_var}/log/horizon
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/openstack-dashboard.conf
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings
+%config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/local_settings.d/*.example
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/default_policies/*.yaml
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/default_policies/README.txt
 %config(noreplace) %attr(0640, root, apache) %{_sysconfdir}/openstack-dashboard/cinder_policy.yaml
