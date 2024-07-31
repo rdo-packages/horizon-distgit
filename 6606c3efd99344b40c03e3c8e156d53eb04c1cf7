@@ -16,6 +16,24 @@
       "message": "rpm -q --provides https://cbs.centos.org/kojifiles/packages/python-django-compressor/4.4/1.el9s/noarch/python3-django-compressor-4.4-1.el9s.noarch.rpm\npython-django-compressor \u003d 4.4-1.el9s\npython3-django-compressor \u003d 4.4-1.el9s\npython3.9-django-compressor \u003d 4.4-1.el9s\npython3.9dist(django-compressor) \u003d 4.3.1\npython3dist(django-compressor) \u003d 4.3.1",
       "revId": "6606c3efd99344b40c03e3c8e156d53eb04c1cf7",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5507ba6a_1a3ae841",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 635
+      },
+      "writtenOn": "2024-07-31T17:02:46Z",
+      "side": 1,
+      "message": "we have leftover 4.3.1 instead of 4.4",
+      "parentUuid": "dedbd6d1_2be7f4c5",
+      "revId": "6606c3efd99344b40c03e3c8e156d53eb04c1cf7",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
