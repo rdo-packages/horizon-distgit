@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54610bc0_e004cc17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 635
+      },
+      "writtenOn": "2024-08-29T11:20:54Z",
+      "side": 1,
+      "message": "waiting for https://review.rdoproject.org/r/c/openstack/horizon-distgit/+/54091 to be merged and promoted",
+      "revId": "eb43df688703ef292259bce6877b7c87c2a4d74b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
