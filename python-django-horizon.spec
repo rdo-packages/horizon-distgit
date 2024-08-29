@@ -174,6 +174,7 @@ sed -i "s/six.*/six/" requirements.txt
 sed -i 's/^\(XStatic\)>=.*/\1/' requirements.txt
 sed -i 's/^\(XStatic-Angular\)>=.*/\1/' requirements.txt
 sed -i 's/^\(XStatic-JQuery-Migrate\)>=.*/\1/' requirements.txt
+sed -i 's/^\(XStatic-JQuery.quicksearch\)>=.*/\1/' requirements.txt
 sed -i 's/^\(XStatic-jquery-ui\)>=.*/\1/' requirements.txt
 sed -i 's/^\(XStatic-jQuery\)>=.*/\1/' requirements.txt
 
