@@ -16,6 +16,24 @@
       "message": "do we need this code to be conditional? With respect to if/when this code (will it?) get backported to downstream? downstream sets rhosp to 1",
       "revId": "595579a4fca02f181e389a3be7033b8d6ed54b8b",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20af2761_73e011e2",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 635
+      },
+      "writtenOn": "2024-11-18T09:00:21Z",
+      "side": 1,
+      "message": "This conditional makes the code to be run for RDO but not OSP.",
+      "parentUuid": "eaa486e3_9ed05d80",
+      "revId": "595579a4fca02f181e389a3be7033b8d6ed54b8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
