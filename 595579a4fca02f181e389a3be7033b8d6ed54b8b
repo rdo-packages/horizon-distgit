@@ -34,6 +34,24 @@
       "parentUuid": "eaa486e3_9ed05d80",
       "revId": "595579a4fca02f181e389a3be7033b8d6ed54b8b",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccce5cfc_788d5834",
+        "filename": "python-django-horizon.spec",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 721
+      },
+      "writtenOn": "2024-11-18T14:59:40Z",
+      "side": 1,
+      "message": "the reason I flagged this - there is code above that is not conditional - dealing with .rpmremoved \n\nI did not go through the logic with how .rpmmoved is used across the various installs scripts.\n\nIf this removal is not needed for OSP, I am good.",
+      "parentUuid": "20af2761_73e011e2",
+      "revId": "595579a4fca02f181e389a3be7033b8d6ed54b8b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
