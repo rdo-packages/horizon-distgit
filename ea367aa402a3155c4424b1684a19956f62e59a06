@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3748d65_916b5363",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 237
+      },
+      "writtenOn": "2024-12-16T12:07:50Z",
+      "side": 1,
+      "message": "This is due to change in dependencies.\n\nWe no longer use pyscss and django-pyscss, instead we use python3-libsass.",
+      "revId": "ea367aa402a3155c4424b1684a19956f62e59a06",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
