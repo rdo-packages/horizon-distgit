@@ -16,6 +16,24 @@
       "message": "This is due to change in dependencies.\n\nWe no longer use pyscss and django-pyscss, instead we use python3-libsass.",
       "revId": "ea367aa402a3155c4424b1684a19956f62e59a06",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52e688fa_42854d18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 635
+      },
+      "writtenOn": "2024-12-17T13:07:44Z",
+      "side": 1,
+      "message": "waiting for https://review.rdoproject.org/r/c/rdoinfo/+/55826 to be merged",
+      "parentUuid": "d3748d65_916b5363",
+      "revId": "ea367aa402a3155c4424b1684a19956f62e59a06",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
