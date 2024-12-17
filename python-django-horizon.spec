@@ -358,7 +358,6 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/project
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/settings
 %{_datadir}/openstack-dashboard/openstack_dashboard/dashboards/__init__.py*
-%{_datadir}/openstack-dashboard/openstack_dashboard/django_pyscss_fix
 %{_datadir}/openstack-dashboard/openstack_dashboard/enabled
 %{_datadir}/openstack-dashboard/openstack_dashboard/karma.conf.js
 %{_datadir}/openstack-dashboard/openstack_dashboard/local
