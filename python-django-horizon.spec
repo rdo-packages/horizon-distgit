@@ -156,7 +156,7 @@ sed -i 's:COMPRESS_OFFLINE.=.False:COMPRESS_OFFLINE = True:' openstack_dashboard
 
 # Set help_url
 %if 0%{?rhosp}
-sed -i "s;'help_url': \"https://docs.openstack.org/\";'help_url': \"https://access.redhat.com/documentation/en/red-hat-openstack-platform/\";" openstack_dashboard/settings.py
+sed -i "s;'help_url': \"https://docs.openstack.org/\";'help_url': \"https://docs.redhat.com/en/documentation/red_hat_openstack_services_on_openshift/\";" openstack_dashboard/settings.py
 %endif
 
 sed -i /^[[:space:]]*-c{env:.*_CONSTRAINTS_FILE.*/d tox.ini
