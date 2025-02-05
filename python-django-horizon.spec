@@ -167,8 +167,6 @@ sed -i '/^[\ ]*hacking>=.*/d' tox.ini
 sed -i '/^[\ ]*doc8 doc\/source/d' tox.ini
 # requirements-override-centos C9S is providing pyyaml-5.4.1 while package requires >= 6.0
 sed -i "s/PyYAML.*/PyYAML/" requirements.txt
-# requirements-override-centos C9S is providing six-1.15 while package requires >= 1.16
-sed -i "s/six.*/six/" requirements.txt
 
 # uncap some XStatic deps we don't provide yet in RDO
 sed -i 's/^\(XStatic\)>=.*/\1/' requirements.txt
