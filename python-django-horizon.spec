@@ -418,3 +418,4 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 - Update to 25.2.0
 
 
+# REMOVEME: error caused by commit https://opendev.org/openstack/horizon/commit/41d5dc20564347873faa51efc4e7f9678e55885e
