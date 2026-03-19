@@ -1,5 +1,5 @@
 %{!?sources_gpg: %{!?dlrn:%global sources_gpg 1} }
-%global sources_gpg_sign 0xf8675126e2411e7748dd46662fc2093e4682645f
+%global sources_gpg_sign 0x22284f69d9eccdf3df7819791c711af193ff8e54
 
 %{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 # we are excluding some runtime reqs from automatic generator
@@ -18,8 +18,8 @@ Name:       python-django-horizon
 # Liberty semver reset
 # https://review.openstack.org/#/q/I6a35fa0dda798fad93b804d00a46af80f08d475c,n,z
 Epoch:      1
-Version:    25.1.0
-Release:    2%{?dist}
+Version:    25.1.2
+Release:    1%{?dist}
 Summary:    Django application for talking to Openstack
 
 Group:      Development/Libraries
@@ -414,6 +414,9 @@ systemctl daemon-reload >/dev/null 2>&1 || :
 %endif
 
 %changelog
+* Thu Mar 19 2026 RDO <dev@lists.rdoproject.org> 1:25.1.2-1
+- Update to 25.1.2
+
 * Fri Nov 15 2024 Joel Capitao <jcapitao@redhat.com> 1:25.1.0-2
 - Expose local_settings.d to the config directory
 
